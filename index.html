@@ -1,733 +1,335 @@
 <!DOCTYPE html>
 <html lang="pt-BR">
 <head>
-<meta charset="utf-8">
-<meta name="viewport" content="width=device-width, initial-scale=1">
-<title>ISF2.8 CM2220 E / CM2220 AN — Diagramas de Sintomas de Falhas</title>
-<style>
-  :root{
-    --bg:#0f172a; --card:#111827; --ink:#e5e7eb; --muted:#94a3b8;
-    --accent:#22d3ee; --accent-2:#f59e0b; --line:#1f2937;
-    --causa:#fbbf24; --correcao:#34d399; --chip:#1e293b;
-  }
-  *{box-sizing:border-box}
-  body{margin:0;background:linear-gradient(180deg,#0b1220,#0f172a 40%);color:var(--ink);
-       font:16px/1.6 system-ui,-apple-system,Segoe UI,Roboto,sans-serif}
-  a{color:var(--accent);text-decoration:none}
-  a:hover{text-decoration:underline}
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Cummins ISF2.8 - Seção TS</title>
+  
+  <!-- Ícones Font Awesome -->
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+  
+  <!-- SEU CSS GLOBAL (do MWM) -->
+  <link rel="stylesheet" href="style.css">
 
-  /* ---------- Cabeçalho do artigo ---------- */
-  .art-head{padding:32px 24px 8px;max-width:1100px;margin:0 auto}
-  .art-kicker{display:inline-block;font-size:.75rem;letter-spacing:.12em;text-transform:uppercase;
-               color:var(--accent);border:1px solid var(--accent);border-radius:999px;
-               padding:4px 10px;margin-bottom:14px}
-  .art-head h1{margin:0 0 6px;font-size:2rem;line-height:1.2}
-  .art-lead{margin:0 0 16px;color:var(--muted);max-width:70ch}
-  .chips{display:flex;flex-wrap:wrap;gap:8px;margin-bottom:16px}
-  .chips span{background:var(--chip);border:1px solid var(--line);color:var(--muted);
-              padding:4px 10px;border-radius:999px;font-size:.8rem}
+  <!-- ESTILOS ESPECÍFICOS PARA A PÁGINA DO CUMMINS (Mantendo o tema claro) -->
+  <style>
+    .diag-passos { display: flex; flex-direction: column; gap: 14px; margin-top: 20px; }
+    
+    .diag-passo {
+      display: grid;
+      grid-template-columns: auto 1fr 1fr;
+      gap: 16px;
+      background: #f8fafc;
+      border: 1px solid var(--border-color);
+      border-radius: 12px;
+      padding: 16px;
+      transition: var(--transition);
+    }
+    .diag-passo:hover { box-shadow: var(--shadow-sm); border-color: #c7d2fe; }
 
-  /* ---------- Dica ---------- */
-  .dica{background:rgba(34,211,238,.06);border-left:4px solid var(--accent);
-        padding:14px 18px;border-radius:8px;margin:0 auto 24px;max-width:1100px}
-  .dica strong{color:var(--accent)}
-  .dica p{margin:6px 0 0;color:var(--muted)}
+    .diag-num {
+      font-weight: 700;
+      color: var(--primary);
+      background: var(--primary-light);
+      border: 1px solid #c7d2fe;
+      border-radius: 8px;
+      padding: 4px 10px;
+      height: fit-content;
+      font-size: 0.85rem;
+      white-space: nowrap;
+    }
 
-  /* ---------- Índice ---------- */
-  .indice{max-width:1100px;margin:0 auto 32px;padding:0 24px}
-  .indice h2{font-size:1.25rem;margin:0 0 12px;color:var(--ink)}
-  .indice-grupo{margin-bottom:18px}
-  .indice-grupo h3{font-size:.8rem;letter-spacing:.1em;text-transform:uppercase;
-                    color:var(--accent-2);margin:0 0 8px}
-  .indice ul{list-style:none;padding:0;margin:0;display:grid;
-             grid-template-columns:repeat(auto-fill,minmax(280px,1fr));gap:6px 16px}
-  .indice li a{display:flex;gap:8px;padding:4px 0;color:var(--ink);font-size:.92rem}
-  .indice li a:hover{color:var(--accent)}
-  .indice .codigo-mini{color:var(--accent-2);font-weight:600;min-width:44px}
+    .diag-bloco h4 { margin: 0 0 4px; font-size: 0.75rem; letter-spacing: 0.1em; text-transform: uppercase; }
+    .diag-causa h4 { color: #b91c1c; } 
+    .diag-correcao h4 { color: #15803d; } 
+    .diag-bloco p { margin: 0; font-size: 0.92rem; color: var(--text-main); }
 
-  /* ---------- Seções por sistema ---------- */
-  .sistema{max-width:1100px;margin:0 auto;padding:0 24px}
-  .sistema > h2{font-size:1.5rem;border-bottom:1px solid var(--line);
-                padding-bottom:8px;margin:40px 0 20px;color:var(--accent)}
-
-  /* ---------- Cada sintoma ---------- */
-  .sintoma{background:var(--card);border:1px solid var(--line);border-radius:12px;
-           padding:22px 24px;margin-bottom:20px;scroll-margin-top:20px}
-  .sintoma header{display:flex;align-items:baseline;gap:12px;flex-wrap:wrap;margin-bottom:6px}
-  .sintoma .codigo{background:var(--accent-2);color:#111;font-weight:700;padding:2px 10px;
-                   border-radius:6px;font-size:.8rem;letter-spacing:.05em}
-  .sintoma h3{margin:0;font-size:1.25rem;color:var(--ink)}
-  .sintoma .intro{color:var(--muted);font-style:italic;margin:8px 0 16px;font-size:.92rem}
-
-  /* ---------- Passos ---------- */
-  .passos{list-style:none;padding:0;margin:0;display:flex;flex-direction:column;gap:14px}
-  .passo{display:grid;grid-template-columns:auto 1fr 1fr;gap:16px;
-         background:#0b1220;border:1px solid var(--line);border-radius:10px;padding:14px 16px}
-  .passo .num{font-weight:700;color:var(--accent);background:rgba(34,211,238,.1);
-              border:1px solid rgba(34,211,238,.35);border-radius:8px;
-              padding:4px 10px;height:fit-content;font-size:.85rem;white-space:nowrap}
-  .passo .bloco h4{margin:0 0 4px;font-size:.75rem;letter-spacing:.1em;text-transform:uppercase}
-  .passo .causa h4{color:var(--causa)}
-  .passo .correcao h4{color:var(--correcao)}
-  .passo p{margin:0;font-size:.92rem;color:var(--ink)}
-
-  @media (max-width:760px){
-    .passo{grid-template-columns:1fr}
-    .passo .num{justify-self:start}
-  }
-
-  footer{max-width:1100px;margin:48px auto 24px;padding:0 24px;color:var(--muted);font-size:.85rem;
-         border-top:1px solid var(--line);padding-top:16px}
-</style>
+    @media (max-width: 760px) {
+      .diag-passo { grid-template-columns: 1fr; }
+    }
+    
+    /* Ajuste no TOC para 3 colunas em telas grandes, 1 no celular */
+    .toc ul { columns: 3; column-gap: 20px; font-size: 0.85rem; }
+    @media (max-width: 900px) { .toc ul { columns: 2; } }
+    @media (max-width: 600px) { .toc ul { columns: 1; } }
+    
+    .toc li { break-inside: avoid; margin-bottom: 4px; }
+    .toc .page-num { color: var(--text-muted); font-size: 0.75rem; float: right; }
+  </style>
 </head>
 <body>
 
-<header class="art-head">
-  <span class="art-kicker">Diagnóstico · Sintomas</span>
-  <h1>ISF2.8 CM2220 E / CM2220 AN</h1>
-  <p class="art-lead">Diagramas de sintomas de falhas e reparos — Seção TS do manual Cummins. Cada diagrama lista as causas prováveis e a correção recomendada passo a passo.</p>
-  <div class="chips">
-    <span>Cummins ISF2.8</span>
-    <span>47 sintomas</span>
-    <span>Seção TS</span>
-    <span>Manual de Diagnóstico</span>
+  <div class="site-wrapper">
+
+    <!-- NAVBAR (Mantendo a estrutura do MWM) -->
+    <header>
+      <div class="nav-container">
+        <a href="#" class="logo">
+          <i class="fa-solid fa-house"></i>
+          <span>Início</span>
+        </a>
+        <button class="mobile-toggle" id="mobile-toggle-btn" aria-label="Abrir Menu">
+          <i class="fa-solid fa-bars"></i>
+        </button>
+        <ul class="main-nav" id="main-nav">
+          <li class="nav-item"><button class="nav-btn"><span>Sistema Elétrico</span></button></li>
+          <li class="nav-item"><button class="nav-btn"><span>Combustível</span></button></li>
+          <li class="nav-item"><button class="nav-btn"><span>Injeção</span></button></li>
+          <li class="nav-item"><button class="nav-btn"><span>Motor e Chassi</span></button></li>
+          <li class="nav-item"><button class="nav-btn"><span>Diagnóstico</span></button></li>
+        </ul>
+      </div>
+    </header>
+
+    <!-- CONTEÚDO PRINCIPAL -->
+    <main>
+      <article class="page-card" id="page-card">
+        
+        <!-- CABEÇALHO DO ARTIGO -->
+        <header class="art-head">
+          <span class="art-kicker">Seção TS · Diagramas</span>
+          <h1>ISF2.8 CM2220 E / CM2220 AN</h1>
+          <p class="art-lead">Diagramas de Sintomas de Falhas e Reparos. Consulte abaixo o índice completo de sintomas e as instruções passo a passo.</p>
+          <div class="chips">
+            <span>Cummins ISF2.8</span>
+            <span>Manual de Diagnóstico</span>
+            <span>Índice Completo</span>
+          </div>
+        </header>
+
+        <!-- DICA -->
+        <div class="dica">
+          <strong>Como usar</strong>
+          <p>Leia os passos na ordem. Cada passo traz a <em>causa</em> e a <em>correção</em>. Se o passo resolver o problema, pare; caso contrário, siga para o próximo.</p>
+        </div>
+
+        <!-- ÍNDICE COMPLETO (Baseado no TXT fornecido) -->
+        <div class="toc">
+          <strong>Índice do Manual Original</strong>
+          <ul>
+            <li><a href="#alternador-sobrecarga">Alternador com Sobrecarga</a> <span class="page-num">TS-5</span></li>
+            <li><a href="#alternador-nao-carrega">Alternador Não Carrega</a> <span class="page-num">TS-3</span></li>
+            <li><a href="#bomba-vacuo">A Bomba de Vácuo Não Mantém Vácuo Adequado</a> <span class="page-num">TS-93</span></li>
+            <li><a href="#consumo-fluido-diesel">Consumo de Fluido de Escape de Diesel</a> <span class="page-num">TS-94</span></li>
+            <li><a href="#consumo-combustivel">Consumo Excessivo de Combustível</a> <span class="page-num">TS-58</span></li>
+            <li><a href="#consumo-oleo">Consumo Excessivo de Óleo Lubrificante</a> <span class="page-num">TS-71</span></li>
+            <li><a href="#desaceleracao-lenta">Desaceleração Lenta do Motor</a> <span class="page-num">TS-24</span></li>
+            <li><a href="#erro-comunicacao">Erro de Comunicação</a> <span class="page-num">TS-6</span></li>
+            <li><a href="#borra-oleo">Excesso de Borra de Óleo Lubrificante</a> <span class="page-num">TS-79</span></li>
+            <li><a href="#fumaca-branca">Excesso de Fumaça Branca</a> <span class="page-num">TS-87</span></li>
+            <li><a href="#fumaca-preta">Excesso de Fumaça Preta</a> <span class="page-num">TS-85</span></li>
+            <li><a href="#ruido-bomba-vacuo">Excesso de Ruídos na Bomba de Vácuo</a> <span class="page-num">TS-92</span></li>
+            <li><a href="#ruido-motor">Excesso de Ruídos no Motor</a> <span class="page-num">TS-28</span></li>
+            <li><a href="#ruido-biela">Excesso de Ruídos no Motor - Biela</a> <span class="page-num">TS-33</span></li>
+            <li><a href="#ruido-mancal">Excesso de Ruídos no Motor - Mancal</a> <span class="page-num">TS-35</span></li>
+            <li><a href="#ruido-pistao">Excesso de Ruídos no Motor - Pistão</a> <span class="page-num">TS-37</span></li>
+            <li><a href="#ruido-turbo">Excesso de Ruídos no Motor - Turbocompressor</a> <span class="page-num">TS-39</span></li>
+            <li><a href="#sopro-carter">Excesso de Sopro de Gases no Cárter</a> <span class="page-num">TS-20</span></li>
+            <li><a href="#vibracao-motor">Excesso de Vibrações do Motor</a> <span class="page-num">TS-52</span></li>
+            <li><a href="#interruptor-marcha-lenta">Interruptor de Regulagem da Marcha Lenta</a> <span class="page-num">TS-70</span></li>
+            <li><a href="#luzes-advertencia">Luzes de Advertência Não Acendem</a> <span class="page-num">TS-57</span></li>
+            <li><a href="#motor-irregular">Motor Apresenta Funcionamento Irregular</a> <span class="page-num">TS-44</span></li>
+            <li><a href="#baixa-potencia">Motor com Baixa Potência de Saída</a> <span class="page-num">TS-41</span></li>
+            <li><a href="#partida-dificil">Motor dá Partida com Dificuldade</a> <span class="page-num">TS-25</span></li>
+            <li><a href="#motor-nao-desliga">Motor Não Desliga</a> <span class="page-num">TS-56</span></li>
+            <li><a href="#motor-nao-gira">Motor Não Gira ou Gira Lentamente</a> <span class="page-num">TS-54</span></li>
+            <li><a href="#oleo-contaminado">Óleo Lubrificante Contaminado</a> <span class="page-num">TS-74</span></li>
+            <li><a href="#perda-arrefecimento-externa">Perda de Líquido de Arrefecimento - Externa</a> <span class="page-num">TS-8</span></li>
+            <li><a href="#perda-arrefecimento-interna">Perda de Líquido de Arrefecimento - Interna</a> <span class="page-num">TS-10</span></li>
+            <li><a href="#combustivel-arrefecimento">Presença de Combustível no Líquido de Arrefecimento</a> <span class="page-num">TS-63</span></li>
+            <li><a href="#combustivel-oleo">Presença de Combustível no Óleo Lubrificante</a> <span class="page-num">TS-64</span></li>
+            <li><a href="#arrefecimento-oleo">Presença de Líquido de Arrefecimento no Óleo</a> <span class="page-num">TS-19</span></li>
+            <li><a href="#oleo-arrefecimento">Presença de Óleo no Líquido de Arrefecimento</a> <span class="page-num">TS-82</span></li>
+            <li><a href="#pressao-admissao-baixa">Pressão no Coletor de Admissão Abaixo da Normal</a> <span class="page-num">TS-68</span></li>
+            <li><a href="#pressao-alta-oleo">Pressão Alta do Óleo Lubrificante</a> <span class="page-num">TS-75</span></li>
+            <li><a href="#pressao-baixa-combustivel">Pressão Baixa do Combustível na Partida</a> <span class="page-num">TS-22</span></li>
+            <li><a href="#pressao-baixa-oleo">Pressão Baixa do Óleo Lubrificante</a> <span class="page-num">TS-76</span></li>
+            <li><a href="#pto">PTO ou Piloto Automático Não Funcionam</a> <span class="page-num">TS-83</span></li>
+            <li><a href="#rotacao-irregular">Rotação Irregular em Marcha Lenta</a> <span class="page-num">TS-46</span></li>
+            <li><a href="#rotacao-pto">Rotação Irregular em PTO</a> <span class="page-num">TS-47</span></li>
+            <li><a href="#ruido-pino">Excesso de Ruídos - Batidas de Pino</a> <span class="page-num">TS-31</span></li>
+            <li><a href="#temp-ar-admissao">Temperatura do Ar no Coletor Acima</a> <span class="page-num">TS-65</span></li>
+            <li><a href="#temp-arrefecimento-baixa">Temperatura do Líquido Abaixo da Normal</a> <span class="page-num">TS-18</span></li>
+            <li><a href="#temp-arrefecimento-gradual">Superaquecimento Gradual</a> <span class="page-num">TS-11</span></li>
+            <li><a href="#temp-arrefecimento-repentino">Superaquecimento Repentino</a> <span class="page-num">TS-15</span></li>
+            <li><a href="#temp-oleo">Temperatura do Óleo Acima da Especificação</a> <span class="page-num">TS-81</span></li>
+            <li><a href="#vazamento-turbo">Vazamento de Óleo no Turbocompressor</a> <span class="page-num">TS-90</span></li>
+            <li><a href="#ventilador">Ventilador do Motor Não Funciona</a> <span class="page-num">TS-27</span></li>
+          </ul>
+        </div>
+
+        <!-- ================= SISTEMA ELÉTRICO ================= -->
+        <section class="sistema">
+          <h2>Sistema Elétrico</h2>
+
+          <!-- t013 -->
+          <article class="sintoma" id="alternador-nao-carrega">
+            <header><span class="codigo">t013</span><h3>Alternador Não Carrega ou Carrega Insuficientemente</h3></header>
+            <div class="diag-passos">
+              <div class="diag-passo">
+                <span class="diag-num">PASSO 1</span>
+                <div class="diag-bloco diag-causa"><h4>Causa</h4><p>Falha de funcionamento do indicador do veículo.</p></div>
+                <div class="diag-bloco diag-correcao"><h4>Correção</h4><p>Verifique o indicador do veículo. Consulte o manual de serviços do OEM.</p></div>
+              </div>
+              <div class="diag-passo">
+                <span class="diag-num">PASSO 2</span>
+                <div class="diag-bloco diag-causa"><h4>Causa</h4><p>Rotação do motor baixa demais para carregar o alternador.</p></div>
+                <div class="diag-bloco diag-correcao"><h4>Correção</h4><p>Acione o acelerador para aumentar a rotação do motor para 1200 rpm e excitar o alternador. (Consulte Boletim 4022267).</p></div>
+              </div>
+              <div class="diag-passo">
+                <span class="diag-num">PASSO 3</span>
+                <div class="diag-bloco diag-causa"><h4>Causa</h4><p>A correia do alternador está solta.</p></div>
+                <div class="diag-bloco diag-correcao"><h4>Correção</h4><p>Verifique a tensão da correia do alternador. Consulte o Procedimento 013-001.</p></div>
+              </div>
+              <div class="diag-passo">
+                <span class="diag-num">PASSO 4</span>
+                <div class="diag-bloco diag-causa"><h4>Causa</h4><p>O sistema elétrico está aberto (fusíveis, fios ou conexões).</p></div>
+                <div class="diag-bloco diag-correcao"><h4>Correção</h4><p>Verifique os fusíveis, os fios e as conexões. Consulte o manual de serviço do OEM.</p></div>
+              </div>
+            </div>
+          </article>
+
+          <!-- t078 -->
+          <article class="sintoma" id="motor-nao-gira">
+            <header><span class="codigo">t078</span><h3>Motor Não Gira ou Gira Lentamente na Partida</h3></header>
+            <div class="diag-passos">
+              <div class="diag-passo">
+                <span class="diag-num">PASSO 1</span>
+                <div class="diag-bloco diag-causa"><h4>Causa</h4><p>A temperatura da bateria está abaixo da especificação.</p></div>
+                <div class="diag-bloco diag-correcao"><h4>Correção</h4><p>Verifique se o aquecedor da bateria (se equipado) funciona corretamente.</p></div>
+              </div>
+              <div class="diag-passo">
+                <span class="diag-num">PASSO 2</span>
+                <div class="diag-bloco diag-causa"><h4>Causa</h4><p>A voltagem da bateria está baixa.</p></div>
+                <div class="diag-bloco diag-correcao"><h4>Correção</h4><p>Verifique as baterias e o circuito de alimentação. Consulte o Procedimento 013-007.</p></div>
+              </div>
+              <div class="diag-passo">
+                <span class="diag-num">PASSO 3</span>
+                <div class="diag-bloco diag-causa"><h4>Causa</h4><p>Os cabos ou as conexões da bateria estão soltos ou corroídos.</p></div>
+                <div class="diag-bloco diag-correcao"><h4>Correção</h4><p>Verifique os cabos e as conexões. Consulte o Procedimento 013-009.</p></div>
+              </div>
+            </div>
+          </article>
+        </section>
+
+        <!-- ================= ARREFECIMENTO ================= -->
+        <section class="sistema">
+          <h2>Sistema de Arrefecimento</h2>
+          
+          <!-- t022 -->
+          <article class="sintoma" id="temp-arrefecimento-gradual">
+            <header><span class="codigo">t022</span><h3>Temperatura Acima da Normal - Superaquecimento Gradual</h3></header>
+            <div class="diag-passos">
+              <div class="diag-passo">
+                <span class="diag-num">PASSO 1</span>
+                <div class="diag-bloco diag-causa"><h4>Causa</h4><p>Códigos eletrônicos de falha ativos ou altas contagens.</p></div>
+                <div class="diag-bloco diag-correcao"><h4>Correção</h4><p>Verifique e faça o diagnóstico com a ferramenta INSITE™. (Boletim 4021677).</p></div>
+              </div>
+              <div class="diag-passo">
+                <span class="diag-num">PASSO 2</span>
+                <div class="diag-bloco diag-causa"><h4>Causa</h4><p>A tampa ou o anteparo de inverno do radiador estão fechados.</p></div>
+                <div class="diag-bloco diag-correcao"><h4>Correção</h4><p>Abra a tampa ou o anteparo de inverno do radiador.</p></div>
+              </div>
+              <div class="diag-passo">
+                <span class="diag-num">PASSO 8</span>
+                <div class="diag-bloco diag-causa"><h4>Causa</h4><p>A correia de acionamento do ventilador está quebrada ou solta.</p></div>
+                <div class="diag-bloco diag-correcao"><h4>Correção</h4><p>Verifique a correia. Consulte o Procedimento 008-002.</p></div>
+              </div>
+            </div>
+          </article>
+        </section>
+
+        <!-- ================= COMBUSTÍVEL ================= -->
+        <section class="sistema">
+          <h2>Sistema de Combustível</h2>
+          
+          <!-- t057 -->
+          <article class="sintoma" id="baixa-potencia">
+            <header><span class="codigo">t057</span><h3>Motor com Baixa Potência de Saída</h3></header>
+            <div class="diag-passos">
+              <div class="diag-passo">
+                <span class="diag-num">PASSO 1</span>
+                <div class="diag-bloco diag-causa"><h4>Causa</h4><p>Disponível atualização de calibração do ECM.</p></div>
+                <div class="diag-bloco diag-correcao"><h4>Correção</h4><p>Verifique o histórico no QuickServe™ Online. Se necessário, calibre o ECM. (Procedimento 019-032).</p></div>
+              </div>
+              <div class="diag-passo">
+                <span class="diag-num">PASSO 2</span>
+                <div class="diag-bloco diag-causa"><h4>Causa</h4><p>Baixa potência, desempenho ou aceleração.</p></div>
+                <div class="diag-bloco diag-correcao"><h4>Correção</h4><p>Use INSITE™ para monitorar 'Estado de Operação do Motor'. Verifique códigos de ajuste dos injetores (Boletim 4021686).</p></div>
+              </div>
+              <div class="diag-passo">
+                <span class="diag-num">PASSO 3</span>
+                <div class="diag-bloco diag-causa"><h4>Causa</h4><p>Baixa potência, desempenho ou aceleração.</p></div>
+                <div class="diag-bloco diag-correcao"><h4>Correção</h4><p>Faça o teste de restrição na entrada de combustível. (Procedimento 006-020).</p></div>
+              </div>
+            </div>
+          </article>
+        </section>
+
+        <!-- ================= LUBRIFICAÇÃO / RUÍDOS ================= -->
+        <section class="sistema">
+          <h2>Lubrificação e Ruídos</h2>
+
+          <!-- t105 -->
+          <article class="sintoma" id="pressao-baixa-oleo">
+            <header><span class="codigo">t105</span><h3>Pressão Baixa do Óleo Lubrificante</h3></header>
+            <div class="diag-passos">
+              <div class="diag-passo">
+                <span class="diag-num">PASSO 1</span>
+                <div class="diag-bloco diag-causa"><h4>Causa</h4><p>Códigos eletrônicos de falha ativos.</p></div>
+                <div class="diag-bloco diag-correcao"><h4>Correção</h4><p>Verifique com INSITE™. Consulte o Manual de Diagnóstico.</p></div>
+              </div>
+              <div class="diag-passo">
+                <span class="diag-num">PASSO 2</span>
+                <div class="diag-bloco diag-causa"><h4>Causa</h4><p>O interruptor ou sensor da pressão do óleo está defeituoso.</p></div>
+                <div class="diag-bloco diag-correcao"><h4>Correção</h4><p>Meça a pressão real e compare com o indicador. (Procedimento 007-037).</p></div>
+              </div>
+              <div class="diag-passo">
+                <span class="diag-num">PASSO 4</span>
+                <div class="diag-bloco diag-causa"><h4>Causa</h4><p>O nível do óleo lubrificante está acima ou abaixo da especificação.</p></div>
+                <div class="diag-bloco diag-correcao"><h4>Correção</h4><p>Adicione ou drene. (Procedimento 007-037 e 007-009).</p></div>
+              </div>
+            </div>
+          </article>
+
+          <!-- t047 -->
+          <article class="sintoma" id="ruido-motor">
+            <header><span class="codigo">t047</span><h3>Excesso de Ruídos no Motor</h3></header>
+            <div class="diag-passos">
+              <div class="diag-passo">
+                <span class="diag-num">PASSO 1</span>
+                <div class="diag-bloco diag-causa"><h4>Causa</h4><p>A correia de acionamento do ventilador está solta.</p></div>
+                <div class="diag-bloco diag-correcao"><h4>Correção</h4><p>Verifique a tensão. (Procedimento 008-002).</p></div>
+              </div>
+              <div class="diag-passo">
+                <span class="diag-num">PASSO 6</span>
+                <div class="diag-bloco diag-causa"><h4>Causa</h4><p>O nível do óleo lubrificante está acima ou abaixo da especificação.</p></div>
+                <div class="diag-bloco diag-correcao"><h4>Correção</h4><p>Adicione ou drene. (Procedimento 007-037).</p></div>
+              </div>
+            </div>
+          </article>
+        </section>
+
+      </article>
+    </main>
+
+    <!-- RODAPÉ -->
+    <footer class="site-footer">
+      <div class="footer-inner">
+        <div class="footer-brand">
+          <a href="#" class="logo"><i class="fa-solid fa-gears"></i><span>Guia Técnico</span></a>
+          <p>Consulta rápida de esquemas, testes e especificações para oficina.</p>
+        </div>
+      </div>
+      <div class="footer-bottom">
+        <span>© 2026. Conteúdo baseado na Seção TS do manual Cummins ISF2.8.</span>
+        <a href="#">Voltar ao início</a>
+      </div>
+    </footer>
+
   </div>
-</header>
 
-<div class="dica">
-  <strong>Como usar</strong>
-  <p>Leia os passos na ordem. Cada passo traz a <em>causa</em> e a <em>correção</em>. Se o passo resolver o problema, pare; caso contrário, siga para o próximo. Para detalhes de procedimento, consulte o número indicado (ex.: “Procedimento 008-020 na Seção 8”).</p>
-</div>
-
-<!-- ====================== ÍNDICE ====================== -->
-<nav class="indice" aria-label="Índice de sintomas">
-  <h2>Índice de sintomas</h2>
-
-  <div class="indice-grupo">
-    <h3>Sistema Elétrico</h3>
-    <ul>
-      <li><a href="#t013"><span class="codigo-mini">t013</span> Alternador Não Carrega ou Carrega Insuficientemente</a></li>
-      <li><a href="#t014"><span class="codigo-mini">t014</span> Alternador com Sobrecarga</a></li>
-      <li><a href="#t016"><span class="codigo-mini">t016</span> Erro de Comunicação — Ferramenta Eletrônica de Serviço</a></li>
-      <li><a href="#t084"><span class="codigo-mini">t084</span> Luzes de Advertência de Códigos de Falha Não Acendem</a></li>
-      <li><a href="#t078"><span class="codigo-mini">t078</span> Motor Não Gira ou Gira Lentamente na Partida</a></li>
-    </ul>
-  </div>
-
-  <div class="indice-grupo">
-    <h3>Sistema de Arrefecimento</h3>
-    <ul>
-      <li><a href="#t020"><span class="codigo-mini">t020</span> Perda de Líquido de Arrefecimento — Externa</a></li>
-      <li><a href="#t021"><span class="codigo-mini">t021</span> Perda de Líquido de Arrefecimento — Interna</a></li>
-      <li><a href="#t022"><span class="codigo-mini">t022</span> Temperatura Acima da Normal — Superaquecimento Gradual</a></li>
-      <li><a href="#t023"><span class="codigo-mini">t023</span> Temperatura Acima da Normal — Superaquecimento Repentino</a></li>
-      <li><a href="#t024"><span class="codigo-mini">t024</span> Temperatura Abaixo da Normal</a></li>
-      <li><a href="#t025"><span class="codigo-mini">t025</span> Presença de Líquido de Arrefecimento no Óleo</a></li>
-      <li><a href="#t091"><span class="codigo-mini">t091</span> Presença de Combustível no Líquido de Arrefecimento</a></li>
-      <li><a href="#t108"><span class="codigo-mini">t108</span> Presença de Óleo no Líquido de Arrefecimento</a></li>
-    </ul>
-  </div>
-
-  <div class="indice-grupo">
-    <h3>Sistema de Combustível</h3>
-    <ul>
-      <li><a href="#t029"><span class="codigo-mini">t029</span> Pressão Baixa do Combustível no Giro de Partida</a></li>
-      <li><a href="#t041"><span class="codigo-mini">t041</span> Desaceleração Lenta do Motor</a></li>
-      <li><a href="#t087"><span class="codigo-mini">t087</span> Consumo Excessivo de Combustível</a></li>
-      <li><a href="#t068"><span class="codigo-mini">t068</span> Rotação Irregular em PTO ou Piloto Automático</a></li>
-      <li><a href="#t112"><span class="codigo-mini">t112</span> PTO ou Piloto Automático Não Funcionam</a></li>
-      <li><a href="#t099"><span class="codigo-mini">t099</span> Interruptor de Regulagem da Marcha Lenta Não Funciona</a></li>
-    </ul>
-  </div>
-
-  <div class="indice-grupo">
-    <h3>Sistema de Lubrificação</h3>
-    <ul>
-      <li><a href="#t102"><span class="codigo-mini">t102</span> Consumo Excessivo de Óleo Lubrificante</a></li>
-      <li><a href="#t103"><span class="codigo-mini">t103</span> Óleo Lubrificante Contaminado</a></li>
-      <li><a href="#t104"><span class="codigo-mini">t104</span> Pressão Alta do Óleo Lubrificante</a></li>
-      <li><a href="#t105"><span class="codigo-mini">t105</span> Pressão Baixa do Óleo Lubrificante</a></li>
-      <li><a href="#t106"><span class="codigo-mini">t106</span> Excesso de Borra de Óleo no Cárter</a></li>
-      <li><a href="#t107"><span class="codigo-mini">t107</span> Temperatura do Óleo Acima da Especificação</a></li>
-      <li><a href="#t027"><span class="codigo-mini">t027</span> Excesso de Sopro de Gases no Cárter</a></li>
-      <li><a href="#oleo-comb"><span class="codigo-mini">s/n</span> Presença de Combustível no Óleo Lubrificante</a></li>
-    </ul>
-  </div>
-
-  <div class="indice-grupo">
-    <h3>Admissão e Escape</h3>
-    <ul>
-      <li><a href="#t096"><span class="codigo-mini">t096</span> Temperatura do Ar no Coletor Acima da Especificação</a></li>
-      <li><a href="#t097"><span class="codigo-mini">t097</span> Pressão no Coletor Abaixo da Normal</a></li>
-      <li><a href="#t052"><span class="codigo-mini">t052</span> Ruídos no Turbocompressor</a></li>
-      <li><a href="#t122"><span class="codigo-mini">t122</span> Vazamento de Óleo/Combustível no Turbocompressor</a></li>
-      <li><a href="#t123"><span class="codigo-mini">t123</span> Ruídos na Bomba de Vácuo</a></li>
-      <li><a href="#t124"><span class="codigo-mini">t124</span> Bomba de Vácuo Não Mantém Vácuo Adequado</a></li>
-    </ul>
-  </div>
-
-  <div class="indice-grupo">
-    <h3>Ruídos e Vibrações</h3>
-    <ul>
-      <li><a href="#t047"><span class="codigo-mini">t047</span> Excesso de Ruídos no Motor</a></li>
-      <li><a href="#t048"><span class="codigo-mini">t048</span> Ruídos — Batidas de Pino</a></li>
-      <li><a href="#t049"><span class="codigo-mini">t049</span> Ruídos — Biela</a></li>
-      <li><a href="#t050"><span class="codigo-mini">t050</span> Ruídos — Mancal Principal</a></li>
-      <li><a href="#t051"><span class="codigo-mini">t051</span> Ruídos — Pistão</a></li>
-      <li><a href="#t075"><span class="codigo-mini">t075</span> Excesso de Vibrações do Motor</a></li>
-    </ul>
-  </div>
-
-  <div class="indice-grupo">
-    <h3>Desempenho, Partida e Ignição</h3>
-    <ul>
-      <li><a href="#t043"><span class="codigo-mini">t043</span> Partida Difícil ou Não Dá Partida (com Fumaça)</a></li>
-      <li><a href="#t057"><span class="codigo-mini">t057</span> Motor com Baixa Potência de Saída</a></li>
-      <li><a href="#t062"><span class="codigo-mini">t062</span> Funcionamento Irregular ou Falha de Ignição</a></li>
-      <li><a href="#t066"><span class="codigo-mini">t066</span> Rotação Irregular em Marcha Lenta</a></li>
-      <li><a href="#t081"><span class="codigo-mini">t081</span> Motor Não Desliga</a></li>
-      <li><a href="#t046"><span class="codigo-mini">t046</span> Ventilador do Motor com Falha</a></li>
-    </ul>
-  </div>
-
-  <div class="indice-grupo">
-    <h3>Emissões e Pós-tratamento</h3>
-    <ul>
-      <li><a href="#t116"><span class="codigo-mini">t116</span> Excesso de Fumaça Preta</a></li>
-      <li><a href="#t118"><span class="codigo-mini">t118</span> Excesso de Fumaça Branca</a></li>
-      <li><a href="#t128"><span class="codigo-mini">t128</span> Consumo de Fluido de Escape de Diesel — Anormal</a></li>
-    </ul>
-  </div>
-</nav>
-
-<!-- ============================================================ -->
-<!-- =================== SISTEMA ELÉTRICO ======================= -->
-<!-- ============================================================ -->
-<section class="sistema">
-<h2>Sistema Elétrico</h2>
-
-<article class="sintoma" id="t013">
-  <header><span class="codigo">t013</span><h3>Alternador Não Carrega ou Carrega Insuficientemente</h3></header>
-  <ol class="passos">
-    <li class="passo"><span class="num">PASSO 1</span>
-      <div class="bloco causa"><h4>Causa</h4><p>Falha de funcionamento do indicador do veículo.</p></div>
-      <div class="bloco correcao"><h4>Correção</h4><p>Verifique o indicador do veículo. Consulte o manual de serviços do OEM.</p></div></li>
-    <li class="passo"><span class="num">PASSO 2</span>
-      <div class="bloco causa"><h4>Causa</h4><p>Rotação do motor baixa demais para carregar o alternador.</p></div>
-      <div class="bloco correcao"><h4>Correção</h4><p>Acione o acelerador para aumentar a rotação do motor para 1200 rpm e excitar o alternador. Consulte o Manual de Operação e Manutenção dos Motores ISF2.8 CM2220 E e ISF2.8 CM2220 AN, Boletim 4022267, ou o Manual do Proprietário, Boletim 4022266, para verificar a rotação de marcha lenta e o funcionamento corretos do motor.</p></div></li>
-    <li class="passo"><span class="num">PASSO 3</span>
-      <div class="bloco causa"><h4>Causa</h4><p>A correia do alternador está solta.</p></div>
-      <div class="bloco correcao"><h4>Correção</h4><p>Verifique a tensão da correia do alternador. Consulte o Procedimento 013-001 na Seção 13.</p></div></li>
-    <li class="passo"><span class="num">PASSO 4</span>
-      <div class="bloco causa"><h4>Causa</h4><p>O sistema elétrico está aberto (fusíveis queimados, fios quebrados ou conexões soltas).</p></div>
-      <div class="bloco correcao"><h4>Correção</h4><p>Verifique os fusíveis, os fios e as conexões. Consulte o manual de serviço do OEM e os diagramas elétricos do fabricante.</p></div></li>
-    <li class="passo"><span class="num">PASSO 5</span>
-      <div class="bloco causa"><h4>Causa</h4><p>Os cabos ou as conexões da bateria estão soltos, quebrados ou corroídos (resistência excessiva).</p></div>
-      <div class="bloco correcao"><h4>Correção</h4><p>Verifique os cabos e as conexões da bateria. Consulte o Procedimento 013-009 na Seção 13.</p></div></li>
-    <li class="passo"><span class="num">PASSO 6</span>
-      <div class="bloco causa"><h4>Causa</h4><p>Falha no funcionamento das baterias.</p></div>
-      <div class="bloco correcao"><h4>Correção</h4><p>Verifique as condições das baterias. Substitua as baterias, se necessário. Consulte o Procedimento 013-007 na Seção 13.</p></div></li>
-    <li class="passo"><span class="num">PASSO 7</span>
-      <div class="bloco causa"><h4>Causa</h4><p>A polia do alternador está solta no eixo.</p></div>
-      <div class="bloco correcao"><h4>Correção</h4><p>Aperte a polia. Consulte o fabricante do alternador e/ou o manual de serviços do OEM.</p></div></li>
-    <li class="passo"><span class="num">PASSO 8</span>
-      <div class="bloco causa"><h4>Causa</h4><p>A temperatura da bateria está acima da especificação.</p></div>
-      <div class="bloco correcao"><h4>Correção</h4><p>Mantenha as baterias longe de fontes de calor. Consulte o manual de serviços do OEM.</p></div></li>
-    <li class="passo"><span class="num">PASSO 9</span>
-      <div class="bloco causa"><h4>Causa</h4><p>Falha no funcionamento do alternador ou do regulador de voltagem.</p></div>
-      <div class="bloco correcao"><h4>Correção</h4><p>Teste a saída do alternador. Se necessário, substitua o alternador ou o regulador de voltagem. Consulte o Procedimento 013-001 na Seção 13 e o manual de serviços do OEM.</p></div></li>
-    <li class="passo"><span class="num">PASSO 10</span>
-      <div class="bloco causa"><h4>Causa</h4><p>Sobrecarga no alternador, ou a capacidade do mesmo está abaixo da especificação.</p></div>
-      <div class="bloco correcao"><h4>Correção</h4><p>Instale um alternador de maior capacidade. Consulte o Procedimento 013-001 na Seção 13 e o manual de serviços do OEM.</p></div></li>
-    <li class="passo"><span class="num">PASSO 11</span>
-      <div class="bloco causa"><h4>Causa</h4><p>Códigos eletrônicos de falha ativos ou altas contagens de códigos de falha inativos.</p></div>
-      <div class="bloco correcao"><h4>Correção</h4><p>Leia os códigos de falha utilizando uma ferramenta eletrônica de serviço. Consulte o Manual de Diagnóstico de Códigos de Falha, Boletim 4021677.</p></div></li>
-  </ol>
-</article>
-
-<article class="sintoma" id="t014">
-  <header><span class="codigo">t014</span><h3>Alternador com Sobrecarga</h3></header>
-  <ol class="passos">
-    <li class="passo"><span class="num">PASSO 1</span>
-      <div class="bloco causa"><h4>Causa</h4><p>Os cabos ou as conexões da bateria estão soltos, quebrados ou corroídos (resistência excessiva).</p></div>
-      <div class="bloco correcao"><h4>Correção</h4><p>Verifique os cabos e as conexões da bateria. Consulte o Procedimento 013-009 na Seção 13.</p></div></li>
-    <li class="passo"><span class="num">PASSO 2</span>
-      <div class="bloco causa"><h4>Causa</h4><p>As células das baterias estão danificadas (circuito aberto).</p></div>
-      <div class="bloco correcao"><h4>Correção</h4><p>Verifique as condições das baterias. Substitua as baterias, se necessário. Consulte o manual de serviços do OEM.</p></div></li>
-    <li class="passo"><span class="num">PASSO 3</span>
-      <div class="bloco causa"><h4>Causa</h4><p>Falha de funcionamento do regulador de voltagem.</p></div>
-      <div class="bloco correcao"><h4>Correção</h4><p>Verifique o regulador de voltagem. Substitua o regulador de voltagem, se necessário. Consulte o manual de serviços do OEM.</p></div></li>
-    <li class="passo"><span class="num">PASSO 4</span>
-      <div class="bloco causa"><h4>Causa</h4><p>Códigos eletrônicos de falha ativos ou altas contagens de códigos de falha inativos.</p></div>
-      <div class="bloco correcao"><h4>Correção</h4><p>Leia os códigos de falha utilizando uma ferramenta eletrônica de serviço. Consulte o Manual de Diagnóstico de Códigos de Falha, Boletim 4021677.</p></div></li>
-  </ol>
-</article>
-
-<article class="sintoma" id="t016">
-  <header><span class="codigo">t016</span><h3>Erro de Comunicação — Ferramenta Eletrônica de Serviço ou Dispositivo de Controle</h3></header>
-  <ol class="passos">
-    <li class="passo"><span class="num">PASSO 1</span>
-      <div class="bloco causa"><h4>Causa</h4><p>Erro 5023: Nenhuma conexão com o ECM foi estabelecida ou detectada.</p></div>
-      <div class="bloco correcao"><h4>Correção</h4><p>Consulte o Procedimento 019-472 na Seção 19.</p></div></li>
-    <li class="passo"><span class="num">PASSO 2</span>
-      <div class="bloco causa"><h4>Causa</h4><p>Erro 5080: O ECM é inicializado via ROM e deve ser recalibrado.</p></div>
-      <div class="bloco correcao"><h4>Correção</h4><p>Calibre o ECM com o código de ECM apropriado. Consulte o Procedimento 019-032 na Seção 19.</p></div></li>
-    <li class="passo"><span class="num">PASSO 3</span>
-      <div class="bloco causa"><h4>Causa</h4><p>Erro 5081: O ECM é inicializado via ROM e deve ser recalibrado.</p></div>
-      <div class="bloco correcao"><h4>Correção</h4><p>Calibre o ECM com o código de ECM apropriado. Consulte o Procedimento 019-032 na Seção 19.</p></div></li>
-    <li class="passo"><span class="num">PASSO 4</span>
-      <div class="bloco causa"><h4>Causa</h4><p>Erro 5089: O ECM está em um estado inválido e deve ser recalibrado.</p></div>
-      <div class="bloco correcao"><h4>Correção</h4><p>Desligue por 30 segundos e reconecte. Consulte o Procedimento 019-472 na Seção 19.</p></div></li>
-    <li class="passo"><span class="num">PASSO 5</span>
-      <div class="bloco causa"><h4>Causa</h4><p>Erro 5091: O ECM é recém-instalado e deve ser recalibrado.</p></div>
-      <div class="bloco correcao"><h4>Correção</h4><p>Calibre o ECM com o código de ECM apropriado. Consulte o Procedimento 019-032 na Seção 19.</p></div></li>
-    <li class="passo"><span class="num">PASSO 6</span>
-      <div class="bloco causa"><h4>Causa</h4><p>Erro 5092: A ferramenta INSITE™ detectou ECMs que não podem funcionar e devem ser recalibrados, ou ECMs com calibrações incompatíveis.</p></div>
-      <div class="bloco correcao"><h4>Correção</h4><p>Recalibre os ECMs que não se encontram calibrados. Consulte o Procedimento 019-032 na Seção 19.</p></div></li>
-    <li class="passo"><span class="num">PASSO 7</span>
-      <div class="bloco causa"><h4>Causa</h4><p>Erro 5200: A comunicação entre o PC e o datalink foi perdida.</p></div>
-      <div class="bloco correcao"><h4>Correção</h4><p>Consulte o Procedimento 019-472 na Seção 19.</p></div></li>
-    <li class="passo"><span class="num">PASSO 8</span>
-      <div class="bloco causa"><h4>Causa</h4><p>Erro 5201: A comunicação entre o datalink e o ECM foi perdida.</p></div>
-      <div class="bloco correcao"><h4>Correção</h4><p>Consulte o Procedimento 019-472 na Seção 19.</p></div></li>
-    <li class="passo"><span class="num">PASSO 9</span>
-      <div class="bloco causa"><h4>Causa</h4><p>Erro 5202: A comunicação entre o datalink e o ECM foi perdida.</p></div>
-      <div class="bloco correcao"><h4>Correção</h4><p>Consulte o Procedimento 019-472 na Seção 19.</p></div></li>
-    <li class="passo"><span class="num">PASSO 10</span>
-      <div class="bloco causa"><h4>Causa</h4><p>Erro 5204: A comunicação entre o adaptador de datalink e o ECM não pôde ser estabelecida.</p></div>
-      <div class="bloco correcao"><h4>Correção</h4><p>Consulte o Procedimento 019-472 na Seção 19.</p></div></li>
-  </ol>
-</article>
-
-<article class="sintoma" id="t084">
-  <header><span class="codigo">t084</span><h3>Luzes de Advertência de Códigos de Falha Não Acendem</h3></header>
-  <ol class="passos">
-    <li class="passo"><span class="num">PASSO 1</span>
-      <div class="bloco causa"><h4>Causa</h4><p>A chave de ignição está desligada (OFF).</p></div>
-      <div class="bloco correcao"><h4>Correção</h4><p>Ligue a chave de ignição (ON).</p></div></li>
-    <li class="passo"><span class="num">PASSO 2</span>
-      <div class="bloco causa"><h4>Causa</h4><p>As luzes de advertência de código de falha estão queimadas.</p></div>
-      <div class="bloco correcao"><h4>Correção</h4><p>Verifique se há voltagem para as luzes de advertência. Substitua as lâmpadas se necessário. Consulte o Procedimento 019-046 na Seção 19.</p></div></li>
-    <li class="passo"><span class="num">PASSO 3</span>
-      <div class="bloco causa"><h4>Causa</h4><p>Falha de funcionamento do circuito da lâmpada de advertência de código de falha.</p></div>
-      <div class="bloco correcao"><h4>Correção</h4><p>Verifique o circuito da lâmpada de advertência de código de falha. Consulte o Procedimento 019-047 na Seção 19.</p></div></li>
-    <li class="passo"><span class="num">PASSO 4</span>
-      <div class="bloco causa"><h4>Causa</h4><p>Falha de funcionamento do circuito da chave de ignição.</p></div>
-      <div class="bloco correcao"><h4>Correção</h4><p>Verifique o circuito da chave de ignição do veículo, do equipamento ou do barco. Consulte o Procedimento 019-064 na Seção 19.</p></div></li>
-  </ol>
-</article>
-
-<article class="sintoma" id="t078">
-  <header><span class="codigo">t078</span><h3>Motor Não Gira ou Gira Lentamente na Partida (Motor de Partida Elétrico)</h3></header>
-  <ol class="passos">
-    <li class="passo"><span class="num">PASSO 1</span>
-      <div class="bloco causa"><h4>Causa</h4><p>A temperatura da bateria está abaixo da especificação.</p></div>
-      <div class="bloco correcao"><h4>Correção</h4><p>Verifique se o aquecedor da bateria (se equipado) funciona corretamente. Consulte o manual de serviços do OEM.</p></div></li>
-    <li class="passo"><span class="num">PASSO 2</span>
-      <div class="bloco causa"><h4>Causa</h4><p>Códigos eletrônicos de falha ativos ou altas contagens de códigos de falha inativos.</p></div>
-      <div class="bloco correcao"><h4>Correção</h4><p>Leia os códigos de falha utilizando uma ferramenta eletrônica de serviço. Consulte o Manual de Diagnóstico de Códigos de Falha, Boletim 4021677. Use a ferramenta INSITE™ para visualizar os códigos.</p></div></li>
-    <li class="passo"><span class="num">PASSO 3</span>
-      <div class="bloco causa"><h4>Causa</h4><p>A voltagem da bateria está baixa.</p></div>
-      <div class="bloco correcao"><h4>Correção</h4><p>Verifique as baterias e o circuito de alimentação não-comutada das baterias. Consulte o Procedimento 013-007 na Seção 13.</p></div></li>
-    <li class="passo"><span class="num">PASSO 4</span>
-      <div class="bloco causa"><h4>Causa</h4><p>Os cabos ou as conexões da bateria estão soltos, quebrados ou corroídos (resistência excessiva).</p></div>
-      <div class="bloco correcao"><h4>Correção</h4><p>Verifique os cabos e as conexões da bateria. Consulte o Procedimento 013-009 na Seção 13.</p></div></li>
-    <li class="passo"><span class="num">PASSO 5</span>
-      <div class="bloco causa"><h4>Causa</h4><p>A capacidade da bateria está abaixo da especificação.</p></div>
-      <div class="bloco correcao"><h4>Correção</h4><p>Consulte o Procedimento 013-007 na Seção 13. Substitua as baterias, se necessário.</p></div></li>
-    <li class="passo"><span class="num">PASSO 6</span>
-      <div class="bloco causa"><h4>Causa</h4><p>Os cabos da bateria não têm bitola ou comprimento corretos.</p></div>
-      <div class="bloco correcao"><h4>Correção</h4><p>Substitua os cabos da bateria por outros de bitola maior ou de menor comprimento. Consulte o manual de serviços do OEM.</p></div></li>
-    <li class="passo"><span class="num">PASSO 7</span>
-      <div class="bloco causa"><h4>Causa</h4><p>Os dispositivos do OEM de intertravamento do motor de partida estão acoplados.</p></div>
-      <div class="bloco correcao"><h4>Correção</h4><p>Verifique os dispositivos de intertravamento do motor de partida. Consulte o manual de serviços do OEM.</p></div></li>
-    <li class="passo"><span class="num">PASSO 8</span>
-      <div class="bloco causa"><h4>Causa</h4><p>O interruptor, o indicador ou o sensor da pressão do óleo lubrificante estão defeituosos ou não instalados no local correto.</p></div>
-      <div class="bloco correcao"><h4>Correção</h4><p>Verifique se estão corretos o funcionamento e as localizações do interruptor, do indicador ou do sensor. Consulte o manual de serviços do OEM.</p></div></li>
-    <li class="passo"><span class="num">PASSO 9</span>
-      <div class="bloco causa"><h4>Causa</h4><p>As unidades acionadas pelo motor estão acopladas.</p></div>
-      <div class="bloco correcao"><h4>Correção</h4><p>Desacople as unidades acionadas pelo motor.</p></div></li>
-    <li class="passo"><span class="num">PASSO 10</span>
-      <div class="bloco causa"><h4>Causa</h4><p>Falha de funcionamento de componente do circuito de partida.</p></div>
-      <div class="bloco correcao"><h4>Correção</h4><p>Verifique os componentes do circuito de partida. Consulte o manual de serviços do OEM.</p></div></li>
-    <li class="passo"><span class="num">PASSO 11</span>
-      <div class="bloco causa"><h4>Causa</h4><p>Dano no pinhão do motor de partida ou na cremalheira.</p></div>
-      <div class="bloco correcao"><h4>Correção</h4><p>Remova o motor de partida e inspecione a cremalheira. Consulte o Procedimento 013-020 na Seção 13.</p></div></li>
-    <li class="passo"><span class="num">PASSO 12</span>
-      <div class="bloco causa"><h4>Causa</h4><p>O nível do óleo lubrificante está acima da especificação.</p></div>
-      <div class="bloco correcao"><h4>Correção</h4><p>Verifique o nível do óleo. Verifique a calibração da vareta medidora e a capacidade do cárter. Abasteça o sistema até o nível especificado. Consulte o Procedimento 007-009 na Seção 7.</p></div></li>
-    <li class="passo"><span class="num">PASSO 13</span>
-      <div class="bloco causa"><h4>Causa</h4><p>O óleo lubrificante não atende às especificações para as condições de operação.</p></div>
-      <div class="bloco correcao"><h4>Correção</h4><p>Troque o óleo e os filtros. Consulte o Procedimento 007-037 na Seção 7 e o Manual de Operação e Manutenção dos Motores ISF2.8 CM2220 E e ISF2.8 CM2220 AN, Boletim 4022267.</p></div></li>
-    <li class="passo"><span class="num">PASSO 14</span>
-      <div class="bloco causa"><h4>Causa</h4><p>A rotação da árvore de manivelas está comprometida.</p></div>
-      <div class="bloco correcao"><h4>Correção</h4><p>Verifique se a árvore de manivelas apresenta facilidade de rotação. Consulte o Procedimento 013-020 na Seção 13.</p></div></li>
-    <li class="passo"><span class="num">PASSO 15</span>
-      <div class="bloco causa"><h4>Causa</h4><p>Calço hidráulico de um cilindro.</p></div>
-      <div class="bloco correcao"><h4>Correção</h4><p>Remova os injetores e gire a árvore de manivelas. Localize a fonte do fluido no cilindro. Consulte o Procedimento 006-026 na Seção 6.</p></div></li>
-    <li class="passo"><span class="num">PASSO 16</span>
-      <div class="bloco causa"><h4>Causa</h4><p>Dano interno do motor.</p></div>
-      <div class="bloco correcao"><h4>Correção</h4><p>Analise o óleo e inspecione os filtros para localizar uma área de dano provável. Consulte o Procedimento 007-044 na Seção 7.</p></div></li>
-  </ol>
-</article>
-</section>
-
-<!-- ============================================================ -->
-<!-- ================ SISTEMA DE ARREFECIMENTO ================== -->
-<!-- ============================================================ -->
-<section class="sistema">
-<h2>Sistema de Arrefecimento</h2>
-
-<article class="sintoma" id="t020">
-  <header><span class="codigo">t020</span><h3>Perda de Líquido de Arrefecimento do Motor — Externa</h3></header>
-  <ol class="passos">
-    <li class="passo"><span class="num">PASSO 1</span>
-      <div class="bloco causa"><h4>Causa</h4><p>O nível do líquido de arrefecimento do motor está acima da especificação.</p></div>
-      <div class="bloco correcao"><h4>Correção</h4><p>Verifique o nível do líquido de arrefecimento do motor. Consulte o Procedimento 008-018 na Seção 8.</p></div></li>
-    <li class="passo"><span class="num">PASSO 2</span>
-      <div class="bloco causa"><h4>Causa</h4><p>Vazamento externo de líquido de arrefecimento do motor.</p></div>
-      <div class="bloco correcao"><h4>Correção</h4><p>Verifique se há vazamento pelos seguintes componentes: mangueiras, torneiras de dreno, coletor de água, tubos de ligação, bujões de expansão e bujões-tubos, conexões, tubos de alimentação e de retorno para o arrefecedor da EGR, linhas de desaeração do arrefecedor da EGR, linhas de alimentação e retorno do motor para a válvula EGR, arrefecedor da EGR, válvula EGR, colméia do radiador, juntas do compressor de ar e do cabeçote, arrefecedor de óleo lubrificante, vedação da bomba d'água e componentes montados pelo OEM. Se necessário, faça um teste de pressão no sistema. Consulte o Procedimento 008-020 na Seção 8.</p></div></li>
-    <li class="passo"><span class="num">PASSO 3</span>
-      <div class="bloco causa"><h4>Causa</h4><p>A tampa do radiador não é a correta, está defeituosa ou tem uma classificação baixa de pressão.</p></div>
-      <div class="bloco correcao"><h4>Correção</h4><p>Verifique a tampa de pressão do radiador. Consulte o Procedimento 008-047 na Seção 8 e o manual de serviço do OEM.</p></div></li>
-    <li class="passo"><span class="num">PASSO 4</span>
-      <div class="bloco causa"><h4>Causa</h4><p>A mangueira do sistema de arrefecimento está danificada, com restrição ou com vazamento.</p></div>
-      <div class="bloco correcao"><h4>Correção</h4><p>Inspecione as mangueiras. Consulte o Procedimento 008-045 na Seção 8.</p></div></li>
-    <li class="passo"><span class="num">PASSO 5</span>
-      <div class="bloco causa"><h4>Causa</h4><p>A linha de abastecimento ou as linhas de desaeração estão restringidas, obstruídas ou o percurso não está correto.</p></div>
-      <div class="bloco correcao"><h4>Correção</h4><p>Verifique as linhas de desaeração e a linha de abastecimento quanto ao roteamento correto e quanto a restrições. Consulte o manual de serviços do OEM.</p></div></li>
-    <li class="passo"><span class="num">PASSO 6</span>
-      <div class="bloco causa"><h4>Causa</h4><p>Roteamento incorreto da tubulação do OEM, resultando em perda de líquido de arrefecimento por extravasamento.</p></div>
-      <div class="bloco correcao"><h4>Correção</h4><p>Verifique a tubulação e certifique-se de que não haja líquido de arrefecimento de alta pressão que possa causar refluxo na linha de abastecimento. Consulte o manual de serviços do OEM.</p></div></li>
-    <li class="passo"><span class="num">PASSO 7</span>
-      <div class="bloco causa"><h4>Causa</h4><p>O motor está superaquecendo.</p></div>
-      <div class="bloco correcao"><h4>Correção</h4><p>Consulte os diagramas 'Temperatura Acima do Normal — Superaquecimento Gradual' ou 'Temperatura Acima da Normal — Superaquecimento Repentino'.</p></div></li>
-    <li class="passo"><span class="num">PASSO 8</span>
-      <div class="bloco causa"><h4>Causa</h4><p>Ar ou gases de combustão estão entrando no sistema de arrefecimento.</p></div>
-      <div class="bloco correcao"><h4>Correção</h4><p>Verifique se há ar ou gases de combustão no sistema de arrefecimento. Consulte o Procedimento 008-020 na Seção 8.</p></div></li>
-  </ol>
-</article>
-
-<article class="sintoma" id="t021">
-  <header><span class="codigo">t021</span><h3>Perda de Líquido de Arrefecimento do Motor — Interna</h3></header>
-  <ol class="passos">
-    <li class="passo"><span class="num">PASSO 1</span>
-      <div class="bloco causa"><h4>Causa</h4><p>O arrefecedor de óleo lubrificante apresenta vazamento.</p></div>
-      <div class="bloco correcao"><h4>Correção</h4><p>Verifique se há vazamentos de líquido de arrefecimento no arrefecedor de óleo lubrificante. Consulte o Procedimento 007-003 na Seção 7.</p></div></li>
-    <li class="passo"><span class="num">PASSO 2</span>
-      <div class="bloco causa"><h4>Causa</h4><p>Vazamentos internos de líquido de arrefecimento do motor.</p></div>
-      <div class="bloco correcao"><h4>Correção</h4><p>Consulte o Procedimento 008-020 na Seção 8 para fazer o teste de pressão do sistema e verificar vazamentos internos.</p></div></li>
-    <li class="passo"><span class="num">PASSO 3</span>
-      <div class="bloco causa"><h4>Causa</h4><p>Vazamento na junta do cabeçote dos cilindros.</p></div>
-      <div class="bloco correcao"><h4>Correção</h4><p>Verifique a junta do cabeçote dos cilindros. Consulte o Procedimento 002-004 na Seção 2.</p></div></li>
-    <li class="passo"><span class="num">PASSO 4</span>
-      <div class="bloco causa"><h4>Causa</h4><p>O cabeçote dos cilindros está trincado ou poroso.</p></div>
-      <div class="bloco correcao"><h4>Correção</h4><p>Faça o teste de pressão no cabeçote dos cilindros. Consulte o Procedimento 002-004 na Seção 2.</p></div></li>
-    <li class="passo"><span class="num">PASSO 5</span>
-      <div class="bloco causa"><h4>Causa</h4><p>O bloco dos cilindros está trincado ou poroso.</p></div>
-      <div class="bloco correcao"><h4>Correção</h4><p>Inspecione o bloco dos cilindros. Consulte o Procedimento 001-026 na Seção 1.</p></div></li>
-  </ol>
-</article>
-
-<article class="sintoma" id="t022">
-  <header><span class="codigo">t022</span><h3>Temperatura do Líquido de Arrefecimento Acima da Normal — Superaquecimento Gradual</h3></header>
-  <ol class="passos">
-    <li class="passo"><span class="num">PASSO 1</span>
-      <div class="bloco causa"><h4>Causa</h4><p>Códigos eletrônicos de falha ativos ou altas contagens de códigos de falha inativos.</p></div>
-      <div class="bloco correcao"><h4>Correção</h4><p>Verifique e faça o diagnóstico dos códigos de falha com a ferramenta INSITE™. Consulte o Manual de Diagnóstico de Códigos de Falha, Boletim 4021677.</p></div></li>
-    <li class="passo"><span class="num">PASSO 2</span>
-      <div class="bloco causa"><h4>Causa</h4><p>A tampa ou o anteparo de inverno do radiador estão fechados.</p></div>
-      <div class="bloco correcao"><h4>Correção</h4><p>Abra a tampa ou o anteparo de inverno do radiador. Consulte o manual de serviços do OEM.</p></div></li>
-    <li class="passo"><span class="num">PASSO 3</span>
-      <div class="bloco causa"><h4>Causa</h4><p>As venezianas do radiador não abrem completamente, ou o ajuste de acionamento está incorreto.</p></div>
-      <div class="bloco correcao"><h4>Correção</h4><p>Inspecione as venezianas do radiador. Repare ou substitua, se necessário. Verifique o ajuste de acionamento. Consulte o manual de serviços do OEM.</p></div></li>
-    <li class="passo"><span class="num">PASSO 4</span>
-      <div class="bloco causa"><h4>Causa</h4><p>As aletas do arrefecedor ar-ar, do radiador ou do condensador do ar condicionado estão danificadas ou obstruídas com resíduos.</p></div>
-      <div class="bloco correcao"><h4>Correção</h4><p>Inspecione as aletas. Limpe, se necessário. Consulte o Procedimento 010-027 na Seção 10 e o manual de serviço do OEM.</p></div></li>
-    <li class="passo"><span class="num">PASSO 5</span>
-      <div class="bloco causa"><h4>Causa</h4><p>O nível do líquido de arrefecimento do motor está abaixo da especificação.</p></div>
-      <div class="bloco correcao"><h4>Correção</h4><p>Verifique o nível do líquido. Verifique se há vazamento externo. Consulte o Procedimento 008-018 na Seção 8 e o diagrama 'Vazamento Externo de Líquido de Arrefecimento do Motor'. Obtenha uma amostra do óleo lubrificante e encaminhe-a a um laboratório para verificar a presença de líquido de arrefecimento no óleo (vazamento interno).</p></div></li>
-    <li class="passo"><span class="num">PASSO 6</span>
-      <div class="bloco causa"><h4>Causa</h4><p>A mistura de anticongelante e água do líquido de arrefecimento não está correta.</p></div>
-      <div class="bloco correcao"><h4>Correção</h4><p>Verifique a concentração de anticongelante. Adicione anticongelante ou água para corrigir a concentração. Consulte os Requisitos e Manutenção do Líquido de Arrefecimento dos Motores Cummins®, Boletim 3666132.</p></div></li>
-    <li class="passo"><span class="num">PASSO 7</span>
-      <div class="bloco causa"><h4>Causa</h4><p>O defletor do ventilador está danificado ou faltando, ou os defletores de recirculação estão danificados ou faltando.</p></div>
-      <div class="bloco correcao"><h4>Correção</h4><p>Inspecione o defletor e os defletores de recirculação. Repare, substitua ou instale, se necessário. Consulte o Procedimento 008-038 na Seção 8.</p></div></li>
-    <li class="passo"><span class="num">PASSO 8</span>
-      <div class="bloco causa"><h4>Causa</h4><p>A correia de acionamento do ventilador está quebrada ou solta.</p></div>
-      <div class="bloco correcao"><h4>Correção</h4><p>Verifique a correia. Substitua, se necessário. Consulte o Procedimento 008-002 na Seção 8.</p></div></li>
-    <li class="passo"><span class="num">PASSO 9</span>
-      <div class="bloco causa"><h4>Causa</h4><p>O acionamento ou os controles do ventilador estão defeituosos.</p></div>
-      <div class="bloco correcao"><h4>Correção</h4><p>Verifique o acionamento e os controles. Consulte o Procedimento 008-027 na Seção 8, se controlado eletronicamente pelo ECM. Se controlado pelo OEM, consulte o manual de serviço do OEM.</p></div></li>
-    <li class="passo"><span class="num">PASSO 10</span>
-      <div class="bloco causa"><h4>Causa</h4><p>Falha de funcionamento do indicador ou do sensor da temperatura do líquido de arrefecimento do motor.</p></div>
-      <div class="bloco correcao"><h4>Correção</h4><p>Teste o indicador e o sensor. Repare ou substitua, se necessário. Consulte o manual de serviços do OEM e o Manual de Diagnóstico de Códigos de Falha, Boletim 4021677.</p></div></li>
-    <li class="passo"><span class="num">PASSO 11</span>
-      <div class="bloco causa"><h4>Causa</h4><p>A tampa do radiador não é a correta, está defeituosa ou tem classificação baixa de pressão.</p></div>
-      <div class="bloco correcao"><h4>Correção</h4><p>Verifique a tampa de pressão do radiador. Consulte o Procedimento 008-047 na Seção 8.</p></div></li>
-    <li class="passo"><span class="num">PASSO 12</span>
-      <div class="bloco causa"><h4>Causa</h4><p>O termostato não é do tipo correto ou está defeituoso.</p></div>
-      <div class="bloco correcao"><h4>Correção</h4><p>Verifique o número de peça do termostato e o funcionamento. Consulte o Procedimento 008-013 na Seção 8.</p></div></li>
-    <li class="passo"><span class="num">PASSO 13</span>
-      <div class="bloco causa"><h4>Causa</h4><p>A mangueira do sistema de arrefecimento está danificada, com restrição ou com vazamento.</p></div>
-      <div class="bloco correcao"><h4>Correção</h4><p>Inspecione as mangueiras. Consulte o Procedimento 008-045 na Seção 8.</p></div></li>
-    <li class="passo"><span class="num">PASSO 14</span>
-      <div class="bloco causa"><h4>Causa</h4><p>A linha de abastecimento ou as linhas de desaeração estão restringidas, obstruídas ou com percurso incorreto.</p></div>
-      <div class="bloco correcao"><h4>Correção</h4><p>Verifique as linhas quanto ao roteamento correto e quanto a restrições. Consulte o manual de serviços do OEM.</p></div></li>
-    <li class="passo"><span class="num">PASSO 15</span>
-      <div class="bloco causa"><h4>Causa</h4><p>A temperatura do ar no coletor de admissão está acima da especificação.</p></div>
-      <div class="bloco correcao"><h4>Correção</h4><p>Consulte o diagrama 'Temperatura do Ar no Coletor de Admissão Acima da Especificação'.</p></div></li>
-    <li class="passo"><span class="num">PASSO 16</span>
-      <div class="bloco causa"><h4>Causa</h4><p>O nível do óleo lubrificante está acima ou abaixo da especificação.</p></div>
-      <div class="bloco correcao"><h4>Correção</h4><p>Verifique o nível do óleo. Adicione ou drene, se necessário. Consulte o Procedimento 007-037 na Seção 7.</p></div></li>
-    <li class="passo"><span class="num">PASSO 17</span>
-      <div class="bloco causa"><h4>Causa</h4><p>O sistema de arrefecimento está contaminado com sujeira, incrustações ou borra.</p></div>
-      <div class="bloco correcao"><h4>Correção</h4><p>Limpe o sistema de arrefecimento. Consulte o Procedimento 008-018 na Seção 8.</p></div></li>
-    <li class="passo"><span class="num">PASSO 18</span>
-      <div class="bloco causa"><h4>Causa</h4><p>O óleo lubrificante está contaminado com líquido de arrefecimento do motor ou com combustível.</p></div>
-      <div class="bloco correcao"><h4>Correção</h4><p>Consulte o diagrama 'Óleo Lubrificante Contaminado'.</p></div></li>
-    <li class="passo"><span class="num">PASSO 19</span>
-      <div class="bloco causa"><h4>Causa</h4><p>O líquido de arrefecimento está contaminado com óleo.</p></div>
-      <div class="bloco correcao"><h4>Correção</h4><p>Consulte o diagrama 'Presença de Óleo Lubrificante ou de Óleo da Transmissão no Líquido de Arrefecimento'.</p></div></li>
-    <li class="passo"><span class="num">PASSO 20</span>
-      <div class="bloco causa"><h4>Causa</h4><p>Falha de funcionamento da bomba d'água.</p></div>
-      <div class="bloco correcao"><h4>Correção</h4><p>Verifique a pressão no bloco. Substitua a bomba se necessário. Consulte o Procedimento 008-020 na Seção 8 ou o Procedimento 008-062 na Seção 8.</p></div></li>
-    <li class="passo"><span class="num">PASSO 21</span>
-      <div class="bloco causa"><h4>Causa</h4><p>A colméia do radiador está obstruída ou danificada internamente, ou a válvula de retenção ou o tubo 'J' estão defeituosos.</p></div>
-      <div class="bloco correcao"><h4>Correção</h4><p>Inspecione o radiador e limpe-o se necessário. Consulte o Procedimento 008-042 na Seção 8.</p></div></li>
-    <li class="passo"><span class="num">PASSO 22</span>
-      <div class="bloco causa"><h4>Causa</h4><p>O sistema de arrefecimento do veículo não é adequado.</p></div>
-      <div class="bloco correcao"><h4>Correção</h4><p>Certifique-se de que os sistemas de arrefecimento do motor e do veículo estejam utilizando os componentes corretos. Consulte o manual de serviços do OEM.</p></div></li>
-    <li class="passo"><span class="num">PASSO 23</span>
-      <div class="bloco causa"><h4>Causa</h4><p>Ar ou gases de combustão estão entrando no sistema de arrefecimento.</p></div>
-      <div class="bloco correcao"><h4>Correção</h4><p>Verifique se há ar ou gases de combustão no sistema. Consulte o Procedimento 008-020 na Seção 8.</p></div></li>
-  </ol>
-</article>
-
-<article class="sintoma" id="t023">
-  <header><span class="codigo">t023</span><h3>Temperatura do Líquido de Arrefecimento Acima da Normal — Superaquecimento Repentino</h3></header>
-  <ol class="passos">
-    <li class="passo"><span class="num">PASSO 1</span>
-      <div class="bloco causa"><h4>Causa</h4><p>Códigos eletrônicos de falha ativos ou altas contagens de códigos de falha inativos.</p></div>
-      <div class="bloco correcao"><h4>Correção</h4><p>Verifique e faça o diagnóstico dos códigos com a ferramenta INSITE™. Consulte o Manual de Diagnóstico de Códigos de Falha, Boletim 4021677.</p></div></li>
-    <li class="passo"><span class="num">PASSO 2</span>
-      <div class="bloco causa"><h4>Causa</h4><p>O nível do líquido de arrefecimento está abaixo da especificação.</p></div>
-      <div class="bloco correcao"><h4>Correção</h4><p>Verifique o nível e se há vazamento externo. Consulte o Procedimento 008-018 na Seção 8, o Procedimento 008-020 na Seção 8 e o diagrama 'Vazamento Externo de Líquido de Arrefecimento do Motor'. Obtenha uma amostra do óleo e encaminhe-a a um laboratório para verificar vazamento interno.</p></div></li>
-    <li class="passo"><span class="num">PASSO 3</span>
-      <div class="bloco causa"><h4>Causa</h4><p>A correia de acionamento do ventilador está quebrada ou solta.</p></div>
-      <div class="bloco correcao"><h4>Correção</h4><p>Verifique a correia. Substitua, se necessário. Consulte o Procedimento 008-002 na Seção 8.</p></div></li>
-    <li class="passo"><span class="num">PASSO 4</span>
-      <div class="bloco causa"><h4>Causa</h4><p>A tampa ou o anteparo de inverno do radiador estão fechados.</p></div>
-      <div class="bloco correcao"><h4>Correção</h4><p>Abra a tampa ou o anteparo. Consulte o manual de serviços do OEM.</p></div></li>
-    <li class="passo"><span class="num">PASSO 5</span>
-      <div class="bloco causa"><h4>Causa</h4><p>As venezianas do radiador não abrem completamente, ou o ajuste está incorreto.</p></div>
-      <div class="bloco correcao"><h4>Correção</h4><p>Inspecione as venezianas. Repare ou substitua, se necessário. Consulte o manual de serviços do OEM.</p></div></li>
-    <li class="passo"><span class="num">PASSO 6</span>
-      <div class="bloco causa"><h4>Causa</h4><p>As aletas do arrefecedor ar-ar, do radiador ou do condensador estão danificadas ou obstruídas.</p></div>
-      <div class="bloco correcao"><h4>Correção</h4><p>Inspecione as aletas. Limpe, se necessário. Consulte o Procedimento 010-027 na Seção 10.</p></div></li>
-    <li class="passo"><span class="num">PASSO 7</span>
-      <div class="bloco causa"><h4>Causa</h4><p>O termostato não é do tipo correto ou está defeituoso.</p></div>
-      <div class="bloco correcao"><h4>Correção</h4><p>Verifique o número de peça e o funcionamento. Consulte o Procedimento 008-013 na Seção 8.</p></div></li>
-    <li class="passo"><span class="num">PASSO 8</span>
-      <div class="bloco causa"><h4>Causa</h4><p>Falha de funcionamento do medidor da temperatura do líquido de arrefecimento.</p></div>
-      <div class="bloco correcao"><h4>Correção</h4><p>Teste o medidor. Repare ou substitua, se necessário. Consulte o manual de serviços do OEM.</p></div></li>
-    <li class="passo"><span class="num">PASSO 9</span>
-      <div class="bloco causa"><h4>Causa</h4><p>Falha de funcionamento do indicador ou do sensor da temperatura do líquido de arrefecimento.</p></div>
-      <div class="bloco correcao"><h4>Correção</h4><p>Teste o indicador e o sensor. Consulte o manual de serviços do OEM e o Manual de Diagnóstico de Códigos de Falha, Boletim 4021677.</p></div></li>
-    <li class="passo"><span class="num">PASSO 10</span>
-      <div class="bloco causa"><h4>Causa</h4><p>A mangueira do sistema de arrefecimento está danificada, com restrição ou com vazamento.</p></div>
-      <div class="bloco correcao"><h4>Correção</h4><p>Inspecione as mangueiras. Consulte o Procedimento 008-045 na Seção 8.</p></div></li>
-    <li class="passo"><span class="num">PASSO 11</span>
-      <div class="bloco causa"><h4>Causa</h4><p>A linha de abastecimento ou as linhas de desaeração estão restringidas ou obstruídas.</p></div>
-      <div class="bloco correcao"><h4>Correção</h4><p>Verifique as linhas. Consulte o manual de serviços do OEM.</p></div></li>
-    <li class="passo"><span class="num">PASSO 12</span>
-      <div class="bloco causa"><h4>Causa</h4><p>Falha de funcionamento da bomba d'água.</p></div>
-      <div class="bloco correcao"><h4>Correção</h4><p>Verifique a pressão no bloco. Substitua a bomba se necessário. Consulte o Procedimento 008-020 ou 008-062 na Seção 8.</p></div></li>
-    <li class="passo"><span class="num">PASSO 13</span>
-      <div class="bloco causa"><h4>Causa</h4><p>A tampa do radiador não é a correta, está defeituosa ou tem classificação baixa de pressão.</p></div>
-      <div class="bloco correcao"><h4>Correção</h4><p>Verifique a tampa de pressão. Consulte o Procedimento 008-047 na Seção 8.</p></div></li>
-    <li class="passo"><span class="num">PASSO 14</span>
-      <div class="bloco causa"><h4>Causa</h4><p>O acionamento ou os controles do ventilador estão defeituosos.</p></div>
-      <div class="bloco correcao"><h4>Correção</h4><p>Verifique o acionamento e os controles. Consulte o Procedimento 008-027 na Seção 8, se controlado pelo ECM; se pelo OEM, consulte o manual de serviço.</p></div></li>
-    <li class="passo"><span class="num">PASSO 15</span>
-      <div class="bloco causa"><h4>Causa</h4><p>Falha de funcionamento dos componentes do sistema de arrefecimento.</p></div>
-      <div class="bloco correcao"><h4>Correção</h4><p>Faça o teste de diagnóstico do sistema. Consulte o Procedimento 008-020 na Seção 8.</p></div></li>
-  </ol>
-</article>
-
-<article class="sintoma" id="t024">
-  <header><span class="codigo">t024</span><h3>Temperatura do Líquido de Arrefecimento Abaixo da Normal</h3></header>
-  <ol class="passos">
-    <li class="passo"><span class="num">PASSO 1</span>
-      <div class="bloco causa"><h4>Causa</h4><p>Motor funcionando em baixa temperatura ambiente.</p></div>
-      <div class="bloco correcao"><h4>Correção</h4><p>Verifique os anteparos de inverno e as venezianas.</p></div></li>
-    <li class="passo"><span class="num">PASSO 2</span>
-      <div class="bloco causa"><h4>Causa</h4><p>Códigos eletrônicos de falha ativos ou altas contagens.</p></div>
-      <div class="bloco correcao"><h4>Correção</h4><p>Verifique com INSITE™. Consulte o Manual de Diagnóstico de Códigos de Falha, Boletim 4021677.</p></div></li>
-    <li class="passo"><span class="num">PASSO 3</span>
-      <div class="bloco causa"><h4>Causa</h4><p>Falha no indicador ou no sensor da temperatura.</p></div>
-      <div class="bloco correcao"><h4>Correção</h4><p>Teste o indicador e o sensor. Consulte o manual do OEM e o Manual de Diagnóstico de Códigos de Falha, Boletim 4021677.</p></div></li>
-    <li class="passo"><span class="num">PASSO 4</span>
-      <div class="bloco causa"><h4>Causa</h4><p>O termostato não é do tipo correto ou está defeituoso.</p></div>
-      <div class="bloco correcao"><h4>Correção</h4><p>Verifique o número de peça e o funcionamento. Consulte o Procedimento 008-013 na Seção 8.</p></div></li>
-    <li class="passo"><span class="num">PASSO 5</span>
-      <div class="bloco causa"><h4>Causa</h4><p>O acionamento ou os controles do ventilador estão defeituosos.</p></div>
-      <div class="bloco correcao"><h4>Correção</h4><p>Verifique o acionamento. Consulte o Procedimento 008-027 na Seção 8 (ECM) ou o manual do OEM.</p></div></li>
-    <li class="passo"><span class="num">PASSO 6</span>
-      <div class="bloco causa"><h4>Causa</h4><p>Tempo excessivo de marcha lenta do motor.</p></div>
-      <div class="bloco correcao"><h4>Correção</h4><p>Tempos prolongados de marcha lenta (superiores a 10 minutos) reduzem as temperaturas do líquido e do óleo. Desligue o motor em vez de mantê-lo em marcha lenta por longos períodos.</p></div></li>
-    <li class="passo"><span class="num">PASSO 7</span>
-      <div class="bloco causa"><h4>Causa</h4><p>Falha de funcionamento dos componentes do sistema de arrefecimento.</p></div>
-      <div class="bloco correcao"><h4>Correção</h4><p>Faça o teste de diagnóstico do sistema. Consulte o Procedimento 008-020 na Seção 8.</p></div></li>
-  </ol>
-</article>
-
-<article class="sintoma" id="t025">
-  <header><span class="codigo">t025</span><h3>Presença de Líquido de Arrefecimento no Óleo Lubrificante</h3></header>
-  <ol class="passos">
-    <li class="passo"><span class="num">PASSO 1</span>
-      <div class="bloco causa"><h4>Causa</h4><p>Falha de funcionamento do arrefecedor de óleo lubrificante.</p></div>
-      <div class="bloco correcao"><h4>Correção</h4><p>Verifique o arrefecedor do óleo. Consulte o Procedimento 007-003 na Seção 7.</p></div></li>
-    <li class="passo"><span class="num">PASSO 2</span>
-      <div class="bloco causa"><h4>Causa</h4><p>Vazamentos internos de líquido de arrefecimento do motor.</p></div>
-      <div class="bloco correcao"><h4>Correção</h4><p>Consulte o Procedimento 008-020 na Seção 8 para fazer o teste de pressão.</p></div></li>
-    <li class="passo"><span class="num">PASSO 3</span>
-      <div class="bloco causa"><h4>Causa</h4><p>Vazamento na junta do cabeçote dos cilindros.</p></div>
-      <div class="bloco correcao"><h4>Correção</h4><p>Verifique a junta. Consulte o Procedimento 002-004 na Seção 2.</p></div></li>
-    <li class="passo"><span class="num">PASSO 4</span>
-      <div class="bloco causa"><h4>Causa</h4><p>O cabeçote dos cilindros está trincado ou poroso.</p></div>
-      <div class="bloco correcao"><h4>Correção</h4><p>Faça o teste de pressão no cabeçote. Consulte o Procedimento 002-004 na Seção 2.</p></div></li>
-    <li class="passo"><span class="num">PASSO 5</span>
-      <div class="bloco causa"><h4>Causa</h4><p>O bloco dos cilindros está trincado ou poroso.</p></div>
-      <div class="bloco correcao"><h4>Correção</h4><p>Inspecione o bloco. Consulte o Procedimento 001-026 na Seção 1.</p></div></li>
-  </ol>
-</article>
-
-<article class="sintoma" id="t091">
-  <header><span class="codigo">t091</span><h3>Presença de Combustível no Líquido de Arrefecimento do Motor</h3></header>
-  <ol class="passos">
-    <li class="passo"><span class="num">PASSO 1</span>
-      <div class="bloco causa"><h4>Causa</h4><p>O reservatório de suprimento de líquido de arrefecimento do motor está contaminado.</p></div>
-      <div class="bloco correcao"><h4>Correção</h4><p>Verifique o reservatório. Drene o líquido e substitua por outro não contaminado. Substitua os filtros de líquido de arrefecimento. Consulte o Procedimento 008-018 na Seção 8.</p></div></li>
-  </ol>
-</article>
-
-<article class="sintoma" id="t108">
-  <header><span class="codigo">t108</span><h3>Presença de Óleo Lubrificante ou de Óleo da Transmissão no Líquido de Arrefecimento do Motor</h3></header>
-  <ol class="passos">
-    <li class="passo"><span class="num">PASSO 1</span>
-      <div class="bloco causa"><h4>Causa</h4><p>O reservatório de suprimento de líquido de arrefecimento está contaminado.</p></div>
-      <div class="bloco correcao"><h4>Correção</h4><p>Drene o líquido e substitua por outro não contaminado. Substitua os filtros. Consulte o Procedimento 008-018 na Seção 8.</p></div></li>
-    <li class="passo"><span class="num">PASSO 2</span>
-      <div class="bloco causa"><h4>Causa</h4><p>Falha de funcionamento do arrefecedor de óleo lubrificante.</p></div>
-      <div class="bloco correcao"><h4>Correção</h4><p>Verifique o arrefecedor do óleo e a junta. Consulte o Procedimento 007-003 na Seção 7.</p></div></li>
-    <li class="passo"><span class="num">PASSO 3</span>
-      <div class="bloco causa"><h4>Causa</h4><p>Falha do arrefecedor do conversor de torque ou do arrefecedor do óleo hidráulico.</p></div>
-      <div class="bloco correcao"><h4>Correção</h4><p>Remova e inspecione as colméias e os anéis 'O'. Consulte o manual de serviços do OEM.</p></div></li>
-    <li class="passo"><span class="num">PASSO 4</span>
-      <div class="bloco causa"><h4>Causa</h4><p>Vazamento na tampa dianteira das engrenagens.</p></div>
-      <div class="bloco correcao"><h4>Correção</h4><p>Inspecione a tampa e a junta. Consulte o Procedimento 001-031 na Seção 1.</p></div></li>
-    <li class="passo"><span class="num">PASSO 5</span>
-      <div class="bloco causa"><h4>Causa</h4><p>Vazamento na junta do cabeçote dos cilindros.</p></div>
-      <div class="bloco correcao"><h4>Correção</h4><p>Verifique a junta. Consulte o Procedimento 002-004 na Seção 2.</p></div></li>
-    <li class="passo"><span class="num">PASSO 6</span>
-      <div class="bloco causa"><h4>Causa</h4><p>O cabeçote dos cilindros está trincado ou poroso.</p></div>
-      <div class="bloco correcao"><h4>Correção</h4><p>Faça o teste de pressão. Consulte o Procedimento 002-004 na Seção 2 e o Procedimento 008-020 na Seção 8.</p></div></li>
-    <li class="passo"><span class="num">PASSO 7</span>
-      <div class="bloco causa"><h4>Causa</h4><p>O bloco dos cilindros está trincado ou poroso.</p></div>
-      <div class="bloco correcao"><h4>Correção</h4><p>Inspecione o bloco. Consulte o Procedimento 001-026 na Seção 1.</p></div></li>
-  </ol>
-</article>
-</section>
-
-<!-- ============================================================ -->
-<!-- ================ SISTEMA DE COMBUSTÍVEL ==================== -->
-<!-- ============================================================ -->
-<section class="sistema">
-<h2>Sistema de Combustível</h2>
-
-<article class="sintoma" id="t029">
-  <header><span class="codigo">t029</span><h3>Pressão Baixa do Combustível no Giro de Partida do Motor</h3></header>
-  <ol class="passos">
-    <li class="passo"><span class="num">PASSO 1</span>
-      <div class="bloco causa"><h4>Causa</h4><p>O nível do combustível no tanque está baixo.</p></div>
-      <div class="bloco correcao"><h4>Correção</h4><p>Complete o tanque. Consulte o manual de serviços do OEM.</p></div></li>
-    <li class="passo"><span class="num">PASSO 2</span>
-      <div class="bloco causa"><h4>Causa</h4><p>O filtro de combustível está obstruído.</p></div>
-      <div class="bloco correcao"><h4>Correção</h4><p>Meça a pressão antes e depois do filtro. Substitua o filtro, se necessário. Consulte o Procedimento 006-074 na Seção 6.</p></div></li>
-    <li class="passo"><span class="num">PASSO 3</span>
-      <div class="bloco causa"><h4>Causa</h4><p>Vazamento de combustível.</p></div>
-      <div class="bloco correcao"><h4>Correção</h4><p>Verifique as linhas, conexões e filtros. Consulte o manual de serviços do OEM.</p></div></li>
-    <li class="passo"><span class="num">PASSO 4</span>
-      <div class="bloco causa"><h4>Causa</h4><p>Restrição na entrada do combustível.</p></div>
-      <div class="bloco correcao"><h4>Correção</h4><p>Verifique se há restrições. Consulte o Procedimento 006-020 na Seção 6.</p></div></li>
-    <li class="passo"><span class="num">PASSO 5</span>
-      <div class="bloco causa"><h4>Causa</h4><p>Presença de ar no sistema de combustível.</p></div>
-      <div class="bloco correcao"><h4>Correção</h4><p>Faça a desaeração completa do sistema. Consulte o Procedimento 006-003 na Seção 6.</p></div></li>
-    <li class="passo"><span class="num">PASSO 6</span>
-      <div class="bloco causa"><h4>Causa</h4><p>— (passo sem descrição no manual original)</p></div>
-      <div class="bloco correcao"><h4>Correção</h4><p>— (passo sem descrição no manual original)</p></div></li>
-    <li class="passo"><span class="num">PASSO 7</span>
-      <div class="bloco causa"><h4>Causa</h4><p>A válvula de alívio de pressão na common rail está presa na posição aberta.</p></div>
-      <div class="bloco correcao"><h4>Correção</h4><p>Inspecione a válvula. Consulte o Procedimento 006-060 na Seção 6.</p></div></li>
-    <li class="passo"><span class="num">PASSO 8</span>
-      <div class="bloco causa"><h4>Causa</h4><p>O tubo de sucção de combustível no tanque está quebrado.</p></div>
-      <div class="bloco correcao"><h4>Correção</h4><p>Verifique e repare o tubo, se necessário. Consulte o manual de serviços do OEM.</p></div></li>
-    <li class="passo"><span class="num">PASSO 9</span>
-      <div class="bloco causa"><h4>Causa</h4><p>Falha de funcionamento da bomba de combustível.</p></div>
-      <div class="bloco correcao"><h4>Correção</h4><p>Verifique a pressão na saída da bomba com INSITE™. Substitua a bomba, se necessário. Consulte o Procedimento 005-016 na Seção 5.</p></div></li>
-  </ol>
-</article>
-
-<article class="sintoma" id="t041">
-  <header><span class="codigo">t041</span><h3>Desaceleração Lenta do Motor</h3></header>
-  <ol class="passos">
-    <li class="passo"><span class="num">PASSO 1</span>
-      <div class="bloco causa"><h4>Causa</h4><p>Códigos eletrônicos de falha ativos ou altas contagens.</p></div>
-      <div class="bloco correcao"><h4>Correção</h4><p>Consulte o Manual de Diagnóstico de Códigos de Falha, Boletim 4021677.</p></div></li>
-    <li class="passo"><span class="num">PASSO 2</span>
-      <div class="bloco causa"><h4>Causa</h4><p>O sistema do módulo de controle eletrônico não está calibrado ou está calibrado incorretamente.</p></div>
-      <div class="bloco correcao"><h4>Correção</h4><p>Compare a calibração do ECM com a classificação do motor e a CPL. Se necessário, calibre o sistema. Consulte o Boletim 4021677.</p></div></li>
-    <li class="passo"><span class="num">PASSO 3</span>
-      <div class="bloco causa"><h4>Causa</h4><p>Pedal ou alavanca do acelerador com restrição ou com defeito.</p></div>
-      <div class="bloco correcao"><h4>Correção</h4><p>Verifique a porcentagem do pedal com ferramenta eletrônica (100% pressionado, 0% liberado). Verifique o pedal remoto. Calibre, se possível. Consulte o Boletim 4021677.</p></div></li>
-    <li class="passo"><span class="num">PASSO 4</span>
-      <div class="bloco causa"><h4>Causa</h4><p>Falha de funcionamento do injetor.</p></div>
-      <div class="bloco correcao"><h4>Correção</h4><p>Faça o teste de corte de um só cilindro. Substitua os injetores conforme necessário. Consulte o Procedimento 006-026 na Seção 6 ou o Procedimento 014-008 na Seção 14.</p></div></li>
-    <li class="passo"><span class="num">PASSO 5</span>
-      <div class="bloco causa"><h4>Causa</h4><p>Os dispositivos de controle J1939 estão interferindo com os controles do motor.</p></div>
-      <div class="bloco correcao"><h4>Correção</h4><p>Como alternativa, desconecte todos os outros dispositivos J1939 do datalink até que a comunicação seja restaurada. Consulte o Boletim 4021677.</p></div></li>
-    <li class="passo"><span class="num">PASSO 6</span>
-      <div class="bloco causa"><h4>Causa</h4><p>A embreagem está defeituosa ou não é do tipo correto.</p></div>
-      <div class="bloco correcao"><h4>Correção</h4><p>Compare as especificações do trem de força com as recomendações da Cummins. Verifique a embreagem. Consulte o manual de serviços do OEM.</p></div></li>
-  </ol>
-</article>
-
-<article class="sintoma" id="t087">
-  <header><span class="codigo">t087</span><h3>Consumo Excessivo de Combustível</h3></header>
-  <ol class="passos">
-    <li class="passo"><span class="num">PASSO 1</span>
-      <div class="bloco causa"><h4>Causa</h4><p>Fale com o operador e verifique a causa da reclamação.</p></div>
-      <div class="bloco correcao"><h4>Correção</h4><p>Consulte o formulário Dirigibilidade/Baixa Potência — Reclamação do Cliente no final da Seção TS.</p></div></li>
-    <li class="passo"><span class="num">PASSO 2</span>
-      <div class="bloco causa"><h4>Causa</h4><p>As expectativas de consumo de combustível não são razoáveis.</p></div>
-      <div class="bloco correcao"><h4>Correção</h4><p>Faça uma simulação no VE/VMS® para aplicações automotivas, ou um teste de rodagem para estabelecer o consumo real. Consulte o manual de serviços do OEM.</p></div></li>
-    <li class="passo"><span class="num">PASSO 3</span>
-      <div class="bloco causa"><h4>Causa</h4><p>A técnica utilizada pelo operador não está correta.</p></div>
-      <div class="bloco correcao"><h4>Correção</h4><p>Explique ao operador o funcionamento correto do motor. Consulte o Boletim 4022267 ou o Boletim 4022266.</p></div></li>
-    <li class="passo"><span class="num">PASSO 4</span>
-      <div class="bloco causa"><h4>Causa</h4><p>O nível do óleo lubrificante está acima da especificação.</p></div>
-      <div class="bloco correcao"><h4>Correção</h4><p>Verifique o nível. Consulte o Procedimento 007-009 na Seção 7 e o Procedimento 007-037 na Seção 7.</p></div></li>
-    <li class="passo"><span class="num">PASSO 5</span>
-      <div class="bloco causa"><h4>Causa</h4><p>O óleo lubrificante não atende às especificações para as condições de operação.</p></div>
-      <div class="bloco correcao"><h4>Correção</h4><p>Troque o óleo e os filtros. Consulte o Procedimento 007-037 na Seção 7 e o Boletim 4022267.</p></div></li>
-    <li class="passo"><span class="num">PASSO 6</span>
-      <div class="bloco causa"><h4>Causa</h4><p>O medidor de combustível ou o odômetro estão mal calibrados.</p></div>
-      <div class="bloco correcao"><h4>Correção</h4><p>Verifique as calibrações. Calibre ou substitua. Calcule o consumo com novos valores de quilometragem.</p></div></li>
-    <li class="passo"><span class="num">PASSO 7</span>
-      <div class="bloco causa"><h4>Causa</h4><p>Códigos eletrônicos de falha ativos ou altas contagens.</p></div>
-      <div class="bloco correcao"><h4>Correção</h4><p>Verifique com INSITE™. Consulte o Boletim 4021677.</p></div></li>
-    <li class="passo"><span class="num">PASSO 8</span>
-      <div class="bloco causa"><h4>Causa</h4><p>Os parâmetros programáveis ou os recursos selecionados não estão corretos.</p></div>
-      <div class="bloco correcao"><h4>Correção</h4><p>Verifique com ferramenta eletrônica. Ajuste os parâmetros. Consulte o Procedimento 019-078 na Seção 19.</p></div></li>
-    <li class="passo"><span
+  <!-- JAVASCRIPT -->
+  <script src="menu.js"></script>
+</body>
+</html>
