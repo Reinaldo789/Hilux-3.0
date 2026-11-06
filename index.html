@@ -3,343 +3,244 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Cummins ISF2.8 CM2220 - Diagnóstico</title>
-
+  <title>Cummins ISF2.8 - Diagnóstico de Sintomas</title>
+  
   <!-- Ícones Font Awesome -->
   <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
-
+  
+  <!-- SEU CSS GLOBAL -->
   <link rel="stylesheet" href="style.css">
+
+  <!-- ESTILOS ESPECÍFICOS PARA OS PASSOS DO CUMMINS (Adaptado ao tema claro do MWM) -->
+  <style>
+    /* Como a classe .passo do seu CSS é para fluxogramas (display:none), 
+       criamos uma classe nova para os passos de texto do Cummins */
+    .diag-passos { display: flex; flex-direction: column; gap: 14px; margin-top: 20px; }
+    
+    .diag-passo {
+      display: grid;
+      grid-template-columns: auto 1fr 1fr;
+      gap: 16px;
+      background: #f8fafc;
+      border: 1px solid var(--border-color);
+      border-radius: 12px;
+      padding: 16px;
+      transition: var(--transition);
+    }
+    .diag-passo:hover { box-shadow: var(--shadow-sm); border-color: #c7d2fe; }
+
+    .diag-num {
+      font-weight: 700;
+      color: var(--primary);
+      background: var(--primary-light);
+      border: 1px solid #c7d2fe;
+      border-radius: 8px;
+      padding: 4px 10px;
+      height: fit-content;
+      font-size: 0.85rem;
+      white-space: nowrap;
+    }
+
+    .diag-bloco h4 { margin: 0 0 4px; font-size: 0.75rem; letter-spacing: 0.1em; text-transform: uppercase; }
+    .diag-causa h4 { color: #b91c1c; } /* Vermelho para causa */
+    .diag-correcao h4 { color: #15803d; } /* Verde para correção */
+    .diag-bloco p { margin: 0; font-size: 0.92rem; color: var(--text-main); }
+
+    @media (max-width: 760px) {
+      .diag-passo { grid-template-columns: 1fr; }
+    }
+    
+    /* Ajuste no TOC para parecer com o MWM */
+    .toc ul { columns: 2; column-gap: 20px; }
+    @media (max-width: 600px) { .toc ul { columns: 1; } }
+  </style>
 </head>
 <body>
 
   <div class="site-wrapper">
 
-    <!-- NAVBAR -->
+    <!-- NAVBAR (Copia do seu MWM) -->
     <header>
       <div class="nav-container">
         <a href="#" class="logo">
           <i class="fa-solid fa-house"></i>
           <span>Início</span>
         </a>
-
         <button class="mobile-toggle" id="mobile-toggle-btn" aria-label="Abrir Menu">
           <i class="fa-solid fa-bars"></i>
         </button>
-
         <ul class="main-nav" id="main-nav">
-          
-          <!-- 1. SISTEMA ELÉTRICO -->
-          <li class="nav-item">
-            <button class="nav-btn">
-              <span><i class="fa-solid fa-bolt" style="margin-right:6px; color:var(--primary);"></i> Sistema Elétrico</span>
-              <i class="fa-solid fa-chevron-down"></i>
-            </button>
-
-            <div class="mega-menu">
-              <div class="mega-categories-container">
-                
-                <!-- Luzes e Painel -->
-                <div class="category-group">
-                  <div class="category-title"><i class="fa-solid fa-lightbulb"></i> Luzes e Painel</div>
-                  <div class="mega-links-grid">
-                    <a href="#sistema-eletrico/luzes-advertencia" class="mega-link-item"><i class="fa-solid fa-chevron-right"></i> Luzes de Advertência (t084)</a>
-                    <a href="#sistema-eletrico/chave-ignicao" class="mega-link-item"><i class="fa-solid fa-chevron-right"></i> Chave de Ignição (t081)</a>
-                  </div>
-                </div>
-
-                <!-- Acessórios e Carga -->
-                <div class="category-group">
-                  <div class="category-title"><i class="fa-solid fa-car-battery"></i> Acessórios e Carga</div>
-                  <div class="mega-links-grid">
-                    <a href="#sistema-eletrico/alternador" class="mega-link-item"><i class="fa-solid fa-chevron-right"></i> Alternador (t013, t014)</a>
-                    <a href="#sistema-eletrico/bateria" class="mega-link-item"><i class="fa-solid fa-chevron-right"></i> Bateria (t013, t014)</a>
-                    <a href="#sistema-eletrico/motor-de-partida" class="mega-link-item"><i class="fa-solid fa-chevron-right"></i> Motor de Partida (t078)</a>
-                  </div>
-                </div>
-
-                <!-- ECM e Comunicação -->
-                <div class="category-group">
-                  <div class="category-title"><i class="fa-solid fa-microchip"></i> ECM e Comunicação</div>
-                  <div class="mega-links-grid">
-                    <a href="#sistema-eletrico/erro-comunicacao" class="mega-link-item"><i class="fa-solid fa-chevron-right"></i> Erro de Comunicação (t016)</a>
-                  </div>
-                </div>
-
-              </div>
-            </div>
-          </li>
-
-          <!-- 2. ALIMENTAÇÃO DE COMBUSTÍVEL -->
-          <li class="nav-item">
-            <button class="nav-btn">
-              <span><i class="fa-solid fa-gas-pump" style="margin-right:6px; color:var(--primary);"></i> Linha de Combustível</span>
-              <i class="fa-solid fa-chevron-down"></i>
-            </button>
-
-            <div class="mega-menu">
-              <div class="mega-categories-container">
-                
-                <!-- Linha de Baixa -->
-                <div class="category-group">
-                  <div class="category-title"><i class="fa-solid fa-filter"></i> Linha de Baixa Pressão</div>
-                  <div class="mega-links-grid">
-                    <a href="#alimentacao-de-combustivel/pressao-baixa-partida" class="mega-link-item"><i class="fa-solid fa-chevron-right"></i> Pressão Baixa na Partida (t029)</a>
-                    <a href="#alimentacao-de-combustivel/bomba-combustivel" class="mega-link-item"><i class="fa-solid fa-chevron-right"></i> Bomba e Filtro Combustível</a>
-                  </div>
-                </div>
-
-                <!-- Linha de Alta -->
-                <div class="category-group">
-                  <div class="category-title"><i class="fa-solid fa-gauge-high"></i> Linha de Alta Pressão</div>
-                  <div class="mega-links-grid">
-                    <a href="#alimentacao-de-combustivel/injetores" class="mega-link-item"><i class="fa-solid fa-chevron-right"></i> Bicos Injetores (t041, t062)</a>
-                    <a href="#alimentacao-de-combustivel/consumo-combustivel" class="mega-link-item"><i class="fa-solid fa-chevron-right"></i> Consumo Excessivo (t087)</a>
-                  </div>
-                </div>
-
-              </div>
-            </div>
-          </li>
-
-          <!-- 3. SISTEMA DE INJEÇÃO (SENSORES E ATUADORES) -->
-          <li class="nav-item">
-            <button class="nav-btn">
-              <span><i class="fa-solid fa-microchip" style="margin-right:6px; color:var(--primary);"></i> Sensores e Atuadores</span>
-              <i class="fa-solid fa-chevron-down"></i>
-            </button>
-
-            <div class="mega-menu">
-              <div class="mega-categories-container">
-                
-                <!-- Sensores -->
-                <div class="category-group">
-                  <div class="category-title"><i class="fa-solid fa-microchip"></i> Sensores</div>
-                  <div class="mega-links-grid">
-                    <a href="#sistema-de-injecao/sensor-pres-adm" class="mega-link-item"><i class="fa-solid fa-chevron-right"></i> Sensor Pressão Admissão (t097)</a>
-                    <a href="#sistema-de-injecao/sensor-temp-liquido" class="mega-link-item"><i class="fa-solid fa-chevron-right"></i> Sensor Temp. Líquido (t022)</a>
-                    <a href="#sistema-de-injecao/sensor-pres-oleo" class="mega-link-item"><i class="fa-solid fa-chevron-right"></i> Sensor Pressão Óleo (t104, t105)</a>
-                    <a href="#sistema-de-injecao/sensor-vss" class="mega-link-item"><i class="fa-solid fa-chevron-right"></i> Sensor Velocidade (VSS)</a>
-                  </div>
-                </div>
-
-                <!-- Atuadores -->
-                <div class="category-group">
-                  <div class="category-title"><i class="fa-solid fa-sliders"></i> Atuadores e Válvulas</div>
-                  <div class="mega-links-grid">
-                    <a href="#sistema-de-injecao/valvula-egr" class="mega-link-item"><i class="fa-solid fa-chevron-right"></i> Válvula EGR (t057, t116)</a>
-                    <a href="#sistema-de-injecao/turbocompressor" class="mega-link-item"><i class="fa-solid fa-chevron-right"></i> Turbocompressor (t052, t122)</a>
-                    <a href="#sistema-de-injecao/bomba-vacuo" class="mega-link-item"><i class="fa-solid fa-chevron-right"></i> Bomba de Vácuo (t123)</a>
-                  </div>
-                </div>
-              </div>
-            </div>
-          </li>
-
-          <!-- 4. MOTOR E CHASSI -->
-          <li class="nav-item">
-            <button class="nav-btn">
-              <span><i class="fa-solid fa-wrench" style="margin-right:6px; color:var(--primary);"></i> Motor e Chassi</span>
-              <i class="fa-solid fa-chevron-down"></i>
-            </button>
-
-            <div class="mega-menu">
-              <div class="mega-categories-container">
-
-                <!-- Motor -->
-                <div class="category-group">
-                  <div class="category-title"><i class="fa-solid fa-gear"></i> Motor</div>
-                  <div class="mega-links-grid">
-                    <a href="#motor-e-chassi/ruidos-motor" class="mega-link-item"><i class="fa-solid fa-chevron-right"></i> Ruídos no Motor (t047-t051)</a>
-                    <a href="#motor-e-chassi/sopro-carter" class="mega-link-item"><i class="fa-solid fa-chevron-right"></i> Sopro no Cárter (t027)</a>
-                    <a href="#motor-e-chassi/vibracao-motor" class="mega-link-item"><i class="fa-solid fa-chevron-right"></i> Vibração Excessiva (t075)</a>
-                  </div>
-                </div>
-                
-                <!-- Sistema de Arrefecimento -->
-                <div class="category-group">
-                  <div class="category-title"><i class="fa-solid fa-snowflake"></i> Arrefecimento</div>
-                  <div class="mega-links-grid">
-                    <a href="#motor-e-chassi/superaquecimento" class="mega-link-item"><i class="fa-solid fa-chevron-right"></i> Superaquecimento (t022, t023)</a>
-                    <a href="#motor-e-chassi/perda-arrefecimento" class="mega-link-item"><i class="fa-solid fa-chevron-right"></i> Perda de Líquido (t020, t021)</a>
-                    <a href="#motor-e-chassi/oleo-na-agua" class="mega-link-item"><i class="fa-solid fa-chevron-right"></i> Óleo/Combustível na Água</a>
-                  </div>
-                </div>
-
-              </div>
-            </div>
-          </li>
-
-          <!-- 5. DIAGNÓSTICO -->
-          <li class="nav-item">
-            <button class="nav-btn">
-              <span><i class="fa-solid fa-stethoscope" style="margin-right:6px; color:var(--primary);"></i> Diagnóstico</span>
-              <i class="fa-solid fa-chevron-down"></i>
-            </button>
-
-            <div class="mega-menu">
-              <div class="mega-categories-container">
-
-                <!-- Sintomas do Motor -->
-                <div class="category-group">
-                  <div class="category-title"><i class="fa-solid fa-triangle-exclamation"></i> Sintomas do Motor</div>
-                  <div class="mega-links-grid">
-                    <a href="#diagnostico/falta-potencia" class="mega-link-item"><i class="fa-solid fa-chevron-right"></i> Falta de Potência (t057)</a>
-                    <a href="#diagnostico/motor-nao-pega" class="mega-link-item"><i class="fa-solid fa-chevron-right"></i> Motor Não Pega (t043)</a>
-                    <a href="#diagnostico/fumaca-preta" class="mega-link-item"><i class="fa-solid fa-chevron-right"></i> Fumaça Preta (t116)</a>
-                    <a href="#diagnostico/fumaca-branca" class="mega-link-item"><i class="fa-solid fa-chevron-right"></i> Fumaça Branca (t118)</a>
-                  </div>
-                </div>
-
-                <!-- Lubrificação -->
-                <div class="category-group">
-                  <div class="category-title"><i class="fa-solid fa-oil-can"></i> Lubrificação</div>
-                  <div class="mega-links-grid">
-                    <a href="#diagnostico/consumo-oleo" class="mega-link-item"><i class="fa-solid fa-chevron-right"></i> Consumo Excessivo (t102)</a>
-                    <a href="#diagnostico/oleo-contaminado" class="mega-link-item"><i class="fa-solid fa-chevron-right"></i> Óleo Contaminado (t103)</a>
-                    <a href="#diagnostico/borra-carter" class="mega-link-item"><i class="fa-solid fa-chevron-right"></i> Borra no Cárter (t106)</a>
-                  </div>
-                </div>
-
-              </div>
-            </div>
-          </li>
-
+          <!-- Links do MWM -->
+          <li class="nav-item"><button class="nav-btn"><span>Sistema Elétrico</span></button></li>
+          <li class="nav-item"><button class="nav-btn"><span>Combustível</span></button></li>
+          <li class="nav-item"><button class="nav-btn"><span>Injeção</span></button></li>
+          <li class="nav-item"><button class="nav-btn"><span>Motor e Chassi</span></button></li>
+          <li class="nav-item"><button class="nav-btn"><span>Diagnóstico</span></button></li>
         </ul>
       </div>
     </header>
 
     <!-- CONTEÚDO PRINCIPAL -->
     <main>
-      <div class="home" id="home-box">
-        <section class="home-hero">
-          <span class="home-kicker"><i class="fa-solid fa-screwdriver-wrench"></i> Dicas de oficina</span>
+      <article class="page-card" id="page-card">
+        
+        <!-- CABEÇALHO DO ARTIGO (Cores do seu CSS) -->
+        <header class="art-head">
+          <span class="art-kicker">Diagnóstico · Sintomas</span>
           <h1>Cummins ISF2.8 CM2220</h1>
-          <p>Diagramas de sintomas, testes de componentes e reparos baseados na Seção TS do manual Cummins. Do painel de instrumentos ao turbocompressor.</p>
-          <div class="home-search">
-            <i class="fa-solid fa-magnifying-glass"></i>
-            <input type="search" id="home-search" placeholder="Buscar: bateria, sensor, injetor, fumaça..." autocomplete="off" aria-label="Buscar assunto">
-            <div class="home-results" id="home-results" hidden></div>
+          <p class="art-lead">Diagramas de sintomas de falhas e reparos — Seção TS do manual Cummins. Cada diagrama lista as causas prováveis e a correção recomendada passo a passo.</p>
+          <div class="chips">
+            <span>Cummins ISF2.8</span>
+            <span>47 sintomas</span>
+            <span>Seção TS</span>
           </div>
+        </header>
+
+        <!-- DICA -->
+        <div class="dica">
+          <strong>Como usar</strong>
+          <p>Leia os passos na ordem. Cada passo traz a <em>causa</em> e a <em>correção</em>. Se o passo resolver o problema, pare; caso contrário, siga para o próximo.</p>
+        </div>
+
+        <!-- ÍNDICE (Estilo TOC do MWM) -->
+        <div class="toc">
+          <strong>Índice de Sintomas</strong>
+          <ul>
+            <li><a href="#t013">t013 - Alternador Não Carrega</a></li>
+            <li><a href="#t014">t014 - Alternador com Sobrecarga</a></li>
+            <li><a href="#t016">t016 - Erro de Comunicação</a></li>
+            <li><a href="#t020">t020 - Perda de Líquido (Externa)</a></li>
+            <li><a href="#t021">t021 - Perda de Líquido (Interna)</a></li>
+            <li><a href="#t022">t022 - Superaquecimento Gradual</a></li>
+            <li><a href="#t023">t023 - Superaquecimento Repentino</a></li>
+            <li><a href="#t024">t024 - Temperatura Abaixo</a></li>
+            <li><a href="#t025">t025 - Líquido no Óleo</a></li>
+            <li><a href="#t027">t027 - Sopro no Cárter</a></li>
+            <li><a href="#t029">t029 - Pressão Baixa Combustível</a></li>
+            <li><a href="#t041">t041 - Desaceleração Lenta</a></li>
+            <li><a href="#t043">t043 - Partida Difícil</a></li>
+            <li><a href="#t046">t046 - Ventilador do Motor</a></li>
+            <li><a href="#t047">t047 - Ruídos no Motor</a></li>
+            <li><a href="#t052">t052 - Ruídos no Turbo</a></li>
+            <li><a href="#t057">t057 - Falta de Potência</a></li>
+            <li><a href="#t078">t078 - Motor Não Gira</a></li>
+            <li><a href="#t087">t087 - Consumo Excessivo</a></li>
+            <li><a href="#t096">t096 - Temp. Ar Admissão Alta</a></li>
+            <li><a href="#t097">t097 - Pressão Coletor Baixa</a></li>
+            <li><a href="#t102">t102 - Consumo de Óleo</a></li>
+            <li><a href="#t104">t104 - Pressão Alta Óleo</a></li>
+            <li><a href="#t105">t105 - Pressão Baixa Óleo</a></li>
+            <li><a href="#t116">t116 - Fumaça Preta</a></li>
+            <li><a href="#t118">t118 - Fumaça Branca</a></li>
+            <li><a href="#t122">t122 - Vazamento no Turbo</a></li>
+          </ul>
+        </div>
+
+        <!-- ================= SISTEMA ELÉTRICO ================= -->
+        <section class="sistema">
+          <h2>Sistema Elétrico</h2>
+
+          <article class="sintoma" id="t013">
+            <header><span class="codigo">t013</span><h3>Alternador Não Carrega ou Carrega Insuficientemente</h3></header>
+            <div class="diag-passos">
+              <div class="diag-passo">
+                <span class="diag-num">PASSO 1</span>
+                <div class="diag-bloco diag-causa"><h4>Causa</h4><p>Falha de funcionamento do indicador do veículo.</p></div>
+                <div class="diag-bloco diag-correcao"><h4>Correção</h4><p>Verifique o indicador do veículo. Consulte o manual de serviços do OEM.</p></div>
+              </div>
+              <div class="diag-passo">
+                <span class="diag-num">PASSO 2</span>
+                <div class="diag-bloco diag-causa"><h4>Causa</h4><p>Rotação do motor baixa demais para carregar o alternador.</p></div>
+                <div class="diag-bloco diag-correcao"><h4>Correção</h4><p>Acione o acelerador para aumentar a rotação do motor para 1200 rpm e excitar o alternador. Consulte o Manual de Operação e Manutenção dos Motores ISF2.8 CM2220 E e ISF2.8 CM2220 AN, Boletim 4022267...</p></div>
+              </div>
+              <div class="diag-passo">
+                <span class="diag-num">PASSO 3</span>
+                <div class="diag-bloco diag-causa"><h4>Causa</h4><p>A correia do alternador está solta.</p></div>
+                <div class="diag-bloco diag-correcao"><h4>Correção</h4><p>Verifique a tensão da correia do alternador. Consulte o Procedimento 013-001 na Seção 13.</p></div>
+              </div>
+              <!-- Adicione os outros passos... -->
+            </div>
+          </article>
+
+          <article class="sintoma" id="t014">
+            <header><span class="codigo">t014</span><h3>Alternador com Sobrecarga</h3></header>
+            <div class="diag-passos">
+              <div class="diag-passo">
+                <span class="diag-num">PASSO 1</span>
+                <div class="diag-bloco diag-causa"><h4>Causa</h4><p>Os cabos ou as conexões da bateria estão soltos, quebrados ou corroídos.</p></div>
+                <div class="diag-bloco diag-correcao"><h4>Correção</h4><p>Verifique os cabos e as conexões da bateria. Consulte o Procedimento 013-009 na Seção 13.</p></div>
+              </div>
+              <div class="diag-passo">
+                <span class="diag-num">PASSO 2</span>
+                <div class="diag-bloco diag-causa"><h4>Causa</h4><p>As células das baterias estão danificadas (circuito aberto).</p></div>
+                <div class="diag-bloco diag-correcao"><h4>Correção</h4><p>Verifique as condições das baterias. Substitua as baterias, se necessário. Consulte o manual de serviços do OEM.</p></div>
+              </div>
+            </div>
+          </article>
         </section>
 
-        <section class="home-stats">
-          <div><strong>5</strong><span>Sistemas</span></div>
-          <div><strong>15</strong><span>Grupos</span></div>
-          <div><strong>47</strong><span>Assuntos</span></div>
+        <!-- ================= ARREFECIMENTO ================= -->
+        <section class="sistema">
+          <h2>Sistema de Arrefecimento</h2>
+          
+          <article class="sintoma" id="t022">
+            <header><span class="codigo">t022</span><h3>Temperatura Acima da Normal — Superaquecimento Gradual</h3></header>
+            <div class="diag-passos">
+              <div class="diag-passo">
+                <span class="diag-num">PASSO 1</span>
+                <div class="diag-bloco diag-causa"><h4>Causa</h4><p>Códigos eletrônicos de falha ativos.</p></div>
+                <div class="diag-bloco diag-correcao"><h4>Correção</h4><p>Verifique e faça o diagnóstico dos códigos com a ferramenta INSITE™. Consulte o Boletim 4021677.</p></div>
+              </div>
+              <div class="diag-passo">
+                <span class="diag-num">PASSO 2</span>
+                <div class="diag-bloco diag-causa"><h4>Causa</h4><p>A tampa ou o anteparo de inverno do radiador estão fechados.</p></div>
+                <div class="diag-bloco diag-correcao"><h4>Correção</h4><p>Abra a tampa ou o anteparo de inverno do radiador. Consulte o manual de serviços do OEM.</p></div>
+              </div>
+              <div class="diag-passo">
+                <span class="diag-num">PASSO 3</span>
+                <div class="diag-bloco diag-causa"><h4>Causa</h4><p>As venezianas do radiador não abrem completamente.</p></div>
+                <div class="diag-bloco diag-correcao"><h4>Correção</h4><p>Inspecione as venezianas. Repare ou substitua. Consulte o manual de serviços do OEM.</p></div>
+              </div>
+              <!-- Adicione os outros passos... -->
+            </div>
+          </article>
         </section>
 
-        <h2 class="home-title">Escolha um sistema</h2>
-        <div class="home-grid">
-        
-        <!-- CARD 1 -->
-        <div class="home-card" style="--c:#4f46e5">
-          <div class="home-card-icon"><i class="fa-solid fa-bolt"></i></div>
-          <h3>Sistema Elétrico</h3>
-          <p>Alternador, bateria, motor de partida, ECM, chave de ignição e luzes de advertência.</p>
-          <div class="home-chips">
-            <a href="#sistema-eletrico/alternador">Alternador</a>
-            <a href="#sistema-eletrico/bateria">Bateria</a>
-            <a href="#sistema-eletrico/motor-de-partida">Motor de Partida</a>
-            <a href="#sistema-eletrico/erro-comunicacao">Erro de Comunicação</a>
-          </div>
-          <a class="home-card-more" href="#sistema-eletrico/alternador">Ver tudo de Sistema Elétrico <i class="fa-solid fa-arrow-right"></i></a>
-        </div>
+        <!-- ================= COMBUSTÍVEL ================= -->
+        <section class="sistema">
+          <h2>Sistema de Combustível</h2>
+          
+          <article class="sintoma" id="t057">
+            <header><span class="codigo">t057</span><h3>Motor com Baixa Potência de Saída</h3></header>
+            <div class="diag-passos">
+              <div class="diag-passo">
+                <span class="diag-num">PASSO 1</span>
+                <div class="diag-bloco diag-causa"><h4>Causa</h4><p>Disponível atualização de calibração do ECM.</p></div>
+                <div class="diag-bloco diag-correcao"><h4>Correção</h4><p>Verifique o histórico no QuickServe™ Online. Se necessário, calibre o ECM. Consulte o Procedimento 019-032.</p></div>
+              </div>
+              <div class="diag-passo">
+                <span class="diag-num">PASSO 2</span>
+                <div class="diag-bloco diag-causa"><h4>Causa</h4><p>Baixa potência, desempenho ou aceleração.</p></div>
+                <div class="diag-bloco diag-correcao"><h4>Correção</h4><p>Use INSITE™ para monitorar 'Estado de Operação do Motor'. Certifique-se de que os códigos de ajuste dos injetores estejam corretos. Consulte o Boletim 4021686.</p></div>
+              </div>
+              <div class="diag-passo">
+                <span class="diag-num">PASSO 3</span>
+                <div class="diag-bloco diag-causa"><h4>Causa</h4><p>Restrição na entrada de combustível.</p></div>
+                <div class="diag-bloco diag-correcao"><h4>Correção</h4><p>Faça o teste de restrição na entrada de combustível. Consulte o Procedimento 006-020.</p></div>
+              </div>
+            </div>
+          </article>
+        </section>
 
-        <!-- CARD 2 -->
-        <div class="home-card" style="--c:#0284c7">
-          <div class="home-card-icon"><i class="fa-solid fa-gas-pump"></i></div>
-          <h3>Alimentação de Combustível</h3>
-          <p>Pressão da linha de baixa, filtros, bicos injetores e consumo excessivo.</p>
-          <div class="home-chips">
-            <a href="#alimentacao-de-combustivel/pressao-baixa-partida">Pressão Baixa</a>
-            <a href="#alimentacao-de-combustivel/bomba-combustivel">Bomba de Comb.</a>
-            <a href="#alimentacao-de-combustivel/injetores">Bicos Injetores</a>
-          </div>
-          <a class="home-card-more" href="#alimentacao-de-combustivel/pressao-baixa-partida">Ver tudo de Combustível <i class="fa-solid fa-arrow-right"></i></a>
-        </div>
-
-        <!-- CARD 3 -->
-        <div class="home-card" style="--c:#065f46">
-          <div class="home-card-icon"><i class="fa-solid fa-microchip"></i></div>
-          <h3>Sensores e Atuadores</h3>
-          <p>Sensores de pressão, temperatura, válvula EGR, turbocompressor e bomba de vácuo.</p>
-          <div class="home-chips">
-            <a href="#sistema-de-injecao/sensor-pres-adm">Pres. Admissão</a>
-            <a href="#sistema-de-injecao/sensor-temp-liquido">Temp. Líquido</a>
-            <a href="#sistema-de-injecao/valvula-egr">Válvula EGR</a>
-            <a href="#sistema-de-injecao/turbocompressor">Turbocompressor</a>
-          </div>
-          <a class="home-card-more" href="#sistema-de-injecao/sensor-pres-adm">Ver Sensores e Atuadores <i class="fa-solid fa-arrow-right"></i></a>
-        </div>
-
-        <!-- CARD 4 -->
-        <div class="home-card" style="--c:#1e1b4b">
-          <div class="home-card-icon"><i class="fa-solid fa-wrench"></i></div>
-          <h3>Motor e Chassi</h3>
-          <p>Arrefecimento, ruídos, sopro no cárter, vibração e problemas mecânicos internos.</p>
-          <div class="home-chips">
-            <a href="#motor-e-chassi/superaquecimento">Superaquecimento</a>
-            <a href="#motor-e-chassi/perda-arrefecimento">Perda Líquido</a>
-            <a href="#motor-e-chassi/ruidos-motor">Ruídos</a>
-            <a href="#motor-e-chassi/sopro-carter">Sopro Cárter</a>
-          </div>
-          <a class="home-card-more" href="#motor-e-chassi/superaquecimento">Ver tudo de Motor e Chassi <i class="fa-solid fa-arrow-right"></i></a>
-        </div>
-
-        <!-- CARD 5 -->
-        <div class="home-card" style="--c:#7c2d12">
-          <div class="home-card-icon"><i class="fa-solid fa-stethoscope"></i></div>
-          <h3>Diagnóstico Interativo</h3>
-          <p>Sintomas gerais: falta de potência, fumaça preta/branca, motor não pega e consumo de óleo.</p>
-          <div class="home-chips">
-            <a href="#diagnostico/falta-potencia">Falta Potência</a>
-            <a href="#diagnostico/motor-nao-pega">Não Pega</a>
-            <a href="#diagnostico/fumaca-preta">Fumaça Preta</a>
-            <a href="#diagnostico/fumaca-branca">Fumaça Branca</a>
-          </div>
-          <a class="home-card-more" href="#diagnostico/falta-potencia">Ver todos os diagnósticos <i class="fa-solid fa-arrow-right"></i></a>
-        </div>
-        
-        </div>
-
-        <h2 class="home-title">Mais consultados</h2>
-        <div class="home-quick">
-          <a href="#diagnostico/falta-potencia"><i class="fa-solid fa-gauge-high"></i> Falta de Potência</a>
-          <a href="#sistema-de-injecao/valvula-egr"><i class="fa-solid fa-sliders"></i> Válvula EGR</a>
-          <a href="#sistema-de-injecao/turbocompressor"><i class="fa-solid fa-fan"></i> Turbocompressor</a>
-          <a href="#diagnostico/fumaca-preta"><i class="fa-solid fa-smog"></i> Fumaça Preta</a>
-          <a href="#alimentacao-de-combustivel/injetores"><i class="fa-solid fa-syringe"></i> Bicos Injetores</a>
-        </div>
-      </div>
-      <article class="page-card" id="page-card" hidden></article>
+      </article>
     </main>
 
-   <!-- RODAPÉ -->
+    <!-- RODAPÉ (MWM) -->
     <footer class="site-footer">
       <div class="footer-inner">
         <div class="footer-brand">
-          <a href="#" class="logo"><i class="fa-solid fa-gears"></i><span>Cummins ISF2.8</span></a>
-          <p>Consulta rápida de sintomas, testes e especificações para o motor Cummins ISF2.8.</p>
-        </div>
-        <div class="footer-col"><h4>Elétrico</h4>
-          <a href="#sistema-eletrico/bateria">Bateria</a>
-          <a href="#sistema-eletrico/alternador">Alternador</a>
-          <a href="#sistema-eletrico/motor-de-partida">Motor de Partida</a>
-        </div>
-        <div class="footer-col"><h4>Combustível</h4>
-          <a href="#alimentacao-de-combustivel/pressao-baixa-partida">Pressão Baixa</a>
-          <a href="#alimentacao-de-combustivel/bomba-combustivel">Bomba</a>
-          <a href="#alimentacao-de-combustivel/injetores">Injetores</a>
-        </div>
-        <div class="footer-col"><h4>Sensores</h4>
-          <a href="#sistema-de-injecao/sensor-pres-adm">Pressão Admissão</a>
-          <a href="#sistema-de-injecao/sensor-temp-liquido">Temp. Líquido</a>
-          <a href="#sistema-de-injecao/valvula-egr">Válvula EGR</a>
-        </div>
-        <div class="footer-col"><h4>Motor</h4>
-          <a href="#motor-e-chassi/superaquecimento">Superaquecimento</a>
-          <a href="#motor-e-chassi/ruidos-motor">Ruídos</a>
-          <a href="#diagnostico/falta-potencia">Falta de Potência</a>
+          <a href="#" class="logo"><i class="fa-solid fa-gears"></i><span>Guia Técnico</span></a>
+          <p>Consulta rápida de esquemas, testes e especificações para oficina.</p>
         </div>
       </div>
       <div class="footer-bottom">
@@ -350,15 +251,14 @@
 
   </div>
 
-  <!-- BOTÃO FLUTUANTE DE ROLAR PARA CIMA -->
+  <!-- BOTÃO FLUTUANTE -->
   <div class="floating-container">
-    <button class="float-btn" id="btn-top" title="Voltar ao Topo" aria-label="Voltar ao topo">
+    <button class="float-btn" id="btn-top" title="Voltar ao Topo">
       <i class="fa-solid fa-arrow-up"></i>
     </button>
   </div>
 
   <!-- JAVASCRIPT -->
   <script src="menu.js"></script>
-
 </body>
 </html>
