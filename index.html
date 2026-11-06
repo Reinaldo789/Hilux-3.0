@@ -1,335 +1,423 @@
 <!DOCTYPE html>
 <html lang="pt-BR">
 <head>
-  <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Cummins ISF2.8 - Seção TS</title>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Pressão Baixa do Óleo Lubrificante - t105</title>
+<style>
+  :root {
+    --bg: #f8fafc; /* Fundo claro igual ao PDF */
+    --text: #1e293b;
+    --border: #334155;
+    --line-dot: #94a3b8;
+    --font: Arial, sans-serif;
+  }
   
-  <!-- Ícones Font Awesome -->
-  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+  * { box-sizing: border-box; }
   
-  <!-- SEU CSS GLOBAL (do MWM) -->
-  <link rel="stylesheet" href="style.css">
+  body {
+    margin: 0;
+    background: var(--bg);
+    color: var(--text);
+    font-family: var(--font);
+    line-height: 1.4;
+  }
 
-  <!-- ESTILOS ESPECÍFICOS PARA A PÁGINA DO CUMMINS (Mantendo o tema claro) -->
-  <style>
-    .diag-passos { display: flex; flex-direction: column; gap: 14px; margin-top: 20px; }
-    
-    .diag-passo {
-      display: grid;
-      grid-template-columns: auto 1fr 1fr;
-      gap: 16px;
-      background: #f8fafc;
-      border: 1px solid var(--border-color);
-      border-radius: 12px;
-      padding: 16px;
-      transition: var(--transition);
+  .container {
+    max-width: 1000px;
+    margin: 0 auto;
+    padding: 40px 20px;
+  }
+
+  .header {
+    text-align: center;
+    margin-bottom: 40px;
+  }
+
+  .header h1 {
+    font-size: 1.5rem;
+    margin: 0 0 5px 0;
+    text-transform: uppercase;
+  }
+
+  .header p {
+    margin: 0;
+    font-size: 1rem;
+  }
+
+  /* Estrutura de Colunas do Cabeçalho */
+  .col-headers {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    text-align: center;
+    font-weight: bold;
+    font-size: 1.1rem;
+    margin-bottom: 20px;
+    padding: 0 20px;
+  }
+
+  /* Container de cada passo */
+  .passo {
+    margin-bottom: 30px;
+  }
+
+  /* Layout do passo (Causa | Linha Pontilhada | Correção) */
+  .passo-grid {
+    display: grid;
+    grid-template-columns: 1fr 40px 1fr;
+    align-items: center;
+    gap: 10px;
+  }
+
+  /* Caixas de texto */
+  .box {
+    border: 2px solid var(--border);
+    padding: 15px;
+    background: #fff;
+    min-height: 100px;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    text-align: center;
+    font-size: 0.95rem;
+  }
+
+  .box strong {
+    display: block;
+    margin-bottom: 8px;
+    font-size: 0.85rem;
+  }
+
+  /* Linha pontilhada entre as caixas */
+  .linha-pontilhada {
+    border-top: 2px dotted var(--line-dot);
+    width: 100%;
+  }
+
+  /* Texto entre os passos */
+  .divisor {
+    text-align: center;
+    font-weight: bold;
+    font-size: 1rem;
+    margin: 15px 0;
+    text-transform: uppercase;
+  }
+
+  @media (max-width: 768px) {
+    /* Em telas pequenas, empilha as caixas */
+    .passo-grid {
+      grid-template-columns: 1fr;
     }
-    .diag-passo:hover { box-shadow: var(--shadow-sm); border-color: #c7d2fe; }
-
-    .diag-num {
-      font-weight: 700;
-      color: var(--primary);
-      background: var(--primary-light);
-      border: 1px solid #c7d2fe;
-      border-radius: 8px;
-      padding: 4px 10px;
-      height: fit-content;
-      font-size: 0.85rem;
-      white-space: nowrap;
+    .linha-pontilhada {
+      display: none; /* Esconde a linha pontilhada no celular */
     }
-
-    .diag-bloco h4 { margin: 0 0 4px; font-size: 0.75rem; letter-spacing: 0.1em; text-transform: uppercase; }
-    .diag-causa h4 { color: #b91c1c; } 
-    .diag-correcao h4 { color: #15803d; } 
-    .diag-bloco p { margin: 0; font-size: 0.92rem; color: var(--text-main); }
-
-    @media (max-width: 760px) {
-      .diag-passo { grid-template-columns: 1fr; }
+    .box {
+      text-align: left;
     }
-    
-    /* Ajuste no TOC para 3 colunas em telas grandes, 1 no celular */
-    .toc ul { columns: 3; column-gap: 20px; font-size: 0.85rem; }
-    @media (max-width: 900px) { .toc ul { columns: 2; } }
-    @media (max-width: 600px) { .toc ul { columns: 1; } }
-    
-    .toc li { break-inside: avoid; margin-bottom: 4px; }
-    .toc .page-num { color: var(--text-muted); font-size: 0.75rem; float: right; }
-  </style>
+  }
+</style>
 </head>
 <body>
 
-  <div class="site-wrapper">
-
-    <!-- NAVBAR (Mantendo a estrutura do MWM) -->
-    <header>
-      <div class="nav-container">
-        <a href="#" class="logo">
-          <i class="fa-solid fa-house"></i>
-          <span>Início</span>
-        </a>
-        <button class="mobile-toggle" id="mobile-toggle-btn" aria-label="Abrir Menu">
-          <i class="fa-solid fa-bars"></i>
-        </button>
-        <ul class="main-nav" id="main-nav">
-          <li class="nav-item"><button class="nav-btn"><span>Sistema Elétrico</span></button></li>
-          <li class="nav-item"><button class="nav-btn"><span>Combustível</span></button></li>
-          <li class="nav-item"><button class="nav-btn"><span>Injeção</span></button></li>
-          <li class="nav-item"><button class="nav-btn"><span>Motor e Chassi</span></button></li>
-          <li class="nav-item"><button class="nav-btn"><span>Diagnóstico</span></button></li>
-        </ul>
-      </div>
-    </header>
-
-    <!-- CONTEÚDO PRINCIPAL -->
-    <main>
-      <article class="page-card" id="page-card">
-        
-        <!-- CABEÇALHO DO ARTIGO -->
-        <header class="art-head">
-          <span class="art-kicker">Seção TS · Diagramas</span>
-          <h1>ISF2.8 CM2220 E / CM2220 AN</h1>
-          <p class="art-lead">Diagramas de Sintomas de Falhas e Reparos. Consulte abaixo o índice completo de sintomas e as instruções passo a passo.</p>
-          <div class="chips">
-            <span>Cummins ISF2.8</span>
-            <span>Manual de Diagnóstico</span>
-            <span>Índice Completo</span>
-          </div>
-        </header>
-
-        <!-- DICA -->
-        <div class="dica">
-          <strong>Como usar</strong>
-          <p>Leia os passos na ordem. Cada passo traz a <em>causa</em> e a <em>correção</em>. Se o passo resolver o problema, pare; caso contrário, siga para o próximo.</p>
-        </div>
-
-        <!-- ÍNDICE COMPLETO (Baseado no TXT fornecido) -->
-        <div class="toc">
-          <strong>Índice do Manual Original</strong>
-          <ul>
-            <li><a href="#alternador-sobrecarga">Alternador com Sobrecarga</a> <span class="page-num">TS-5</span></li>
-            <li><a href="#alternador-nao-carrega">Alternador Não Carrega</a> <span class="page-num">TS-3</span></li>
-            <li><a href="#bomba-vacuo">A Bomba de Vácuo Não Mantém Vácuo Adequado</a> <span class="page-num">TS-93</span></li>
-            <li><a href="#consumo-fluido-diesel">Consumo de Fluido de Escape de Diesel</a> <span class="page-num">TS-94</span></li>
-            <li><a href="#consumo-combustivel">Consumo Excessivo de Combustível</a> <span class="page-num">TS-58</span></li>
-            <li><a href="#consumo-oleo">Consumo Excessivo de Óleo Lubrificante</a> <span class="page-num">TS-71</span></li>
-            <li><a href="#desaceleracao-lenta">Desaceleração Lenta do Motor</a> <span class="page-num">TS-24</span></li>
-            <li><a href="#erro-comunicacao">Erro de Comunicação</a> <span class="page-num">TS-6</span></li>
-            <li><a href="#borra-oleo">Excesso de Borra de Óleo Lubrificante</a> <span class="page-num">TS-79</span></li>
-            <li><a href="#fumaca-branca">Excesso de Fumaça Branca</a> <span class="page-num">TS-87</span></li>
-            <li><a href="#fumaca-preta">Excesso de Fumaça Preta</a> <span class="page-num">TS-85</span></li>
-            <li><a href="#ruido-bomba-vacuo">Excesso de Ruídos na Bomba de Vácuo</a> <span class="page-num">TS-92</span></li>
-            <li><a href="#ruido-motor">Excesso de Ruídos no Motor</a> <span class="page-num">TS-28</span></li>
-            <li><a href="#ruido-biela">Excesso de Ruídos no Motor - Biela</a> <span class="page-num">TS-33</span></li>
-            <li><a href="#ruido-mancal">Excesso de Ruídos no Motor - Mancal</a> <span class="page-num">TS-35</span></li>
-            <li><a href="#ruido-pistao">Excesso de Ruídos no Motor - Pistão</a> <span class="page-num">TS-37</span></li>
-            <li><a href="#ruido-turbo">Excesso de Ruídos no Motor - Turbocompressor</a> <span class="page-num">TS-39</span></li>
-            <li><a href="#sopro-carter">Excesso de Sopro de Gases no Cárter</a> <span class="page-num">TS-20</span></li>
-            <li><a href="#vibracao-motor">Excesso de Vibrações do Motor</a> <span class="page-num">TS-52</span></li>
-            <li><a href="#interruptor-marcha-lenta">Interruptor de Regulagem da Marcha Lenta</a> <span class="page-num">TS-70</span></li>
-            <li><a href="#luzes-advertencia">Luzes de Advertência Não Acendem</a> <span class="page-num">TS-57</span></li>
-            <li><a href="#motor-irregular">Motor Apresenta Funcionamento Irregular</a> <span class="page-num">TS-44</span></li>
-            <li><a href="#baixa-potencia">Motor com Baixa Potência de Saída</a> <span class="page-num">TS-41</span></li>
-            <li><a href="#partida-dificil">Motor dá Partida com Dificuldade</a> <span class="page-num">TS-25</span></li>
-            <li><a href="#motor-nao-desliga">Motor Não Desliga</a> <span class="page-num">TS-56</span></li>
-            <li><a href="#motor-nao-gira">Motor Não Gira ou Gira Lentamente</a> <span class="page-num">TS-54</span></li>
-            <li><a href="#oleo-contaminado">Óleo Lubrificante Contaminado</a> <span class="page-num">TS-74</span></li>
-            <li><a href="#perda-arrefecimento-externa">Perda de Líquido de Arrefecimento - Externa</a> <span class="page-num">TS-8</span></li>
-            <li><a href="#perda-arrefecimento-interna">Perda de Líquido de Arrefecimento - Interna</a> <span class="page-num">TS-10</span></li>
-            <li><a href="#combustivel-arrefecimento">Presença de Combustível no Líquido de Arrefecimento</a> <span class="page-num">TS-63</span></li>
-            <li><a href="#combustivel-oleo">Presença de Combustível no Óleo Lubrificante</a> <span class="page-num">TS-64</span></li>
-            <li><a href="#arrefecimento-oleo">Presença de Líquido de Arrefecimento no Óleo</a> <span class="page-num">TS-19</span></li>
-            <li><a href="#oleo-arrefecimento">Presença de Óleo no Líquido de Arrefecimento</a> <span class="page-num">TS-82</span></li>
-            <li><a href="#pressao-admissao-baixa">Pressão no Coletor de Admissão Abaixo da Normal</a> <span class="page-num">TS-68</span></li>
-            <li><a href="#pressao-alta-oleo">Pressão Alta do Óleo Lubrificante</a> <span class="page-num">TS-75</span></li>
-            <li><a href="#pressao-baixa-combustivel">Pressão Baixa do Combustível na Partida</a> <span class="page-num">TS-22</span></li>
-            <li><a href="#pressao-baixa-oleo">Pressão Baixa do Óleo Lubrificante</a> <span class="page-num">TS-76</span></li>
-            <li><a href="#pto">PTO ou Piloto Automático Não Funcionam</a> <span class="page-num">TS-83</span></li>
-            <li><a href="#rotacao-irregular">Rotação Irregular em Marcha Lenta</a> <span class="page-num">TS-46</span></li>
-            <li><a href="#rotacao-pto">Rotação Irregular em PTO</a> <span class="page-num">TS-47</span></li>
-            <li><a href="#ruido-pino">Excesso de Ruídos - Batidas de Pino</a> <span class="page-num">TS-31</span></li>
-            <li><a href="#temp-ar-admissao">Temperatura do Ar no Coletor Acima</a> <span class="page-num">TS-65</span></li>
-            <li><a href="#temp-arrefecimento-baixa">Temperatura do Líquido Abaixo da Normal</a> <span class="page-num">TS-18</span></li>
-            <li><a href="#temp-arrefecimento-gradual">Superaquecimento Gradual</a> <span class="page-num">TS-11</span></li>
-            <li><a href="#temp-arrefecimento-repentino">Superaquecimento Repentino</a> <span class="page-num">TS-15</span></li>
-            <li><a href="#temp-oleo">Temperatura do Óleo Acima da Especificação</a> <span class="page-num">TS-81</span></li>
-            <li><a href="#vazamento-turbo">Vazamento de Óleo no Turbocompressor</a> <span class="page-num">TS-90</span></li>
-            <li><a href="#ventilador">Ventilador do Motor Não Funciona</a> <span class="page-num">TS-27</span></li>
-          </ul>
-        </div>
-
-        <!-- ================= SISTEMA ELÉTRICO ================= -->
-        <section class="sistema">
-          <h2>Sistema Elétrico</h2>
-
-          <!-- t013 -->
-          <article class="sintoma" id="alternador-nao-carrega">
-            <header><span class="codigo">t013</span><h3>Alternador Não Carrega ou Carrega Insuficientemente</h3></header>
-            <div class="diag-passos">
-              <div class="diag-passo">
-                <span class="diag-num">PASSO 1</span>
-                <div class="diag-bloco diag-causa"><h4>Causa</h4><p>Falha de funcionamento do indicador do veículo.</p></div>
-                <div class="diag-bloco diag-correcao"><h4>Correção</h4><p>Verifique o indicador do veículo. Consulte o manual de serviços do OEM.</p></div>
-              </div>
-              <div class="diag-passo">
-                <span class="diag-num">PASSO 2</span>
-                <div class="diag-bloco diag-causa"><h4>Causa</h4><p>Rotação do motor baixa demais para carregar o alternador.</p></div>
-                <div class="diag-bloco diag-correcao"><h4>Correção</h4><p>Acione o acelerador para aumentar a rotação do motor para 1200 rpm e excitar o alternador. (Consulte Boletim 4022267).</p></div>
-              </div>
-              <div class="diag-passo">
-                <span class="diag-num">PASSO 3</span>
-                <div class="diag-bloco diag-causa"><h4>Causa</h4><p>A correia do alternador está solta.</p></div>
-                <div class="diag-bloco diag-correcao"><h4>Correção</h4><p>Verifique a tensão da correia do alternador. Consulte o Procedimento 013-001.</p></div>
-              </div>
-              <div class="diag-passo">
-                <span class="diag-num">PASSO 4</span>
-                <div class="diag-bloco diag-causa"><h4>Causa</h4><p>O sistema elétrico está aberto (fusíveis, fios ou conexões).</p></div>
-                <div class="diag-bloco diag-correcao"><h4>Correção</h4><p>Verifique os fusíveis, os fios e as conexões. Consulte o manual de serviço do OEM.</p></div>
-              </div>
-            </div>
-          </article>
-
-          <!-- t078 -->
-          <article class="sintoma" id="motor-nao-gira">
-            <header><span class="codigo">t078</span><h3>Motor Não Gira ou Gira Lentamente na Partida</h3></header>
-            <div class="diag-passos">
-              <div class="diag-passo">
-                <span class="diag-num">PASSO 1</span>
-                <div class="diag-bloco diag-causa"><h4>Causa</h4><p>A temperatura da bateria está abaixo da especificação.</p></div>
-                <div class="diag-bloco diag-correcao"><h4>Correção</h4><p>Verifique se o aquecedor da bateria (se equipado) funciona corretamente.</p></div>
-              </div>
-              <div class="diag-passo">
-                <span class="diag-num">PASSO 2</span>
-                <div class="diag-bloco diag-causa"><h4>Causa</h4><p>A voltagem da bateria está baixa.</p></div>
-                <div class="diag-bloco diag-correcao"><h4>Correção</h4><p>Verifique as baterias e o circuito de alimentação. Consulte o Procedimento 013-007.</p></div>
-              </div>
-              <div class="diag-passo">
-                <span class="diag-num">PASSO 3</span>
-                <div class="diag-bloco diag-causa"><h4>Causa</h4><p>Os cabos ou as conexões da bateria estão soltos ou corroídos.</p></div>
-                <div class="diag-bloco diag-correcao"><h4>Correção</h4><p>Verifique os cabos e as conexões. Consulte o Procedimento 013-009.</p></div>
-              </div>
-            </div>
-          </article>
-        </section>
-
-        <!-- ================= ARREFECIMENTO ================= -->
-        <section class="sistema">
-          <h2>Sistema de Arrefecimento</h2>
-          
-          <!-- t022 -->
-          <article class="sintoma" id="temp-arrefecimento-gradual">
-            <header><span class="codigo">t022</span><h3>Temperatura Acima da Normal - Superaquecimento Gradual</h3></header>
-            <div class="diag-passos">
-              <div class="diag-passo">
-                <span class="diag-num">PASSO 1</span>
-                <div class="diag-bloco diag-causa"><h4>Causa</h4><p>Códigos eletrônicos de falha ativos ou altas contagens.</p></div>
-                <div class="diag-bloco diag-correcao"><h4>Correção</h4><p>Verifique e faça o diagnóstico com a ferramenta INSITE™. (Boletim 4021677).</p></div>
-              </div>
-              <div class="diag-passo">
-                <span class="diag-num">PASSO 2</span>
-                <div class="diag-bloco diag-causa"><h4>Causa</h4><p>A tampa ou o anteparo de inverno do radiador estão fechados.</p></div>
-                <div class="diag-bloco diag-correcao"><h4>Correção</h4><p>Abra a tampa ou o anteparo de inverno do radiador.</p></div>
-              </div>
-              <div class="diag-passo">
-                <span class="diag-num">PASSO 8</span>
-                <div class="diag-bloco diag-causa"><h4>Causa</h4><p>A correia de acionamento do ventilador está quebrada ou solta.</p></div>
-                <div class="diag-bloco diag-correcao"><h4>Correção</h4><p>Verifique a correia. Consulte o Procedimento 008-002.</p></div>
-              </div>
-            </div>
-          </article>
-        </section>
-
-        <!-- ================= COMBUSTÍVEL ================= -->
-        <section class="sistema">
-          <h2>Sistema de Combustível</h2>
-          
-          <!-- t057 -->
-          <article class="sintoma" id="baixa-potencia">
-            <header><span class="codigo">t057</span><h3>Motor com Baixa Potência de Saída</h3></header>
-            <div class="diag-passos">
-              <div class="diag-passo">
-                <span class="diag-num">PASSO 1</span>
-                <div class="diag-bloco diag-causa"><h4>Causa</h4><p>Disponível atualização de calibração do ECM.</p></div>
-                <div class="diag-bloco diag-correcao"><h4>Correção</h4><p>Verifique o histórico no QuickServe™ Online. Se necessário, calibre o ECM. (Procedimento 019-032).</p></div>
-              </div>
-              <div class="diag-passo">
-                <span class="diag-num">PASSO 2</span>
-                <div class="diag-bloco diag-causa"><h4>Causa</h4><p>Baixa potência, desempenho ou aceleração.</p></div>
-                <div class="diag-bloco diag-correcao"><h4>Correção</h4><p>Use INSITE™ para monitorar 'Estado de Operação do Motor'. Verifique códigos de ajuste dos injetores (Boletim 4021686).</p></div>
-              </div>
-              <div class="diag-passo">
-                <span class="diag-num">PASSO 3</span>
-                <div class="diag-bloco diag-causa"><h4>Causa</h4><p>Baixa potência, desempenho ou aceleração.</p></div>
-                <div class="diag-bloco diag-correcao"><h4>Correção</h4><p>Faça o teste de restrição na entrada de combustível. (Procedimento 006-020).</p></div>
-              </div>
-            </div>
-          </article>
-        </section>
-
-        <!-- ================= LUBRIFICAÇÃO / RUÍDOS ================= -->
-        <section class="sistema">
-          <h2>Lubrificação e Ruídos</h2>
-
-          <!-- t105 -->
-          <article class="sintoma" id="pressao-baixa-oleo">
-            <header><span class="codigo">t105</span><h3>Pressão Baixa do Óleo Lubrificante</h3></header>
-            <div class="diag-passos">
-              <div class="diag-passo">
-                <span class="diag-num">PASSO 1</span>
-                <div class="diag-bloco diag-causa"><h4>Causa</h4><p>Códigos eletrônicos de falha ativos.</p></div>
-                <div class="diag-bloco diag-correcao"><h4>Correção</h4><p>Verifique com INSITE™. Consulte o Manual de Diagnóstico.</p></div>
-              </div>
-              <div class="diag-passo">
-                <span class="diag-num">PASSO 2</span>
-                <div class="diag-bloco diag-causa"><h4>Causa</h4><p>O interruptor ou sensor da pressão do óleo está defeituoso.</p></div>
-                <div class="diag-bloco diag-correcao"><h4>Correção</h4><p>Meça a pressão real e compare com o indicador. (Procedimento 007-037).</p></div>
-              </div>
-              <div class="diag-passo">
-                <span class="diag-num">PASSO 4</span>
-                <div class="diag-bloco diag-causa"><h4>Causa</h4><p>O nível do óleo lubrificante está acima ou abaixo da especificação.</p></div>
-                <div class="diag-bloco diag-correcao"><h4>Correção</h4><p>Adicione ou drene. (Procedimento 007-037 e 007-009).</p></div>
-              </div>
-            </div>
-          </article>
-
-          <!-- t047 -->
-          <article class="sintoma" id="ruido-motor">
-            <header><span class="codigo">t047</span><h3>Excesso de Ruídos no Motor</h3></header>
-            <div class="diag-passos">
-              <div class="diag-passo">
-                <span class="diag-num">PASSO 1</span>
-                <div class="diag-bloco diag-causa"><h4>Causa</h4><p>A correia de acionamento do ventilador está solta.</p></div>
-                <div class="diag-bloco diag-correcao"><h4>Correção</h4><p>Verifique a tensão. (Procedimento 008-002).</p></div>
-              </div>
-              <div class="diag-passo">
-                <span class="diag-num">PASSO 6</span>
-                <div class="diag-bloco diag-causa"><h4>Causa</h4><p>O nível do óleo lubrificante está acima ou abaixo da especificação.</p></div>
-                <div class="diag-bloco diag-correcao"><h4>Correção</h4><p>Adicione ou drene. (Procedimento 007-037).</p></div>
-              </div>
-            </div>
-          </article>
-        </section>
-
-      </article>
-    </main>
-
-    <!-- RODAPÉ -->
-    <footer class="site-footer">
-      <div class="footer-inner">
-        <div class="footer-brand">
-          <a href="#" class="logo"><i class="fa-solid fa-gears"></i><span>Guia Técnico</span></a>
-          <p>Consulta rápida de esquemas, testes e especificações para oficina.</p>
-        </div>
-      </div>
-      <div class="footer-bottom">
-        <span>© 2026. Conteúdo baseado na Seção TS do manual Cummins ISF2.8.</span>
-        <a href="#">Voltar ao início</a>
-      </div>
-    </footer>
-
+<div class="container">
+  <div class="header">
+    <h1>Pressão Baixa do Óleo Lubrificante</h1>
+    <p>Diagrama de sintoma t105</p>
   </div>
 
-  <!-- JAVASCRIPT -->
-  <script src="menu.js"></script>
+  <div class="col-headers">
+    <div>Causa</div>
+    <div>Correção</div>
+  </div>
+
+  <!-- PASSO 1 -->
+  <div class="passo">
+    <div class="passo-grid">
+      <div class="box">
+        <strong>PASSO 1</strong>
+        Códigos eletrônicos de falha ativos ou altas contagens de códigos de falha inativos
+      </div>
+      <div class="linha-pontilhada"></div>
+      <div class="box">
+        Verifique e faça o diagnóstico dos códigos de falha com a ferramenta eletrônica de serviço INSITE™. Consulte o Manual de Diagnóstico de Falhas e Reparos, Sistema Eletrônico de Controle, do motor em questão.
+      </div>
+    </div>
+    <div class="divisor">
+      OK<br>Vá Para o Próximo Passo
+    </div>
+  </div>
+
+  <!-- PASSO 2 -->
+  <div class="passo">
+    <div class="passo-grid">
+      <div class="box">
+        <strong>PASSO 2</strong>
+        O interruptor, o indicador ou o sensor da pressão do óleo lubrificante instalados pelo OEM estão defeituosos ou não estão instalados no local correto
+      </div>
+      <div class="linha-pontilhada"></div>
+      <div class="box">
+        Meça a pressão do óleo lubrificante do motor. Consulte o Procedimento 007-037 na Seção 7. Funcione o motor e compare as leituras com o indicador do veículo instalado pelo OEM. Consulte o manual de serviço do OEM.
+      </div>
+    </div>
+    <div class="divisor">
+      OK<br>Vá Para o Próximo Passo
+    </div>
+  </div>
+
+  <!-- PASSO 3 -->
+  <div class="passo">
+    <div class="passo-grid">
+      <div class="box">
+        <strong>PASSO 3</strong>
+        Falha de funcionamento do sensor/interruptor da pressão do óleo lubrificante ou do circuito do interruptor (sistema de combustível controlado eletronicamente)
+      </div>
+      <div class="linha-pontilhada"></div>
+      <div class="box">
+        Meça a pressão do óleo lubrificante do motor. Consulte o Procedimento 007-037 na Seção 7. Se equipado com um sensor de pressão do óleo, monitore a pressão do óleo com a ferramenta eletrônica de serviço INSITE™. Funcione o motor e compare as leituras. Se necessário, substitua o sensor/interruptor da pressão do óleo. Consulte o Procedimento 019-155 no Manual de Operação e Manutenção dos Motores ISF2.8 CM2220 E e ISF2.8 CM2220 AN, Boletim 4022267, ou o Manual do Proprietário dos Motores ISF2.8 CM2220 E e ISF2.8 CM2220 AN, Boletim 4022266.
+      </div>
+    </div>
+    <div class="divisor">
+      OK<br>Vá Para o Próximo Passo
+    </div>
+  </div>
+
+  <!-- PASSO 4 -->
+  <div class="passo">
+    <div class="passo-grid">
+      <div class="box">
+        <strong>PASSO 4</strong>
+        O nível do óleo lubrificante está acima ou abaixo da especificação
+      </div>
+      <div class="linha-pontilhada"></div>
+      <div class="box">
+        Verifique o nível do óleo. Adicione ou drene óleo, se necessário. Consulte o Procedimento 007-037 na Seção 7 e o Procedimento 007-009, na Seção 7.
+      </div>
+    </div>
+    <div class="divisor">
+      OK<br>Vá Para o Próximo Passo
+    </div>
+  </div>
+
+  <!-- PASSO 5 -->
+  <div class="passo">
+    <div class="passo-grid">
+      <div class="box">
+        <strong>PASSO 5</strong>
+        Vazamento de óleo lubrificante (externo)
+      </div>
+      <div class="linha-pontilhada"></div>
+      <div class="box">
+        Inspecione o motor e verifique se há vazamentos externos de óleo. Aperte os parafusos, os bujões e as conexões. Substitua as juntas, se necessário. Consulte o Kit de Luz Negra, No. 3163337, e o traçador fluorescente, No. 3376891, para ajudar a identificar a fonte do vazamento. Siga as instruções correspondentes. Repare conforme necessário.
+      </div>
+    </div>
+    <div class="divisor">
+      OK<br>Vá Para o Próximo Passo
+    </div>
+  </div>
+
+  <!-- PASSO 6 -->
+  <div class="passo">
+    <div class="passo-grid">
+      <div class="box">
+        <strong>PASSO 6</strong>
+        O óleo lubrificante não atende às especificações para as condições de operação
+      </div>
+      <div class="linha-pontilhada"></div>
+      <div class="box">
+        Troque o óleo e os filtros. Consulte o Procedimento 007-037 na Seção 7. Consulte o Manual de Operação e Manutenção dos Motores ISF2.8 CM2220 E e ISF2.8 CM2220 AN, Boletim 4022267, ou o Manual do Proprietário dos Motores ISF2.8 CM2220 E e ISF2.8 CM2220 AN, Boletim 4022266, para obter as especificações de óleo.
+      </div>
+    </div>
+    <div class="divisor">
+      OK<br>Vá Para o Próximo Passo
+    </div>
+  </div>
+
+  <!-- PASSO 7 -->
+  <div class="passo">
+    <div class="passo-grid">
+      <div class="box">
+        <strong>PASSO 7</strong>
+        O óleo lubrificante está contaminado com líquido de arrefecimento do motor ou com combustível
+      </div>
+      <div class="linha-pontilhada"></div>
+      <div class="box">
+        Consulte o diagrama do sintoma de falha 'Óleo Lubrificante Contaminado'.
+      </div>
+    </div>
+    <div class="divisor">
+      OK<br>Vá Para o Próximo Passo
+    </div>
+  </div>
+
+  <!-- PASSO 8 -->
+  <div class="passo">
+    <div class="passo-grid">
+      <div class="box">
+        <strong>PASSO 8</strong>
+        A angularidade do motor durante o funcionamento excede a especificação
+      </div>
+      <div class="linha-pontilhada"></div>
+      <div class="box">
+        Consulte as folhas de dados do motor para obter as especificações de angularidade do motor em questão.
+      </div>
+    </div>
+    <div class="divisor">
+      OK<br>Vá Para o Próximo Passo
+    </div>
+  </div>
+
+  <!-- PASSO 9 -->
+  <div class="passo">
+    <div class="passo-grid">
+      <div class="box">
+        <strong>PASSO 9</strong>
+        A temperatura do líquido de arrefecimento do motor está acima da especificação
+      </div>
+      <div class="linha-pontilhada"></div>
+      <div class="box">
+        Consulte o diagrama do sintoma 'Temperatura do Líquido de Arrefecimento Acima da Normal - Superaquecimento Gradual'.
+      </div>
+    </div>
+    <div class="divisor">
+      OK<br>Vá Para o Próximo Passo
+    </div>
+  </div>
+
+  <!-- PASSO 10 -->
+  <div class="passo">
+    <div class="passo-grid">
+      <div class="box">
+        <strong>PASSO 10</strong>
+        Falha de funcionamento do regulador principal da pressão do óleo
+      </div>
+      <div class="linha-pontilhada"></div>
+      <div class="box">
+        Verifique a montagem do regulador principal da pressão do óleo. Consulte o Procedimento 007-029 na Seção 7.
+      </div>
+    </div>
+    <div class="divisor">
+      OK<br>Vá Para o Próximo Passo
+    </div>
+  </div>
+
+  <!-- PASSO 11 -->
+  <div class="passo">
+    <div class="passo-grid">
+      <div class="box">
+        <strong>PASSO 11</strong>
+        O tubo de sucção de óleo lubrificante está quebrado, ou a junta apresenta vazamento
+      </div>
+      <div class="linha-pontilhada"></div>
+      <div class="box">
+        Remova e inspecione o cárter de óleo ou o tubo de sucção. Consulte o Procedimento 007-025 na Seção 7.
+      </div>
+    </div>
+    <div class="divisor">
+      OK<br>Vá Para o Próximo Passo
+    </div>
+  </div>
+
+  <!-- PASSO 12 -->
+  <div class="passo">
+    <div class="passo-grid">
+      <div class="box">
+        <strong>PASSO 12</strong>
+        Bloqueio no sensor/interruptor ou circuito de pressão do óleo
+      </div>
+      <div class="linha-pontilhada"></div>
+      <div class="box">
+        Remova a tampa dianteira das engrenagens e verifique se há selante bloqueando o pórtico do sensor/interruptor da pressão do óleo. Consulte o Procedimento 007-003 na Seção 7.
+      </div>
+    </div>
+    <div class="divisor">
+      OK<br>Vá Para o Próximo Passo
+    </div>
+  </div>
+
+  <!-- PASSO 13 -->
+  <div class="passo">
+    <div class="passo-grid">
+      <div class="box">
+        <strong>PASSO 13</strong>
+        Falha de funcionamento da bomba de óleo lubrificante
+      </div>
+      <div class="linha-pontilhada"></div>
+      <div class="box">
+        Inspecione a bomba de óleo lubrificante. Consulte o Procedimento 007-031 na Seção 7.
+      </div>
+    </div>
+    <div class="divisor">
+      OK<br>Vá Para o Próximo Passo
+    </div>
+  </div>
+
+  <!-- PASSO 14 -->
+  <div class="passo">
+    <div class="passo-grid">
+      <div class="box">
+        <strong>PASSO 14</strong>
+        O arrefecedor do óleo lubrificante está obstruído
+      </div>
+      <div class="linha-pontilhada"></div>
+      <div class="box">
+        Verifique o arrefecedor do óleo. Consulte o Procedimento 007-003 na Seção 7.
+      </div>
+    </div>
+    <div class="divisor">
+      OK<br>Vá Para o Próximo Passo
+    </div>
+  </div>
+
+  <!-- PASSO 15 -->
+  <div class="passo">
+    <div class="passo-grid">
+      <div class="box">
+        <strong>PASSO 15</strong>
+        A temperatura do óleo lubrificante está acima da especificação
+      </div>
+      <div class="linha-pontilhada"></div>
+      <div class="box">
+        Consulte o diagrama do sintoma de falha 'Temperatura do Óleo Lubrificante Acima da Especificação'.
+      </div>
+    </div>
+    <div class="divisor">
+      OK<br>Vá Para o Próximo Passo
+    </div>
+  </div>
+
+  <!-- PASSO 16 -->
+  <div class="passo">
+    <div class="passo-grid">
+      <div class="box">
+        <strong>PASSO 16</strong>
+        Os pulverizadores de arrefecimento dos pistões estão danificados ou não estão instalados corretamente
+      </div>
+      <div class="linha-pontilhada"></div>
+      <div class="box">
+        Verifique os pulverizadores de arrefecimento dos pistões quanto a danos e instalação correta. Consulte o Procedimento 001-046 na Seção 1.
+      </div>
+    </div>
+    <div class="divisor">
+      OK<br>Vá Para o Próximo Passo
+    </div>
+  </div>
+
+  <!-- PASSO 17 -->
+  <div class="passo">
+    <div class="passo-grid">
+      <div class="box">
+        <strong>PASSO 17</strong>
+        Dano interno do motor ou vazamento interno de óleo lubrificante
+      </div>
+      <div class="linha-pontilhada"></div>
+      <div class="box">
+        Analise o óleo lubrificante. Inspecione o filtro de óleo. Consulte o Procedimento 007-044 na Seção 7 para localizar uma área de dano provável. Os locais de danos prováveis são bujões-copo internos, mancais principais, casquilhos das bielas, buchas do eixo comando de válvulas e balanceiros.
+      </div>
+    </div>
+    <!-- Último passo não tem o divisor "Vá para o próximo", finaliza no 17 -->
+  </div>
+
+</div>
+
 </body>
 </html>
