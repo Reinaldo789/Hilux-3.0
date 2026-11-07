@@ -1033,3 +1033,124 @@ header.scrolled .mobile-toggle:hover { background: rgba(255,255,255,0.12); color
 .modal-zoom .fechar-zoom:hover {
   color: #ff0000;
 }
+
+/* ==========================================
+   MENU SIMPLES: barra colorida + menu aberto escuro
+   Para trocar as cores, altere só as variáveis abaixo.
+   ========================================== */
+:root {
+  --barra-menu: #4338ca;        /* cor da barra do menu (sempre colorida) */
+  --menu-aberto: #312e81;       /* cor da aba aberta e do painel do menu */
+}
+
+/* Barra do menu: sempre colorida, com letras brancas */
+.site-wrapper > header,
+.site-wrapper > header.scrolled {
+  background: var(--barra-menu);
+  border-bottom: 1px solid var(--menu-aberto);
+  -webkit-backdrop-filter: none;
+  backdrop-filter: none;
+}
+.site-wrapper > header .logo,
+.site-wrapper > header .mobile-toggle { color: #fff; }
+
+@media (min-width: 961px) {
+  .site-wrapper > header .nav-btn { color: #fff; }
+  .site-wrapper > header .nav-btn i { color: #e0e7ff !important; }
+
+  /* Aba aberta (ou da página atual) */
+  .site-wrapper > header .nav-item:hover > .nav-btn,
+  .site-wrapper > header .nav-btn.atual {
+    background: var(--menu-aberto);
+    color: #fff;
+  }
+
+  /* Painel do menu aberto */
+  .site-wrapper > header .mega-menu {
+    background: var(--menu-aberto) !important;
+    border: 0 !important;
+  }
+  .site-wrapper > header .mega-menu .category-title { color: #c7d2fe !important; }
+  .site-wrapper > header .mega-menu .mega-link-item { color: #fff !important; }
+  .site-wrapper > header .mega-menu .mega-link-item:hover {
+    background: rgba(255, 255, 255, 0.15) !important;
+    color: #fff !important;
+  }
+  .site-wrapper > header .mega-menu .mega-link-item.active {
+    background: rgba(255, 255, 255, 0.25) !important;
+    color: #fff !important;
+  }
+  .site-wrapper > header .mega-menu .category-group::after { background: rgba(255, 255, 255, 0.2) !important; }
+  .site-wrapper > header .mega-menu .mega-explore-side { border-top-color: rgba(255, 255, 255, 0.2) !important; }
+  .site-wrapper > header .mega-menu .explore-link,
+  .site-wrapper > header .mega-menu .explore-header-title { color: #fff !important; }
+}
+
+/* ==========================================
+   LATERAIS DA PÁGINA MAIS ESCURAS
+   (para o cartão branco do conteúdo se destacar)
+   Para trocar, altere só as variáveis abaixo.
+   ========================================== */
+:root {
+  --bg-page: #cbd5e1;        /* cor do fundo atrás do conteúdo (as laterais) */
+  --card-borda: #94a3b8;     /* borda do cartão branco do conteúdo */
+  --text-muted: #475569;     /* textos secundários, um pouco mais escuros */
+}
+.page-card {
+  border: 1px solid var(--card-borda);
+  box-shadow: 0 2px 10px rgba(15, 23, 42, 0.15);
+}
+
+/* ==========================================
+   DIAGRAMAS DE SINTOMAS (página do Cummins)
+   ========================================== */
+.page-card .indice { margin: 1.5rem 0 2rem; }
+.page-card .indice h2 { margin-top: 0; }
+.page-card .indice-grupo { margin-bottom: 1.1rem; }
+.page-card .indice-grupo h3 {
+  font-size: 0.8rem; letter-spacing: 0.1em; text-transform: uppercase;
+  color: #b45309; margin: 0 0 0.4rem;
+}
+.page-card .indice ul {
+  list-style: none; padding: 0; margin: 0;
+  display: grid; grid-template-columns: repeat(auto-fill, minmax(280px, 1fr)); gap: 0.15rem 1.2rem;
+}
+.page-card .indice li a {
+  display: flex; gap: 0.5rem; padding: 0.3rem 0;
+  color: var(--text-main); text-decoration: none; font-size: 0.92rem; line-height: 1.4;
+}
+.page-card .indice li a:hover { color: var(--primary); text-decoration: underline; }
+.page-card .indice .codigo-mini { color: #b45309; font-weight: 700; min-width: 3rem; }
+
+.page-card .sistema > h2 { margin-top: 2.2rem; }
+
+.page-card .sintoma {
+  background: var(--card-bg); border: 1px solid var(--border-color);
+  border-radius: 14px; padding: 1.2rem 1.3rem; margin-bottom: 1.2rem;
+  scroll-margin-top: 90px;
+}
+.page-card .sintoma-cab { display: flex; align-items: baseline; gap: 0.7rem; flex-wrap: wrap; margin-bottom: 0.5rem; }
+.page-card .sint-cod {
+  background: #b45309; color: #fff; font-weight: 700; font-size: 0.8rem;
+  letter-spacing: 0.05em; padding: 0.15rem 0.6rem; border-radius: 6px;
+}
+.page-card .sintoma h3 { margin: 0; font-size: 1.15rem; }
+.page-card .passos { list-style: none; padding: 0; margin: 0.8rem 0 0; display: flex; flex-direction: column; gap: 0.7rem; }
+.page-card .etapa {
+  display: grid; grid-template-columns: auto 1fr 1fr; gap: 0.9rem; margin: 0;
+  background: var(--primary-light); border: 1px solid var(--border-color);
+  border-radius: 10px; padding: 0.8rem 1rem;
+}
+.page-card .etapa-num {
+  font-weight: 700; font-size: 0.82rem; white-space: nowrap; height: fit-content;
+  color: var(--primary); background: #fff; border: 1px solid var(--border-color);
+  border-radius: 8px; padding: 0.2rem 0.6rem;
+}
+.page-card .etapa .bloco h4 { margin: 0 0 0.2rem; font-size: 0.72rem; letter-spacing: 0.1em; text-transform: uppercase; }
+.page-card .etapa .causa h4 { color: #b45309; }
+.page-card .etapa .correcao h4 { color: #047857; }
+.page-card .etapa p { margin: 0; font-size: 0.92rem; line-height: 1.5; }
+@media (max-width: 760px) {
+  .page-card .etapa { grid-template-columns: 1fr; gap: 0.5rem; }
+  .page-card .sintoma { padding: 1rem; }
+}
