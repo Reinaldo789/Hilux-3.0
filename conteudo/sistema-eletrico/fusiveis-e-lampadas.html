@@ -1,88 +1,89 @@
-<!-- Esquema elétrico Agrale Marruá AM21 (DE 611.001 Rev.2). Convertido de marrua-MWM.html -->
-<header class="art-head">
-  <!-- <span class="art-kicker">Sistema Elétrico · Esquema</span> -->
-  <h1>Diagramas Elétricos — Agrale Marruá AM21</h1>
-  <!-- <p class="art-lead">AM21 VTNE 3/4t — 12V Euro III MWM 4.07 TCE | Código DE 611.001 Rev.2</p>
-  <div class="chips"><span>Agrale Marruá AM21</span><span>MWM 4.07 TCE</span><span>12 V Euro III</span><span>DE 611.001 Rev. 2</span></div> -->
-</header>
-
-<nav class="toc" aria-label="Neste artigo">
-  <strong>Neste artigo</strong>
-  <ul>
-    <li><a href="#" data-goto="localizacao">Localização</a></li>
-    <li><a href="#" data-goto="funcionamento">Funcionamento</a></li>
-    <li><a href="#" data-goto="caixa-de-fusiveis">Caixa de Fusíveis</a></li>
-    <li><a href="#" data-goto="componentes-injeção">Componentes da Injeção</a></li>
-    <li><a href="#" data-goto="relés-de-injeção">Relés de Injeção</a></li>
-  </ul>
-</nav>
-
-<h2 id="localizacao">Localização</h2>
-<p>Fica localizada abaixo do porta luvas, do lado do passageiro, para ter acesso aos fusíveis basta tirar os 04 parafusos philips.</p>
-<figure class="img-box-preview">
-  <img src="imagens/sistema-eletrico/fusiveis/imagem-01.jpg" alt="Localização do sensor de fase CMP" loading="lazy">
-  <figcaption><i class="fa-solid fa-magnifying-glass-plus"></i> Clique na imagem para ampliar</figcaption>
-</figure>
-
-<p>Para ter acesso ao módulo ECM precisa retira os outros parafusos usando uma chave 10mm.</p>
-<figure class="img-box-preview">
-  <img src="imagens/sistema-eletrico/fusiveis/imagem-02.jpg" alt="Localização do sensor de fase CMP" loading="lazy">
-  <figcaption><i class="fa-solid fa-magnifying-glass-plus"></i> Clique na imagem para ampliar</figcaption>
-</figure>
-
-<div class="descricao-acao">
-<strong>Importante:</strong> Nunca substitua um fusível por outro de amperagem maior. Se um fusível queima frequentemente, há um problema no circuito que deve ser investigado.
-    </div>
-</div>
-
-<h2 id="caixa-de-fusíveis">Caixa de Fusíveis</h2>
-<div class="tabela-wrapper">
-<table class="tabela-pinagem">
-<thead>
-<tr>
-<th>Nº</th>
-<th>Função</th>
-<th>Amp.</th>
-</tr>
-</thead>
+<h2>Compartimento do motor</h2>
+<table class="tabela-fusiveis">
+<thead><tr><th>Nº</th><th>Fusível</th><th>Amperagem</th><th>Circuito</th></tr></thead>
 <tbody>
-<tr><td><span class="pino">1</span></td><td>Limpador de para-brisa; Lavador de para-brisa e Relé Temporizador</td><td><strong>15A</strong></td></tr>
-<tr><td><span class="pino">2</span></td><td>Pisca-Pisca</td><td><strong>15A</strong></td></tr>
-<tr><td><span class="pino">3</span></td><td>Pisca Alerta</td><td><strong>15A</strong></td></tr>
-<tr><td><span class="pino">4</span></td><td>Farol de Ré</td><td><strong>7,5A</strong></td></tr>
-<tr><td><span class="pino">5</span></td><td>Farol alto direito e lâmpada indic. de luz alta</td><td><strong>15A</strong></td></tr>
-<tr><td><span class="pino">6</span></td><td>Farol alto esquerdo</td><td><strong>15A</strong></td></tr>
-<tr><td><span class="pino">7</span></td><td>Lâmpada indic. Carga Bateria; Pressão Óleo; Restrição Filtro; Freio Estacionário e Nível Líquido Freio; 4x4; Diagnose Motor; Água no Combustível e Nível de Água. Relé Filtro 10S; Ind. Temperatura do Motor; Ind. Nível Combustível; Ind. Pressão óleo; Velocímetro; Tacômetro e Voltímetro.</td><td><strong>7,5A</strong></td></tr>
-<tr><td><span class="pino">8</span></td><td>Ilumin. interruptor pisca alerta; Inclinômetro; Tacômetro; Indic. Pressão óleo; Voltímetro; Indic. Temperatura; Indic. Combustível e Velocímetro.</td><td><strong>7,5A</strong></td></tr>
-<tr><td><span class="pino">9</span></td><td>Luz militar lado direito</td><td><strong>7,5A</strong></td></tr>
-<tr><td><span class="pino">10</span></td><td>Luz militar lado esquerdo</td><td><strong>7,5A</strong></td></tr>
-<tr><td><span class="pino">11</span></td><td>Farol luz baixa direito</td><td><strong>15A</strong></td></tr>
-<tr><td><span class="pino">12</span></td><td>Farol luz baixa esquerda</td><td><strong>15A</strong></td></tr>
-<tr><td><span class="pino">13</span></td><td>Ventilação forçada</td><td><strong>15A</strong></td></tr>
-<tr><td><span class="pino">14</span></td><td>Farol de aproximação</td><td><strong>7,5A</strong></td></tr>
-<tr><td><span class="pino">15</span></td><td>Buzina</td><td><strong>15A</strong></td></tr>
-<tr><td><span class="pino">16</span></td><td>Luz de freio civil e militar</td><td><strong>10A</strong></td></tr>
-<tr><td><span class="pino">17</span></td><td>Luz civil lado direito</td><td><strong>7,5A</strong></td></tr>
-<tr><td><span class="pino">18</span></td><td>Luz civil lado esquerdo</td><td><strong>7,5A</strong></td></tr>
-<tr><td><span class="pino">19</span></td><td>Luz de Mapa</td><td><strong>7,5A</strong></td></tr>
-<tr><td><span class="pino">25</span></td><td>ECU Motor +15</td><td><strong>5A</strong></td></tr>
-<tr><td><span class="pino">26</span></td><td>ECU Motor +30</td><td><strong>10A</strong></td></tr>
-<tr><td><span class="pino">27</span></td><td>ECU Motor +30</td><td><strong>15A</strong></td></tr><tr><td><span class="pino">28</span></td><td>Interruptores dos Pedais; Conector Diagnose; Válvula de Vácuo e Relé Bomba Elétrica</td><td><strong>15A</strong></td></tr>
-<tr><td><span class="pino">29</span></td><td>Relé Bomba Elétrica</td><td><strong>10A</strong></td></tr>
-<tr><td><span class="pino">30</span></td><td>Sensor Água Combustível</td><td><strong>5A</strong></td></tr>
+<tr><td>1</td><td><strong>SPARE</strong></td><td>25A</td><td>Fusível de reserva</td></tr>
+<tr><td>2</td><td><strong>SPARE</strong></td><td>15A</td><td>Fusível de reserva</td></tr>
+<tr><td>3</td><td><strong>SPARE</strong></td><td>10A</td><td>Fusível de reserva</td></tr>
+<tr><td>4</td><td><strong>FOG</strong></td><td>15A</td><td>Faróis de neblina</td></tr>
+<tr><td>5</td><td><strong>HORN</strong></td><td>10A</td><td>Buzina</td></tr>
+<tr><td>6</td><td><strong>EFI</strong></td><td>25A</td><td>Sistema de injeção de combustível multiport/sistema de injeção de combustível multiport sequencial</td></tr>
+<tr><td>7</td><td><strong>EDU</strong></td><td>25A</td><td>Sistema de injeção de combustível multiport/sistema de injeção de combustível multiport sequencial</td></tr>
+<tr><td>8</td><td><strong>PTC NO.1</strong></td><td>50A</td><td>Nenhum circuito</td></tr>
+<tr><td>9</td><td><strong>PWR SEAT</strong></td><td>30A</td><td>Banco elétrico</td></tr>
+<tr><td>10</td><td><strong>PTC NO.2</strong></td><td>30A</td><td>Nenhum circuito</td></tr>
+<tr><td>11</td><td><strong>RR CLR</strong></td><td>40A</td><td>Nenhum circuito</td></tr>
+<tr><td>12</td><td><strong>FR HTR</strong></td><td>50A</td><td>Sistema do ar condicionado, fusível do A/C</td></tr>
+<tr><td>13</td><td><strong>ABS NO.2</strong></td><td>30A</td><td>ABS, TRC e VSC</td></tr>
+<tr><td>14</td><td><strong>ABS NO.1</strong></td><td>40A</td><td>ABS, TRC e VSC</td></tr>
+<tr><td>15</td><td><strong>ALT</strong></td><td>100A</td><td>Sistema de carga, fusíveis PWR SEAT, FR HTR, RR CLR, AM1, IG1, PTC NO.1, PTC NO.2, PWR OUT, STOP, TAIL e OBD</td></tr>
+<tr><td>16</td><td><strong>GLOW</strong></td><td>80A</td><td>Sistema de aquecimento do motor</td></tr>
+<tr><td>17</td><td><strong>BATT P/I</strong></td><td>50A</td><td>Fusíveis FOG, HORN e EFI</td></tr>
+<tr><td>18</td><td><strong>AM2</strong></td><td>30A</td><td>Partida do motor, fusíveis ST, IGN, INJ e MET</td></tr>
+<tr><td>19</td><td><strong>MAIN</strong></td><td>40A</td><td>Fusíveis H-LP RH, H-LP LH, H-LP RL e H-LP LL</td></tr>
+<tr><td>20</td><td><strong>A/PUMP</strong></td><td>50A</td><td>Sistema de controle de emissões</td></tr>
+<tr><td>21</td><td><strong>H-LP RL</strong></td><td>15A</td><td>Farol LD (Baixo)</td></tr>
+<tr><td>22</td><td><strong>H-LP LL</strong></td><td>15A</td><td>Farol LE (Baixo)</td></tr>
+<tr><td>23</td><td><strong>H-LP RH</strong></td><td>15A</td><td>Farol LD (Alto) e Farol LD (Baixo)</td></tr>
+<tr><td>24</td><td><strong>H-LP LH</strong></td><td>15A</td><td>Farol LE (Alto) e Farol LE (Baixo)</td></tr>
+<tr><td>25</td><td><strong>EFI No.2</strong></td><td>10A</td><td>Sistema de aquecimento do motor e sistema de injeção de combustível multiport/sistema de injeção de combustível multiport sequencial</td></tr>
+<tr><td>26</td><td><strong>ECU-B</strong></td><td>10A</td><td>Interruptores de cortesia da porta, sistema de travamento elétrico das portas, sistema de controle remoto, sensor de direção e faróis</td></tr>
+<tr><td>27</td><td><strong>RAD</strong></td><td>15A</td><td>Sistema de áudio</td></tr>
+<tr><td>28</td><td><strong>DOME</strong></td><td>7,5A</td><td>Luzes internas, luz da chave de ignição, luz individual, instrumentos e medidores, relógio, mostrador multifunção, sistema de controle remoto e farol de neblina</td></tr>
+<tr><td>29</td><td><strong>A/F</strong></td><td>20A</td><td>Sistema de controle de emissões</td></tr>
+<tr><td>30</td><td><strong>ETCS</strong></td><td>10A</td><td>Sistema de injeção de combustível multiport/sistema de injeção de combustível multiport sequencial</td></tr>
+<tr><td>31</td><td><strong>ALT-S</strong></td><td>7,5A</td><td>Sistema de carga</td></tr>
+<tr><td>32</td><td><strong>TURN-HAZ</strong></td><td>15A</td><td>Sinalizadores de emergência e sinalizadores de direção</td></tr>
+<tr><td>33</td><td><strong>SIREN</strong></td><td>7,5A</td><td>SIREN</td></tr>
+<tr><td>34</td><td><strong>ECU-B No.2</strong></td><td>7,5A</td><td>Sistema do ar condicionado</td></tr>
+<tr><td>35</td><td><strong>DCC</strong></td><td>30A</td><td>Fusíveis ECU-B, DOME e RAD</td></tr>
 </tbody>
 </table>
+
+<h2>Painel de instrumentos — lado do motorista</h2>
+<h3>Lateral dianteira</h3>
+<table class="tabela-fusiveis">
+<thead><tr><th>Nº</th><th>Fusível</th><th>Amperagem</th><th>Circuito</th></tr></thead>
+<tbody>
+<tr><td>1</td><td><strong>PWR OUT</strong></td><td>15A</td><td>Saída de energia</td></tr>
+<tr><td>2</td><td><strong>TAIL</strong></td><td>10A</td><td>Iluminação do painel de instrumentos, faróis de neblina, lanternas dianteiras, lanternas traseiras, luzes da placa de licença, sistema de injeção de combustível multiport/sistema de injeção de combustível multiport sequencial, mostrador multifunção e sistema automático dos faróis</td></tr>
+<tr><td>3</td><td><strong>STOP</strong></td><td>10A</td><td>Luzes de freio, luz de freio elevada, sistema de injeção de combustível multiport/sistema de injeção de combustível multiport sequencial, ABS, TRC, VSC e sistema de controle de bloqueio de mudança de marcha</td></tr>
+<tr><td>4</td><td><strong>OBD</strong></td><td>7,5A</td><td>Sistema de diagnóstico a bordo</td></tr>
+<tr><td>5</td><td><strong>INJ</strong></td><td>15A</td><td>Sistema de injeção de combustível multiport/sistema de injeção de combustível multiport sequencial</td></tr>
+<tr><td>6</td><td><strong>ECU-IG &amp; GAUGE</strong></td><td>10A</td><td>Sistema do ar condicionado, sistema de carga, ABS, TRC, VSC, sinalizadores de emergência, sinalizadores de direção, luzes de ré, sistema de injeção de combustível multiport/sistema de injeção de combustível multiport sequencial, sistema de controle de bloqueio de mudança de marcha, desembaçador do vidro traseiro, faróis, interruptores de cortesia da porta, sistema de travamento elétrico das portas, sistema de controle remoto, controle de cruzeiro, sensor de direção, mostrador multifunção e luz de advertência do cinto de segurança do passageiro</td></tr>
+<tr><td>7</td><td><strong>WIP</strong></td><td>20A</td><td>Limpadores e lavador do para-brisa</td></tr>
+<tr><td>8</td><td><strong>IGN</strong></td><td>7,5A</td><td>Sistema de injeção de combustível multiport/sistema de injeção de combustível multiport sequencial, sistema de airbag e bomba de combustível</td></tr>
+<tr><td>9</td><td><strong>ACC</strong></td><td>7,5A</td><td>Sistema de áudio, saída de energia, relógio, sistema de controle dos espelhos retrovisores elétricos, sistema de controle de bloqueio de mudança de marcha e mostrador multifunção</td></tr>
+<tr><td>10</td><td><strong>CIG</strong></td><td>15A</td><td>Acendedor de cigarros</td></tr>
+<tr><td>11</td><td><strong>MET</strong></td><td>7,5A</td><td>Instrumentos e medidores</td></tr>
+<tr><td>12</td><td><strong>A/C</strong></td><td>10A</td><td>Sistema do ar condicionado</td></tr>
+<tr><td>13</td><td><strong>ST</strong></td><td>7,5A</td><td>Sistema de partida, instrumentos e medidores e sistema de injeção de combustível multiport/sistema de injeção de combustível multiport sequencial</td></tr>
+</tbody>
+</table>
+
+<h3>Lateral traseira</h3>
+<table class="tabela-fusiveis">
+<thead><tr><th>Nº</th><th>Fusível</th><th>Amperagem</th><th>Circuito</th></tr></thead>
+<tbody>
+<tr><td>1</td><td><strong>AM1</strong></td><td>40A</td><td>Fusíveis ABS, TRC, VSC, ACC, CIG, ECU-IG &amp; GAUGE e WIP</td></tr>
+<tr><td>2</td><td><strong>IG1</strong></td><td>40A</td><td>Fusíveis PWR, S-HTR, 4WD, DOOR, DEF e MIR HTR</td></tr>
+</tbody>
+</table>
+
+<h2>Painel de instrumentos — lado do passageiro</h2>
+<table class="tabela-fusiveis">
+<thead><tr><th>Nº</th><th>Fusível</th><th>Amperagem</th><th>Circuito</th></tr></thead>
+<tbody>
+<tr><td>1</td><td><strong>MIR-HTR</strong></td><td>15A</td><td>Nenhum circuito</td></tr>
+<tr><td>2</td><td><strong>4WD</strong></td><td>20A</td><td>ABS, TRC e VSC</td></tr>
+<tr><td>3</td><td><strong>S-HTR</strong></td><td>15A</td><td>Nenhum circuito</td></tr>
+<tr><td>4</td><td><strong>DEF</strong></td><td>20A</td><td>Desembaçador do vidro traseiro e sistema de injeção de combustível multiport/sistema de injeção de combustível multiport sequencial</td></tr>
+<tr><td>5</td><td><strong>DOOR</strong></td><td>25A</td><td>Sistema de travamento elétrico das portas e vidros elétricos</td></tr>
+<tr><td>6</td><td><strong>PWR</strong></td><td>30A</td><td>Vidros elétricos</td></tr>
+</tbody>
+</table>
+
+<div class="aviso">
+<strong>Atenção</strong>
+<p>A disposição dos fusíveis e os sistemas ligados a cada circuito podem variar conforme o modelo e a especificação do veículo. Fonte: manual do proprietário Toyota Hilux 3.0 (2013), seção 4-3, págs. 4-3-43 a 4-3-49.</p>
 </div>
-
-
-<h2 id="componentes-da-injeção">Componentes da Injeção</h2>
-<figure class="img-box-preview">
-  <img src="imagens/sistema-eletrico/fusiveis/imagem-03.jpg" alt="Localização do sensor de fase CMP" loading="lazy">
-  <figcaption><i class="fa-solid fa-magnifying-glass-plus"></i> Clique na imagem para ampliar</figcaption>
-</figure>
-  
-<h2 id="relés-de-injeção">Relés de Injeção</h2>
-<figure class="img-box-preview">
-  <img src="imagens/sistema-eletrico/fusiveis/imagem-04.jpg" alt="Localização do sensor de fase CMP" loading="lazy">
-  <figcaption><i class="fa-solid fa-magnifying-glass-plus"></i> Clique na imagem para ampliar</figcaption>
-</figure>
