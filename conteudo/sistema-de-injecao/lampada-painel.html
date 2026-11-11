@@ -1,0 +1,181 @@
+<!-- Sensor de Fase (CMP). Imagens: salve em conteudo/imagens/sensor-cmp/ -->
+<header class="art-head">
+  <h1>Sensor de Fase (CMP) – Comando de 1 Dente</h1>
+</header>
+
+<nav class="toc" aria-label="Neste artigo">
+  <strong>Neste artigo</strong>
+  <ul>
+    <li><a href="#" data-goto="localizacao">Localização</a></li>
+    <li><a href="#" data-goto="funcionamento">Funcionamento</a></li>
+    
+    <li><a href="#" data-goto="parte-eletrica">Parte elétrica e testes</a>
+      <ul>
+        <li><a href="#" data-goto="teste-alimentacao">Pino 1: Alimentação (5V)</a></li>
+        <li><a href="#" data-goto="teste-sinal">Pino 2: Sinal de Retorno</a></li>
+        <li><a href="#" data-goto="teste-terra">Pino 3: Aterramento</a></li>
+      </ul>
+    </li>
+    
+    <li><a href="#" data-goto="problemas-comuns">Sintomas Práticos de Falha</a></li>
+    <li><a href="#" data-goto="codigos-de-falha">Códigos de falha</a></li>
+  </ul>
+</nav>
+
+<!-- ==========================================
+     CONTEÚDO DO ARTIGO
+     ========================================== -->
+
+<h2 id="localizacao">Localização</h2>
+<p>Fica na parte superior do motor, fixado na tampa de válvulas / cabeçote, logo acima do comando de válvulas. Trabalha em par com o sensor de rotação para sincronizar o motor.</p>
+
+<!-- IMAGEM: Localização do sensor de fase -->
+<figure class="img-box-preview">
+  <img src="conteudo/imagens/sensor-cmp/01-localizacao.jpg" alt="Localização do sensor de fase no cabeçote" loading="lazy">
+  <figcaption><i class="fa-solid fa-magnifying-glass-plus"></i> Clique na imagem para ampliar</figcaption>
+</figure>
+
+<h2 id="funcionamento">Funcionamento (Comando de 1 Dente)</h2>
+<p>O sensor de fase (CMP) do motor MWM 2.8 Eletrônico utiliza a tecnologia de <b>Efeito Hall</b> e opera como um sensor digital ativo com alimentação estabilizada em <b>5,0 Volts</b>.</p>
+<p>A característica técnica crucial deste motor é que o comando de válvulas possui <b>apenas 1 único dente (ou ressalto) de referência</b> por volta completa. Isso significa que o sensor passa a maior parte do tempo lendo o "vazio" (0V) e apenas uma fração mínima de tempo lendo o dente (5V).</p>
+
+<!-- IMAGEM: Detalhe do dente único no comando -->
+<figure class="img-box-preview">
+  <img src="conteudo/imagens/sensor-cmp/02-funcionamento.jpg" alt="Detalhe do dente único no comando de válvulas" loading="lazy">
+  <figcaption><i class="fa-solid fa-magnifying-glass-plus"></i> Clique na imagem para ampliar</figcaption>
+</figure>
+
+<h2 id="parte-eletrica">Parte Elétrica e Testes (V CC)</h2>
+<p>Para testar este componente, o multímetro deve ser configurado na escala de <b>Tensão Contínua (V CC ou VDC)</b>. O teste é realizado por trás do conector (backprobing) utilizando o polo negativo da bateria como referência de aterramento para a ponta preta.</p>
+
+<h3 id="teste-alimentacao">Pino 1 – Alimentação (+5,0V)</h3>
+<p>Com a chave ligada ou o motor em funcionamento, este pino deve registrar uma tensão contínua constante de <b>5,0 Volts</b> (com tolerância de 4,8V a 5,2V) enviada pela ECU Bosch EDC16C8. O valor deve ser totalmente estável e linear em qualquer regime de rotação.</p>
+
+<h3 id="teste-sinal">Pino 2 – Sinal de Retorno (Chaveamento Digital)</h3>
+<p>Este pino transmite o sinal de sincronismo digital para a central. Por causa da configuração mecânica de apenas 1 dente no comando, e devido à taxa de amostragem do multímetro convencional ao calcular a média desse pulso único, <b>a tensão lida é inversamente proporcional à velocidade do motor</b>.</p>
+
+<div class="specs">
+  <div class="spec"><b>2,0 V a 3,5 V</b><span>Fase de Arranque / Marcha Lenta (~800 RPM)</span></div>
+  <div class="spec"><b>0,2 V a 0,8 V</b><span>Alta Rotação (~3000 RPM)</span></div>
+</div>
+
+<!-- GRÁFICO: Tensão Média vs Rotação (Inversamente Proporcional) -->
+<div style="background: #ffffff; border: 1px solid #e2e8f0; border-radius: 16px; padding: 20px; margin: 25px 0; box-shadow: 0 10px 25px -5px rgba(0,0,0,0.05); font-family: 'Inter', 'Segoe UI', sans-serif; overflow-x: auto;">
+  <div style="display: flex; justify-content: center; gap: 30px; margin-bottom: 20px;">
+    <div style="display: flex; align-items: center; gap: 8px;">
+      <div style="width: 16px; height: 4px; background: #8B5CF6; border-radius: 2px;"></div>
+      <span style="font-size: 0.9rem; font-weight: 700; color: #1e293b;">Tensão Média Lida no Multímetro (V CC)</span>
+    </div>
+  </div>
+
+  <svg viewBox="0 0 700 350" style="width: 100%; height: auto; min-width: 550px;">
+    <defs>
+      <filter id="shadow-cmp" x="-10%" y="-10%" width="120%" height="120%">
+        <feDropShadow dx="0" dy="2" stdDeviation="4" flood-color="#000" flood-opacity="0.1"/>
+      </filter>
+    </defs>
+
+    <!-- Grid Horizontal -->
+    <g stroke="#f1f5f9" stroke-width="1">
+      <line x1="80" y1="50" x2="620" y2="50" />
+      <line x1="80" y1="100" x2="620" y2="100" />
+      <line x1="80" y1="150" x2="620" y2="150" />
+      <line x1="80" y1="200" x2="620" y2="200" />
+      <line x1="80" y1="250" x2="620" y2="250" />
+      <line x1="80" y1="300" x2="620" y2="300" />
+    </g>
+
+    <!-- Eixos -->
+    <line x1="80" y1="300" x2="620" y2="300" stroke="#cbd5e1" stroke-width="2" />
+    <line x1="80" y1="50" x2="80" y2="300" stroke="#cbd5e1" stroke-width="2" />
+
+    <!-- Valores Eixo Y (Tensão) -->
+    <g fill="#64748b" font-size="12" font-weight="600" text-anchor="end">
+      <text x="70" y="54">5,0 V</text>
+      <text x="70" y="104">4,0 V</text>
+      <text x="70" y="154">3,0 V</text>
+      <text x="70" y="204">2,0 V</text>
+      <text x="70" y="254">1,0 V</text>
+      <text x="70" y="304">0 V</text>
+    </g>
+
+    <!-- Valores Eixo X (Rotação) -->
+    <g fill="#64748b" font-size="12" font-weight="600" text-anchor="middle">
+      <text x="200" y="325">Marcha Lenta</text>
+      <text x="200" y="340" font-size="10" fill="#94a3b8">(~800 RPM)</text>
+      
+      <text x="500" y="325">Alta Rotação</text>
+      <text x="500" y="340" font-size="10" fill="#94a3b8">(~3000 RPM)</text>
+    </g>
+
+    <!-- Linhas Verticais de Grade -->
+    <g stroke="#e2e8f0" stroke-width="1" stroke-dasharray="4,4">
+      <line x1="200" y1="50" x2="200" y2="300" />
+      <line x1="500" y1="50" x2="500" y2="300" />
+    </g>
+
+    <!-- Faixa de Tolerância (Idle: 2.0 a 3.5V) -->
+    <rect x="180" y="154" width="40" height="50" fill="rgba(139, 92, 246, 0.15)" />
+    
+    <!-- Faixa de Tolerância (Alta: 0.2 a 0.8V) -->
+    <rect x="480" y="274" width="40" height="20" fill="rgba(139, 92, 246, 0.15)" />
+
+    <!-- Linha de Tendência Inversa -->
+    <!-- Idle (Média de 2.75V) = y=200 -->
+    <!-- Alta (Média de 0.5V) = y=285 -->
+    <polyline points="200,200 500,285" fill="none" stroke="#8B5CF6" stroke-width="4" stroke-linecap="round" stroke-linejoin="round" filter="url(#shadow-cmp)"/>
+
+    <!-- Pontos Interativos -->
+    <circle cx="200" cy="200" r="6" fill="#ffffff" stroke="#8B5CF6" stroke-width="3" />
+    <circle cx="500" cy="285" r="6" fill="#ffffff" stroke="#8B5CF6" stroke-width="3" />
+    
+    <!-- Etiquetas -->
+    <g font-size="12" font-weight="700" fill="#1e293b">
+      <text x="200" y="188" text-anchor="middle">~2.75 V</text>
+      <text x="500" y="273" text-anchor="middle">~0.5 V</text>
+    </g>
+  </svg>
+</div>
+
+<div class="dica">
+  <strong>Por que a tensão cai?</strong>
+  <p>Em alta rotação, o pulso gerado pela passagem desse único dente fica tão rápido e curto que o multímetro não consegue processar o pico de 5V. O aparelho calcula a média ponderada do tempo e puxa a leitura física do visor para baixo, bem perto de 0V.</p>
+</div>
+
+<div class="aviso">
+  <strong>Atenção</strong>
+  <p>Se a tensão média travar fixa em 0V ou fixa na tensão máxima de alimentação (5V) sem oscilar nada durante a partida ou aceleração, o sensor queimou ou o comando de válvulas está desalinhado fisicamente.</p>
+</div>
+
+<h3 id="teste-terra">Pino 3 – Aterramento (Massa dos Sensores)</h3>
+<p>Este pino fornece o terra eletrônico isolado vindo do módulo de injeção. Ao medir contra o polo negativo da bateria, o valor deve registrar no máximo <b>0,1 Volt</b>. Valores acima disso indicam alta resistência no chicote ou deficiência no aterramento principal da injeção.</p>
+
+<h2 id="problemas-comuns">Sintomas Práticos de Falha</h2>
+<p>Se o sensor de fase falhar totalmente, a ECU perde a referência de qual cilindro está no tempo de compressão para iniciar a sequência correta de injeção. O motor MWM 2.8 adotará as seguintes reações em oficina:</p>
+
+<ul>
+  <li><b>Partida longa e pesada:</b> A central precisará forçar várias voltas extras no virabrequim para tentar deduzir a posição dos pistões usando apenas o sensor de rotação (CKP);</li>
+  <li><b>Motor não pega:</b> Em alguns mapas de software mais restritos, se o sinal de fase sumir completamente junto com uma perda momentânea de rotação, o motor simplesmente não pega.</li>
+</ul>
+
+<h2 id="codigos-de-falha">Códigos de falha</h2>
+<div class="codigos">
+  <div class="codigo"><span class="num">P0340</span><div>
+    <h4>Falha no circuito do sensor de fase</h4>
+    <p>Sem sinal da árvore de comando chegando à ECU. Causas:</p>
+    <ul>
+      <li>Sensor desconectado ou queimado;</li>
+      <li>Chicote rompido;</li>
+      <li>Alimentação 5V ausente.</li>
+    </ul>
+  </div></div>
+  <div class="codigo"><span class="num">P0341</span><div>
+    <h4>Sinal incorreto ou fora de faixa do CMP</h4>
+    <p>O sinal existe, mas está com ruído ou fora de sincronismo. Causas:</p>
+    <ul>
+      <li>Sensor perdendo referência;</li>
+      <li>Folga mecânica no comando;</li>
+      <li>Motor fora de ponto.</li>
+    </ul>
+  </div></div>
+</div>
