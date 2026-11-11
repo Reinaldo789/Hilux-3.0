@@ -1174,5 +1174,23 @@ header.scrolled .mobile-toggle:hover { background: rgba(255,255,255,0.12); color
     padding: 0.5rem !important;    /* Diminui o espaçamento interno */
     text-align: left !important;   /* Alinha à esquerda para não esticar */
     white-space: normal !important; /* Permite quebrar linha de forma natural */
+
+
+ /* 2. Ajusta QUALQUER célula que ocupe várias colunas (colspan) */
+  .page-card td[colspan],
+  .page-card th[colspan] {
+    font-size: 0.8rem !important;   /* Fonte levemente menor para caber melhor */
+    line-height: 1.4 !important;
+    padding: 0.6rem !important;
+    text-align: left !important;    /* Alinha à esquerda (tira do centro) */
+    
+    /* O SEGREDO ESTÁ AQUI: força o texto a quebrar a linha dentro da célula */
+    white-space: normal !important; 
+    word-wrap: break-word !important; 
+    overflow-wrap: break-word !important;
+    
+    /* Impede que a célula fique mais larga que a tela */
+    max-width: 100vw !important; 
+    box-sizing: border-box !important;
   }
 }
