@@ -1,37 +1,38 @@
-<!-- Válvula MProp. Imagens: salve em conteudo/imagens/valvula-mprop/ -->
+<!-- Válvula de Controle de Sucção (SCV - Suction Control Valve) / Controle de Pressão do Rail - Toyota Hilux 2013 (Sistema Denso). Imagens: salve em conteudo/imagens/valvula-mprop/ -->
 <header class="art-head">
-  <h1>Válvula MProp</h1>
+  <h1>Válvula de Controle de Pressão (SCV) — Toyota Hilux 2013</h1>
+  <p style="font-size: 0.9rem; opacity: 0.9; margin-top: 5px;">Sistema Denso Common Rail • Motores 1KD-FTV 3.0 16V e 2KD-FTV 2.5 16V D-4D (Substitui a função de controle da MProp na linha Hilux)</p>
 </header>
 
 <nav class="toc" aria-label="Neste artigo">
   <strong>Neste artigo</strong>
   <ul>
-    <li><a href="#" data-goto="funcionamento">Funcionamento</a></li>
+    <li><a href="#" data-goto="funcionamento">Funcionamento (Sistema Denso / Válvula SCV)</a></li>
     
     <li><a href="#" data-goto="parte-eletrica">Parte Elétrica e Testes</a>
       <ul>
         <li><a href="#" data-goto="teste-resistencia">Teste de Resistência (Ω)</a></li>
-        <li><a href="#" data-goto="teste-tensao">Teste de Tensão (Multímetro)</a></li>
-        <li><a href="#" data-goto="teste-caneta">Teste com Caneta de Polaridade</a></li>
-        <li><a href="#" data-goto="grafico-pwm">Sinal PWM e Duty Cycle</a></li>
+        <li><a href="#" data-goto="teste-tensao">Teste de Tensão e Comando (Multímetro)</a></li>
+        <li><a href="#" data-goto="teste-caneta">Teste com Caneta / Polaridade</a></li>
+        <li><a href="#" data-goto="grafico-pwm">Sinal de Comando e Duty Cycle</a></li>
       </ul>
     </li>
     
-    <li><a href="#" data-goto="estrutura-mecanica">Estrutura Mecânica</a>
+    <li><a href="#" data-goto="estrutura-mecanica">Estrutura Mecânica e Montagem</a>
       <ul>
-        <li><a href="#" data-goto="teste-mecanico">Teste Mecânico (Travamento)</a></li>
+        <li><a href="#" data-goto="teste-mecanico">Inspeção Mecânica e de Travamento</a></li>
       </ul>
     </li>
     
     <li><a href="#" data-goto="problemas-comuns">Problemas Comuns e Scanner</a>
       <ul>
-        <li><a href="#" data-goto="sem-pressao">Sem pressão de combustível no Rail</a></li>
-        <li><a href="#" data-goto="alta-pressao">Alta pressão de combustível no Rail</a></li>
-        <li><a href="#" data-goto="teste-scanner">Testes com Scanner</a></li>
+        <li><a href="#" data-goto="sem-pressao">Sem pressão ou baixa pressão no Rail</a></li>
+        <li><a href="#" data-goto="alta-pressao">Alta pressão ou oscilação no Rail</a></li>
+        <li><a href="#" data-goto="teste-scanner">Testes com Scanner (Pressão Comandada × Real)</a></li>
       </ul>
     </li>
     
-    <li><a href="#" data-goto="codigos-de-falha">Códigos de Falha</a></li>
+    <li><a href="#" data-goto="codigos-de-falha">Códigos de Falha (Padrão Toyota Denso)</a></li>
   </ul>
 </nav>
 
@@ -39,36 +40,36 @@
      CONTEÚDO DO ARTIGO
      ========================================== -->
 
-<h2 id="funcionamento">Funcionamento</h2>
-<p>A MProp atua no circuito de baixa pressão, antes do estágio de pressurização, para garantir que a bomba de alta pressão gere apenas a pressão necessária para a demanda do motor em um dado momento. Na Agrale Marruá é um componente vital para o funcionamento.</p>
-<p>A válvula reguladora de pressão de combustível tem a função de ajustar a pressão do combustível em função da rotação e carga do motor, dentro da faixa previamente definida no mapeamento de funções do ECM.</p>
+<h2 id="funcionamento">Funcionamento (Sistema Denso / Válvula SCV)</h2>
+<p>Na <b>Toyota Hilux 2013</b> (motores diesel Common Rail <b>1KD-FTV 3.0 16V D-4D</b> e <b>2KD-FTV 2.5 16V D-4D</b>, incluindo <b>Hilux SW4</b>), o controle da pressão do combustível no tubo Rail não utiliza válvula MProp nem válvula KUV da arquitetura Bosch/MWM: quem regula a vazão admitida na bomba de alta pressão é a <b>Válvula SCV (<i>Suction Control Valve</i>)</b> comandada pela <b>ECM (Engine Control Module) Denso</b>.</p>
+<p>A válvula SCV atua na admissão/sucção da bomba de alta pressão para dosar a quantidade de diesel enviada aos elementos de compressão, mantendo a pressão do Rail alinhada à pressão comandada pela ECM conforme rotação, carga e temperatura.</p>
 
 <ul>
-  <li>Controla o fluxo da alimentação de combustível na linha de baixa pressão;</li>
-  <li>Trabalha na mesma linha da <a href="#alimentacao-de-combustivel/valvula-kuv">Válvula KUV</a>;</li>
-  <li>É alimentada pela ECM com sinal PWM de 12V e trabalha com Duty Cycle;</li>
-  <li>A MProp controla o fluxo que alimenta os elementos bombeadores de alta.</li>
+  <li>Controla o fluxo de combustível admitido na bomba de alta pressão para regular a pressão do tubo Common Rail;</li>
+  <li>Trabalha em malha fechada com a realimentação do <a href="#sistema-de-injecao/sensor-pres-rail">sensor de pressão do Rail (FRP)</a> e da ECM Denso;</li>
+  <li>É comandada pela ECM (sinal modulante / Duty Cycle conforme aplicação) para ajustar a vazão conforme a demanda do motor;</li>
+  <li>Qualquer sujeira, verniz/borra de combustível ou desgaste no êmbolo da SCV provoca oscilação de marcha lenta, perda de potência ou variações de pressão no Rail.</li>
 </ul>
 
 <!-- IMAGEM: Fluxo de combustível -->
 <figure class="img-box-preview">
-  <img src="conteudo/imagens/valvula-mprop/01-fluxo-combustivel.jpg" alt="Diagrama de fluxo de combustível: Bomba de engrenagem, MProp, KUV e elementos" loading="lazy">
+  <img src="conteudo/imagens/valvula-mprop/01-fluxo-combustivel.jpg" alt="Diagrama de fluxo de combustível na bomba de alta pressão e controle SCV" loading="lazy">
   <figcaption><i class="fa-solid fa-magnifying-glass-plus"></i> Clique na imagem para ampliar</figcaption>
 </figure>
 
-<p>A figura abaixo mostra a bomba aberta, e na seta azul o percurso do combustível dentro da bomba de alta pressão controlado pela válvula MProp.</p>
+<p>A figura abaixo ilustra o percurso interno do combustível na bomba de alta pressão e a atuação da válvula reguladora sobre a alimentação dos elementos bombeadores.</p>
 
 <!-- IMAGEM: Bomba aberta com setas -->
 <figure class="img-box-preview">
-  <img src="conteudo/imagens/valvula-mprop/02-bomba-aberta.jpg" alt="Corte da bomba de alta pressão mostrando a entrada e saída da MProp" loading="lazy">
+  <img src="conteudo/imagens/valvula-mprop/02-bomba-aberta.jpg" alt="Bomba de alta pressão mostrando o circuito de alimentação e controle" loading="lazy">
   <figcaption><i class="fa-solid fa-magnifying-glass-plus"></i> Clique na imagem para ampliar</figcaption>
 </figure>
 
-<p>Possui um número que indica sua capacidade de vazão, mas esse número para motores pequenos não influencia no funcionamento.</p>
+<p>A válvula possui marcação de identificação/calibração própria do fabricante — utilize sempre o código e a versão de SCV compatíveis com a bomba de alta pressão do motor <b>1KD-FTV</b> ou <b>2KD-FTV</b> da Hilux 2013.</p>
 
 <!-- IMAGEM: Indicação de vazão -->
 <figure class="img-box-preview">
-  <img src="conteudo/imagens/valvula-mprop/03-indicacao-vazao.jpg" alt="Indicação de capacidade de fluxo e calibração na válvula MProp" loading="lazy">
+  <img src="conteudo/imagens/valvula-mprop/03-indicacao-vazao.jpg" alt="Marcação de identificação e calibração na válvula de controle" loading="lazy">
   <figcaption><i class="fa-solid fa-magnifying-glass-plus"></i> Clique na imagem para ampliar</figcaption>
 </figure>
 
@@ -76,66 +77,66 @@
 
 <h3 id="teste-resistencia">1. Teste de Resistência (Ω)</h3>
 <ul>
-  <li><b>Condição:</b> Chave desligada e conector da válvula desconectado.</li>
-  <li><b>Medição:</b> Meça entre os dois terminais da válvula.</li>
+  <li><b>Condição:</b> Chave de ignição desligada e conector da válvula desconectado do chicote.</li>
+  <li><b>Medição:</b> Meça a resistência ôhmica diretamente entre os dois terminais da bobina da válvula (confirme a faixa nominal exata no catálogo técnico da versão/código da SCV instalada).</li>
 </ul>
 
 <div class="specs">
-  <div class="spec"><b>2,6 a 3,5 Ω</b><span>Valor de referência de fábrica</span></div>
+  <div class="spec"><b>~1,5 a 4,0 Ω</b><span>Faixa típica de bobina SCV (confirme código da peça)<br><small>Ausência de curto à carcaça ou circuito aberto (OL)</small></span></div>
 </div>
 
 <div class="aviso">
   <strong>Atenção</strong>
-  <p>Extremamente raro encontrar problemas elétricos nesta válvula. Não é preciso retirá-la para realizar a medição, apenas desconectar o terminal elétrico.</p>
+  <p>Na prática de oficina, a maioria dos defeitos de válvulas de controle de pressão ocorre por <b>travamento mecânico, sujeira/borra no combustível ou desgaste interno</b> — e não apenas por abertura da bobina. Sempre avalie também o comportamento da pressão no scanner e o estado mecânico/vedações ao remover.</p>
 </div>
 
 <!-- IMAGEM: Teste de resistência -->
 <figure class="img-box-preview">
-  <img src="conteudo/imagens/valvula-mprop/04-teste-resistencia.jpg" alt="Medição de resistência nos terminais da válvula MProp" loading="lazy">
+  <img src="conteudo/imagens/valvula-mprop/04-teste-resistencia.jpg" alt="Medição de resistência nos terminais da válvula de controle" loading="lazy">
   <figcaption><i class="fa-solid fa-magnifying-glass-plus"></i> Clique na imagem para ampliar</figcaption>
 </figure>
 
-<h3 id="teste-tensao">2. Teste de Tensão (Multímetro)</h3>
-<p>O teste de tensão verifica da caixa de fusíveis até o conector da válvula. O teste de resistência testa somente a válvula.</p>
+<h3 id="teste-tensao">2. Teste de Tensão e Comando (Multímetro)</h3>
+<p>Enquanto o teste de resistência avalia apenas a bobina da válvula, o teste de tensão verifica a alimentação/comando vindo do chicote e da ECM Denso.</p>
 <ul>
-  <li><b>Alimentação:</b> 12V;</li>
-  <li><b>PWM:</b> 100 Hz a 1,5 kHz;</li>
-  <li><b>Duty Cycle em Lenta:</b> 20 a 40%;</li>
-  <li><b>Duty Cycle em Alta Carga:</b> 60 a 80%.</li>
+  <li><b>Alimentação do sistema:</b> Tensão de bateria (~12 V com chave ligada / ~13,5–14,5 V com motor em funcionamento, conforme a linha de alimentação);</li>
+  <li><b>Comando da ECM:</b> Modulação variável (Duty Cycle) conforme a necessidade de vazão/pressão do Rail;</li>
+  <li><b>Marcha lenta (~750 RPM):</b> Valor estável e coerente com a demanda de baixa carga;</li>
+  <li><b>Aceleração / carga:</b> Variação contínua conforme a ECM ajusta a pressão comandada.</li>
 </ul>
 
 <div class="dica">
-  <strong>Entenda o Duty Cycle</strong>
-  <p>Em 50% a tensão fica metade do tempo ligada e metade desligada, mas é sempre 12V, independente da rotação. O que muda é o tempo em que permanece ligada ou desligada, e o multímetro normal faz a leitura da média da tensão entre determinado tempo. Não se preocupe se encontrar valores discrepantes (como 2,65V, 4,18V ou 6,51V), pois isso já é o suficiente para saber que há 12V em um terminal e pulso negativo no outro.</p>
+  <strong>Entenda a leitura no multímetro</strong>
+  <p>Quando o circuito recebe sinal modulado/pulsado, o multímetro digital comum exibe uma <b>tensão média</b> que varia conforme a relação de tempo ligado/desligado do comando. Para observar a forma do sinal e a frequência com precisão, utilize um <b>osciloscópio</b>.</p>
 </div>
 
 <!-- IMAGEM: Multímetros mostrando diferentes tensões médias -->
 <figure class="img-box-preview">
-  <img src="conteudo/imagens/valvula-mprop/05-teste-tensao.jpg" alt="Diferentes leituras de tensão média no multímetro" loading="lazy">
+  <img src="conteudo/imagens/valvula-mprop/05-teste-tensao.jpg" alt="Leituras de tensão no multímetro durante o teste do circuito" loading="lazy">
   <figcaption><i class="fa-solid fa-magnifying-glass-plus"></i> Clique na imagem para ampliar</figcaption>
 </figure>
 
-<h3 id="teste-caneta">3. Teste com Caneta de Polaridade</h3>
-<p>Usando uma caneta de polaridade, é possível ver o pulso negativo (cinza) e a alimentação positiva (12V vermelho).</p>
+<h3 id="teste-caneta">3. Teste de Polaridade / Chicote</h3>
+<p>Com caneta de polaridade ou multímetro (sem aplicar 12 V direto do lado da ECM), verifique a presença de alimentação e o chaveamento/retorno da linha de controle no conector, garantindo que não haja fio partido, oxidação ou curto para massa/positivo.</p>
 
 <!-- IMAGEM: Teste com caneta (Pulso Negativo) -->
 <figure class="img-box-preview">
-  <img src="conteudo/imagens/valvula-mprop/06-teste-caneta.jpg" alt="Teste com caneta de polaridade mostrando 12V e pulso negativo" loading="lazy">
+  <img src="conteudo/imagens/valvula-mprop/06-teste-caneta.jpg" alt="Verificação elétrica no conector da válvula" loading="lazy">
   <figcaption><i class="fa-solid fa-magnifying-glass-plus"></i> Clique na imagem para ampliar</figcaption>
 </figure>
 
-<h3 id="grafico-pwm">4. Gráfico de Sinal PWM e Duty Cycle</h3>
-<p>O gráfico abaixo ilustra como a ECU varia a largura do pulso (Duty Cycle) para regular a pressão.</p>
+<h3 id="grafico-pwm">4. Gráfico de Sinal de Comando e Duty Cycle</h3>
+<p>O gráfico abaixo ilustra como a modulação do comando altera o tempo de atuação e a tensão média lida no multímetro entre condições de baixa e alta solicitação.</p>
 
 <!-- GRÁFICO PWM -->
 <div style="background: #ffffff; border: 1px solid #e2e8f0; border-radius: 16px; padding: 20px; margin: 25px 0; box-shadow: 0 10px 25px -5px rgba(0,0,0,0.05); font-family: 'Inter', 'Segoe UI', sans-serif; overflow-x: auto;">
   <div style="display: flex; justify-content: center; gap: 30px; margin-bottom: 20px;">
     <div style="display: flex; align-items: center; gap: 8px;">
       <div style="width: 16px; height: 4px; background: #3B82F6; border-radius: 2px;"></div>
-      <span style="font-size: 0.9rem; font-weight: 700; color: #1e293b;">Sinal PWM da ECU (12V / 0V)</span>
+      <span style="font-size: 0.9rem; font-weight: 700; color: #1e293b;">Sinal Modulado / Comando (12V / 0V)</span>
     </div>
     <div style="display: flex; align-items: center; gap: 8px;">
-      <div style="width: 16px; height: 4px; background: #F59E0B; border-radius: 2px; border-top: 2px dashed #F59E0B; background: transparent; border-bottom: none; border-left: none; border-right: none;"></div>
+      <div style="width: 16px; height: 4px; border-top: 2px dashed #F59E0B; background: transparent;"></div>
       <span style="font-size: 0.9rem; font-weight: 700; color: #1e293b;">Tensão Média Lida no Multímetro</span>
     </div>
   </div>
@@ -148,8 +149,8 @@
     </defs>
 
     <!-- GRÁFICO 1: MARCHA LENTA -->
-    <text x="20" y="30" font-size="14" font-weight="bold" fill="#1e293b">MARCHA LENTA (~800 RPM)</text>
-    <text x="20" y="50" font-size="12" fill="#64748b">Duty Cycle: 20% a 40% (Maior parte do tempo em 12V)</text>
+    <text x="20" y="30" font-size="14" font-weight="bold" fill="#1e293b">MARCHA LENTA (~750 RPM)</text>
+    <text x="20" y="50" font-size="12" fill="#64748b">Regime de baixa demanda: modulação ajustada para manter a pressão base do Rail</text>
 
     <g stroke="#f1f5f9" stroke-width="1">
       <line x1="60" y1="80" x2="780" y2="80" />
@@ -169,7 +170,7 @@
 
     <!-- GRÁFICO 2: ALTA CARGA -->
     <text x="20" y="300" font-size="14" font-weight="bold" fill="#1e293b">ALTA ROTAÇÃO / PLENA CARGA</text>
-    <text x="20" y="320" font-size="12" fill="#64748b">Duty Cycle: 60% a 80% (Maior parte do tempo no terra/0V)</text>
+    <text x="20" y="320" font-size="12" fill="#64748b">Regime de maior demanda: modulação alterada conforme o mapa da ECM Denso</text>
 
     <g stroke="#f1f5f9" stroke-width="1">
       <line x1="60" y1="350" x2="780" y2="350" />
@@ -189,219 +190,168 @@
   </svg>
 </div>
 
-<h2 id="estrutura-mecanica">Estrutura Mecânica</h2>
-<p>Em repouso a válvula é normalmente aberta, mas o motor não liga com ela desconectada devido aos check list da ECM. Quando a válvula recebe a tensão PWM de 12V da ECM, a bobina magnetiza e o êmbolo trabalha pulsando o cilindro para frente, pressionando a mola e ajustando a quantidade de combustível necessitada pelo ECM de acordo com o regime de carga exigido no momento.</p>
+<h2 id="estrutura-mecanica">Estrutura Mecânica e Montagem</h2>
+<p>A válvula possui conjunto eletromagnético (bobina/induzido) e elemento de controle/vedação que regula a passagem de combustível na bomba de alta pressão conforme o comando da ECM. Ao remover para inspeção, utilize sempre ferramentas adequadas, mantenha a área limpa contra contaminação por poeira ou partículas metálicas e substitua os anéis de vedação (O-rings) sempre que necessário.</p>
 
 <div class="aviso">
   <strong>Atenção</strong>
-  <p>Não abra a válvula sem ferramentas específicas para isso.</p>
+  <p>Não abra ou force a carcaça selada da válvula sem ferramenta adequada e não aplique 12 V direto na bobina ligada ao chicote da ECM. Contaminação no combustível (água, partículas ou borra) é uma das principais causas de travamento e desgaste prematuro em válvulas do sistema Common Rail.</p>
 </div>
 
 <!-- IMAGEM: Estrutura interna (Bobina e Induzido) -->
 <figure class="img-box-preview">
-  <img src="conteudo/imagens/valvula-mprop/07-estrutura-interna.jpg" alt="Estrutura interna da válvula MProp: bobina e induzido" loading="lazy">
+  <img src="conteudo/imagens/valvula-mprop/07-estrutura-interna.jpg" alt="Estrutura interna da válvula: conjunto magnético e acionamento" loading="lazy">
   <figcaption><i class="fa-solid fa-magnifying-glass-plus"></i> Clique na imagem para ampliar</figcaption>
 </figure>
 
 <!-- IMAGEM: Componentes internos (Cilindro, Mola, Trava) -->
 <figure class="img-box-preview">
-  <img src="conteudo/imagens/valvula-mprop/08-componentes.jpg" alt="Componentes internos: cilindro, mola, trava e O-rings" loading="lazy">
+  <img src="conteudo/imagens/valvula-mprop/08-componentes.jpg" alt="Componentes internos e anéis de vedação da válvula" loading="lazy">
   <figcaption><i class="fa-solid fa-magnifying-glass-plus"></i> Clique na imagem para ampliar</figcaption>
 </figure>
 
-<h3 id="teste-mecanico">Teste Mecânico (Travamento)</h3>
-<p>Se bater a válvula em uma superfície macia (pneu ou palma da mão), nas primeiras batidas (3 a 5) não ouvirá o barulho do êmbolo, pois a válvula pode estar cheia de combustível.</p>
+<h3 id="teste-mecanico">Inspeção Mecânica e de Travamento</h3>
+<p>Com a válvula removida e limpa, verifique visualmente a integridade dos anéis de vedação, a ausência de riscos/escoriações ou resíduos de verniz/borra e o curso livre do elemento móvel (quando aplicável ao projeto da válvula, sem forçar ou amassar componentes internos).</p>
 <ul>
-  <li>Se continuar a bater e não ouvir o barulho do êmbolo, ele pode estar travado ou o cilindro está travado na posição aberta impedindo que o êmbolo se movimente;</li>
-  <li>Se balançar a válvula sem bater e escutar o barulho do êmbolo movimentando livremente, quer dizer que o cilindro está travado na posição fechada.</li>
+  <li>Se houver <b>travamento por sujeira ou verniz</b>, o movimento fica preso ou irregular, causando oscilação de marcha lenta ou demora na resposta de pressão;</li>
+  <li>Se houver <b>desgaste interno severo</b> ou falha persistente mesmo com combustível limpo e filtro em bom estado, a substituição da válvula é a solução indicada.</li>
 </ul>
 
 <!-- IMAGEM: Teste mecânico (bater no pneu/mão) -->
 <figure class="img-box-preview">
-  <img src="conteudo/imagens/valvula-mprop/09-teste-mecanico.jpg" alt="Teste mecânico batendo a válvula em superfície macia" loading="lazy">
+  <img src="conteudo/imagens/valvula-mprop/09-teste-mecanico.jpg" alt="Inspeção mecânica da válvula fora do veículo" loading="lazy">
   <figcaption><i class="fa-solid fa-magnifying-glass-plus"></i> Clique na imagem para ampliar</figcaption>
 </figure>
 
 <div class="trio">
   <div>
-    <h4>Travada Aberta</h4>
+    <h4>Travada em Condição de Alta Vazão / Aberta</h4>
     <ul>
-      <li>Não há barulho do êmbolo batendo na mão;</li>
-      <li>Medindo a profundidade encontrará <b>15 mm</b>;</li>
-      <li>Viatura liga e desliga durante a aceleração.</li>
+      <li>Pode gerar excesso de pressão no Rail em relação à comandada;</li>
+      <li>Risco de corte de injeção, luz da injeção acesa ou desligamento sob carga.</li>
     </ul>
   </div>
   <div>
-    <h4>Travada Fechada</h4>
+    <h4>Travada em Condição de Baixa Vazão / Fechada</h4>
     <ul>
-      <li>Induzido livre dentro da bobina;</li>
-      <li>Cilindro travado à frente do alojamento;</li>
-      <li>Medindo a profundidade encontrará <b>10 mm</b>;</li>
-      <li>Viatura não liga.</li>
+      <li>Pode impedir que o Rail atinja a pressão mínima de partida;</li>
+      <li>Partida longa, motor não pega ou falha/corte de potência.</li>
     </ul>
   </div>
 </div>
 
 <!-- IMAGEM: Medidas 10mm e 15mm -->
 <figure class="img-box-preview">
-  <img src="conteudo/imagens/valvula-mprop/10-medidas-travamento.jpg" alt="Medição da profundidade: 10mm travada aberta, 15mm destravada" loading="lazy">
+  <img src="conteudo/imagens/valvula-mprop/10-medidas-travamento.jpg" alt="Verificação dimensional e de curso na válvula" loading="lazy">
   <figcaption><i class="fa-solid fa-magnifying-glass-plus"></i> Clique na imagem para ampliar</figcaption>
 </figure>
 
 <h2 id="problemas-comuns">Problemas Comuns e Scanner</h2>
 
-<h3 id="sem-pressao">Sem pressão de combustível no Rail</h3>
+<h3 id="sem-pressao">Sem pressão ou baixa pressão de combustível no Rail</h3>
 <div class="trio">
   <div>
     <h4>Sintomas</h4>
     <ul>
-      <li>Bomba elétrica ligou;</li>
-      <li>Sem pressão de combustível no tubo Rail.</li>
+      <li>Partida demorada ou motor não pega;</li>
+      <li>Pressão real do Rail no scanner abaixo da comandada ou sem subida durante o arranque.</li>
     </ul>
   </div>
   <div>
     <h4>Possíveis Causas</h4>
     <ul>
-      <li>Falta de combustível;</li>
-      <li>Bomba elétrica não está funcionando;</li>
-      <li>Válvula de proteção do Rail com vazamento;</li>
-      <li>Válvula KUV travada no fundo do alojamento;</li>
-      <li>Válvula MProp travada fechada;</li>
-      <li>Sujeira na bomba de alta.</li>
+      <li>Filtro de combustível saturado ou entrada de ar na linha de alimentação;</li>
+      <li>Válvula <b>SCV</b> travada, com sujeira ou falha de comando/alimentação;</li>
+      <li>Bomba de alta pressão com desgaste ou retorno excessivo de bicos injetores.</li>
     </ul>
   </div>
   <div>
     <h4>Possíveis Soluções</h4>
     <ul>
-      <li>Verificar se está chegando combustível da bomba elétrica até a entrada da bomba de alta;</li>
-      <li>Verificar excesso de retorno nos bicos injetores;</li>
-      <li>Medir a tensão no sensor do Rail durante as partidas;</li>
-      <li>Verificar válvula de proteção do Rail;</li>
-      <li>Retirar a válvula KUV e verificar se está travada;</li>
-      <li>Retirar a válvula MProp e verificar se está travada;</li>
-      <li>Se nada resolver, é preciso retirar a bomba de alta para limpeza.</li>
+      <li>Verificar alimentação de diesel, filtro, purga de ar e estanqueidade da linha de baixa pressão;</li>
+      <li>Avaliar leitura de pressão do Rail no scanner durante a partida e comparar com a comandada;</li>
+      <li>Testar circuito elétrico e inspeção/substituição da válvula SCV, bomba de alta ou injetores conforme o diagnóstico.</li>
     </ul>
   </div>
 </div>
 
 <div class="dica">
-  <strong>Dica</strong>
-  <p>O jeito mais fácil de verificar se está chegando combustível é afrouxando o tubo do bico injetor. Se for realizar este teste, afrouxe o tubo no lado do bico injetor, pois no tubo Rail a rosca é extremamente frágil.</p>
+  <strong>Dica de Oficina</strong>
+  <p>Antes de condenar a válvula SCV ou a bomba de alta pressão por baixa pressão no Rail, verifique sempre o <b>filtro de diesel</b>, possíveis entradas de ar nas conexões e o <b>retorno dos bicos injetores</b> — retorno excessivo derruba a pressão do Rail mesmo com a bomba e a válvula operando.</p>
 </div>
 
-<h3 id="alta-pressao">Alta pressão de combustível no Rail</h3>
+<h3 id="alta-pressao">Alta pressão ou oscilação de pressão no Rail</h3>
 <div class="trio">
   <div>
     <h4>Sintomas</h4>
     <ul>
-      <li>Alta pressão no Tubo Rail;</li>
-      <li>Acende luz de injeção e desliga o motor.</li>
+      <li>Pressão real acima da comandada ou oscilando em marcha lenta / aceleração;</li>
+      <li>Luz da injeção acesa, marcha lenta irregular ou corte/desligamento do motor.</li>
     </ul>
   </div>
   <div>
     <h4>Possíveis Causas</h4>
     <ul>
-      <li>Válvula MProp travada aberta;</li>
-      <li>Sensor Rail avariado.</li>
+      <li>Válvula <b>SCV</b> com atuação irregular, travamento ou contaminação;</li>
+      <li>Leitura incoerente ou avaria no <a href="#sistema-de-injecao/sensor-pres-rail">sensor de pressão do Rail (FRP)</a>;</li>
+      <li>Mau contato no chicote ou falha no circuito de controle da ECM.</li>
     </ul>
   </div>
   <div>
     <h4>Possíveis Soluções</h4>
     <ul>
-      <li>Limpar a Válvula MProp;</li>
-      <li>Trocar o Sensor Rail avariado.</li>
+      <li>Comparar pressão comandada × real no scanner em marcha lenta e em aceleração;</li>
+      <li>Conferir sinal do sensor FRP e testar/substituir a válvula SCV se confirmada falha de atuação.</li>
     </ul>
   </div>
 </div>
 
 <div class="dica">
-  <strong>Dica</strong>
-  <p>Problemas no sensor do Rail e MProp confundem muito, pois são dependentes um do outro. A dica é reparar se há excesso de fumaça preta no escapamento, pois isso indica excesso de combustível nos injetores devido à falha da válvula MProp.</p>
+  <strong>Dica de Diagnóstico</strong>
+  <p>Sempre cruze os dados do scanner (<b>pressão comandada × pressão real</b>) com a leitura do <a href="#sistema-de-injecao/sensor-pres-rail">sensor de pressão do Rail</a> e o comportamento de marcha lenta antes de substituir componentes.</p>
 </div>
 
-<h3 id="teste-scanner">Testes com Scanner</h3>
-<p>Se a pressão real estiver sempre acima, a válvula MProp pode estar travada ou o sensor de pressão com defeito.</p>
+<h3 id="teste-scanner">Testes com Scanner (Pressão Comandada × Real)</h3>
+<p>Com o scanner conectado à ECM Denso da Hilux 2013, monitore a pressão comandada e a pressão real do Rail em marcha lenta (~750 RPM) e em aceleração (~2.000 RPM).</p>
 
 <!-- IMAGEM: Scanner em marcha lenta -->
 <figure class="img-box-preview">
-  <img src="conteudo/imagens/valvula-mprop/11-scanner-lenta.jpg" alt="Scanner mostrando pressão do Rail em marcha lenta (753.7 bar)" loading="lazy">
+  <img src="conteudo/imagens/valvula-mprop/11-scanner-lenta.jpg" alt="Scanner exibindo leitura de pressão do Rail em marcha lenta" loading="lazy">
   <figcaption><i class="fa-solid fa-magnifying-glass-plus"></i> Clique na imagem para ampliar</figcaption>
 </figure>
-<p>Em 750 rpm, marcha lenta, a pressão deveria estar entre <b>200 a 500 bar</b>.</p>
+<p>Em marcha lenta estável (~750 RPM), a pressão do Rail na Hilux 2013 D-4D situa-se tipicamente na faixa de aproximadamente <b>250 a 400 bar</b> (conforme temperatura do motor e condição de carga), acompanhando de perto o valor comandado.</p>
 
 <!-- IMAGEM: Scanner em alta rotação -->
 <figure class="img-box-preview">
-  <img src="conteudo/imagens/valvula-mprop/12-scanner-alta.jpg" alt="Scanner mostrando pressão do Rail a 2042 rpm (1228.5 bar)" loading="lazy">
+  <img src="conteudo/imagens/valvula-mprop/12-scanner-alta.jpg" alt="Scanner exibindo leitura de pressão do Rail em aceleração" loading="lazy">
   <figcaption><i class="fa-solid fa-magnifying-glass-plus"></i> Clique na imagem para ampliar</figcaption>
 </figure>
-<p>Em 2.000 rpm, a pressão já está no limite máximo aceitável para máxima rotação.</p>
+<p>Em aceleração (~2.000 RPM), a pressão sobe acompanhando a demanda da ECM sem oscilações bruscas nem divergência prolongada entre pressão real e comandada.</p>
 
-<h2 id="codigos-de-falha">Códigos de Falha (Agrale / MWM)</h2>
+<h2 id="codigos-de-falha">Códigos de Falha (Padrão Toyota Denso)</h2>
 
 <div class="codigos">
-  <div class="codigo"><span class="num">1211</span><div>
-    <h4>Falha no sinal da válvula reguladora de pressão (M-PROP)</h4>
-    <p>Não há comunicação elétrica adequada entre o ECM e a válvula. Pode indicar:</p>
-    <ul>
-      <li>Chicote rompido ou com mau contato;</li>
-      <li>Conector mal encaixado ou oxidado;</li>
-      <li>M-PROP aberta (sem continuidade) ou em curto.</li>
-    </ul>
+  <div class="codigo"><span class="num">P0087</span><div>
+    <h4>Pressão do Rail / Sistema de Combustível Muito Baixa</h4>
+    <p>A pressão real no Rail fica abaixo da comandada pela ECM. Verifique filtro de combustível, alimentação de baixa pressão, <b>válvula SCV</b>, bomba de alta pressão ou retorno excessivo de bicos injetores.</p>
   </div></div>
   
-  <div class="codigo"><span class="num">1221</span><div>
-    <h4>Curto-circuito à massa no circuito da válvula M-PROP</h4>
-    <p>Ocorre quando a linha de comando está encostando na carcaça (terra), forçando o módulo a cortar o sinal. Causas comuns:</p>
-    <ul>
-      <li>Fio prensado ou isolação rompida;</li>
-      <li>Bobina da M-PROP em curto;</li>
-      <li>Sujeira ou umidade no chicote.</li>
-    </ul>
+  <div class="codigo"><span class="num">P0088</span><div>
+    <h4>Pressão do Rail / Sistema de Combustível Muito Alta</h4>
+    <p>A pressão real no Rail ultrapassa o limite controlado para a condição de operação. Verifique atuação da <b>válvula SCV</b>, coerência do sinal do <a href="#sistema-de-injecao/sensor-pres-rail">sensor FRP</a> e circuito de controle.</p>
   </div></div>
 
-  <div class="codigo"><span class="num">1222</span><div>
-    <h4>Curto-circuito ao positivo no circuito da válvula M-PROP</h4>
-    <p>Indica que o comando da ECU está recebendo tensão direta de 12V por falha no chicote ou inversão elétrica.</p>
-    <p><b>Cuidado:</b> pode queimar o driver interno do módulo se persistir.</p>
+  <div class="codigo"><span class="num">P0190 / P0191</span><div>
+    <h4>Circuito ou Faixa / Desempenho do Sensor de Pressão do Rail (FRP)</h4>
+    <p>Falhas de circuito ou variação inconsistente na leitura de pressão do Rail que podem se associar a problemas de controle de pressão, chicote ou sensor FRP.</p>
   </div></div>
 
-  <div class="codigo"><span class="num">1231</span><div>
-    <h4>Sinal fora da faixa esperada da válvula M-PROP</h4>
-    <p>A ECU está enviando o sinal PWM corretamente, mas o comportamento da válvula não está dentro do esperado. Causas prováveis:</p>
-    <ul>
-      <li>Travamento interno (mola ou êmbolo sujo);</li>
-      <li>Combustível contaminado (borra ou sujeira fina);</li>
-      <li>Retorno do rail obstruído.</li>
-    </ul>
-  </div></div>
-
-  <div class="codigo"><span class="num">1617</span><div>
-    <h4>Pressão do Rail abaixo do mínimo esperado em marcha lenta</h4>
-    <p>Mesmo com comando PWM alto, a pressão medida no tubo Rail é baixa. Pode indicar:</p>
-    <ul>
-      <li>Válvula M-PROP travada fechada;</li>
-      <li>Bomba de alta desgastada;</li>
-      <li>Entrada de ar na linha de baixa pressão.</li>
-    </ul>
-  </div></div>
-
-  <div class="codigo"><span class="num">1618</span><div>
-    <h4>Pressão do Rail acima do máximo permitido</h4>
-    <p>A ECU tenta reduzir a pressão, mas a M-PROP não responde. Causas:</p>
-    <ul>
-      <li>Válvula travada aberta;</li>
-      <li>Obstrução na linha de retorno;</li>
-      <li>Sensor de pressão do rail com leitura incorreta.</li>
-    </ul>
-  </div></div>
-
-  <div class="codigo"><span class="num">1625</span><div>
-    <h4>Válvula M-PROP com atuação lenta ou instável</h4>
-    <p>A oscilação da pressão no tubo Rail não acompanha corretamente o comando PWM. Essa falha geralmente é intermitente e aparece com o motor quente, ou sob carga variável. Pode indicar:</p>
-    <ul>
-      <li>Desgaste interno da válvula;</li>
-      <li>Combustível de má qualidade;</li>
-      <li>Borra ou corrosão no corpo da válvula.</li>
-    </ul>
+  <div class="codigo"><span class="num">P0627 / P0628 / P0629</span><div>
+    <h4>Circuito de Controle da Bomba / Regulação de Combustível (Conforme Aplicação)</h4>
+    <p>Códigos ligados ao circuito de controle/acionamento de combustível. Inspecione chicote, conectores, alimentação e circuito de comando da ECM Denso.</p>
   </div></div>
 </div>
+
+<p style="font-size: 0.85rem; color: #64748b; margin-top: 2rem; border-top: 1px solid #e2e8f0; padding-top: 1rem;">
+  <em>Este documento foi desenvolvido com base nos parâmetros técnicos do sistema de gerenciamento eletrônico Toyota / Denso Common Rail (Hilux 2013 — motores 1KD-FTV / 2KD-FTV). Uso exclusivo para treinamento e diagnóstico mecânico profissional.</em>
+</p>
