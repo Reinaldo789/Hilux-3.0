@@ -1,74 +1,74 @@
-<!-- Sensor de Rotação (CKP). Imagens: salve em conteudo/imagens/sensor-ckp/ -->
+<!-- Sensor de Rotação (CKP / Sinal NE) - Toyota Hilux 2013 (Sistema Denso). Imagens: salve em conteudo/imagens/sensor-ckp/ -->
 <header class="art-head">
-  <h1>Sensor de Rotação (CKP)</h1>
+  <h1>Sensor de Rotação (CKP / Sinal NE) — Toyota Hilux 2013</h1>
+  <p style="font-size: 0.9rem; opacity: 0.9; margin-top: 5px;">Sistema Denso Common Rail • Motores 1KD-FTV 3.0 / 2KD-FTV 2.5 D-4D</p>
 </header>
 
 <nav class="toc" aria-label="Neste artigo">
   <strong>Neste artigo</strong>
   <ul>
     <li><a href="#" data-goto="localizacao">Localização</a></li>
-    <li><a href="#" data-goto="funcionamento">Funcionamento</a></li>
+    <li><a href="#" data-goto="funcionamento">Funcionamento (Sistema Denso / Sinal NE)</a></li>
     <li><a href="#" data-goto="parte-eletrica">Parte elétrica e testes</a>
       <ul>
         <li><a href="#" data-goto="teste-resistencia">Teste de resistência (motor desligado)</a></li>
       </ul>
     </li>
-    <li><a href="#" data-goto="testes-ac">Testes em corrente alternada</a>
+    <li><a href="#" data-goto="testes-ac">Testes de sinal, frequência e osciloscópio</a>
       <ul>
-        <li><a href="#" data-goto="limitacao-multimetro">Limitação do Multímetro e Proteção da ECU</a></li>
+        <li><a href="#" data-goto="limitacao-multimetro">Limitação do multímetro e proteção da ECM</a></li>
         <li><a href="#" data-goto="diagnostico-chicote">Diagnóstico de chicote vs. componente</a></li>
       </ul>
     </li>
     <li><a href="#" data-goto="problemas-comuns">Problemas comuns</a>
       <ul>
         <li><a href="#" data-goto="motor-gira-mas-nao-pega">Motor gira mas não pega</a></li>
-        <li><a href="#" data-goto="motor-apaga-quando-aquece">Motor apaga quando aquece</a></li>
+        <li><a href="#" data-goto="motor-apaga-quando-aquece">Motor apaga ou corta quando aquece</a></li>
       </ul>
     </li>
-    <li><a href="#" data-goto="codigos-de-falha">Códigos de falha</a></li>
+    <li><a href="#" data-goto="codigos-de-falha">Códigos de falha (Padrão Toyota Denso)</a></li>
   </ul>
 </nav>
 
 <h2 id="localizacao">Localização</h2>
 <figure class="img-box-preview">
-  <img src="conteudo/imagens/sensor-ckp/01-localizacao.jpg" alt="Localização do sensor de rotação CKP" loading="lazy">
+  <img src="conteudo/imagens/sensor-ckp/01-localizacao.jpg" alt="Localização do sensor de rotação CKP na Toyota Hilux 2013" loading="lazy">
   <figcaption><i class="fa-solid fa-magnifying-glass-plus"></i> Clique na imagem para ampliar</figcaption>
 </figure>
-<p>Fica no bloco do motor, na parte traseira inferior esquerda (lado do motorista), posicionado em frente à roda fônica integrada ao volante do motor. É o sensor mais crítico do sistema — sem ele a ECM não reconhece que o motor está girando e bloqueia tudo.</p>
+<p>Na <b>Toyota Hilux 2013</b> (motores diesel Common Rail <b>1KD-FTV 3.0 16V D-4D</b> e <b>2KD-FTV 2.5 16V D-4D</b>, incluindo <b>Hilux SW4</b>), o sensor de posição do virabrequim (<b>CKP — Crankshaft Position Sensor</b>, identificado na engenharia Toyota como <b>Sinal NE</b>) fica montado na região inferior do bloco/carcaça da distribuição (próximo ao cubo/polia ou roda fônica do virabrequim, conforme o arranjo do motor).</p>
+<p>É o sensor de referência primária de rotação e posição angular do virabrequim para a <b>ECM (Engine Control Module) Denso</b> — sem sinal <b>NE</b> válido, a central não sincroniza a injeção Common Rail e o motor não entra em funcionamento.</p>
 
-<h2 id="funcionamento">Funcionamento</h2>
+<h2 id="funcionamento">Funcionamento (Sistema Denso — Sinal NE)</h2>
 <ul>
-  <li>Sensor <b>magnético indutivo</b> — funciona como um mini gerador;</li>
-  <li>Não recebe alimentação da ECM: gera sua própria energia;</li>
-  <li>Possui ímã permanente + bobina de fios de cobre;</li>
-  <li>Ao passar pelos dentes da roda fônica (60-2), o campo magnético varia e induz uma corrente alternada;</li>
-  <li>A falha de dois dentes na roda serve como <b>ponto de referência</b> do pistão;</li>
-  <li>Frequência e amplitude aumentam proporcionalmente à rotação.</li>
+  <li>Na família <b>1KD-FTV / 2KD-FTV</b>, o sensor <b>CKP (NE)</b> atua em conjunto com a roda fônica do virabrequim para informar rotação (RPM) e posição angular exata dos pistões à <b>ECM Denso</b>;</li>
+  <li>Opera em sincronismo direto com o <a href="#sistema-de-injecao/sensor-fase">sensor de fase (CMP / Sinal G)</a> para identificar o cilindro nº 1 em tempo de compressão;</li>
+  <li>A frequência dos pulsos aumenta proporcionalmente à rotação do motor (RPM), permitindo o cálculo preciso de débito, avanço e tempo de abertura dos injetores Common Rail;</li>
+  <li>Qualquer falha de dentes, avaria no ressalto/roda fônica, sujeira/limalha ou alteração no entreferro (<em>air gap</em>) distorce o padrão de pulsos lido pela ECM.</li>
 </ul>
 <figure class="img-box-preview">
-  <img src="conteudo/imagens/sensor-ckp/02-funcionamento.jpg" alt="Funcionamento do sensor indutivo" loading="lazy">
+  <img src="conteudo/imagens/sensor-ckp/02-funcionamento.jpg" alt="Funcionamento do sensor de rotação na Hilux 2013" loading="lazy">
   <figcaption><i class="fa-solid fa-magnifying-glass-plus"></i> Clique na imagem para ampliar</figcaption>
 </figure>
-<p>O sinal chega à ECM em forma de <b>onda senoidal</b> (V AC). Esse é o único sensor do motor que o mecânico <b>precisa obrigatoriamente</b> mudar o multímetro para a escala de alternada (V AC) para ler o sinal real.</p>
+<p>Para diagnóstico preciso do formato de onda, frequência e sincronismo angular com o sinal de fase (<b>G</b>), o uso de <b>osciloscópio</b> é o recurso mais confiável. Quando se utiliza apenas o multímetro em campo, deve-se considerar a resposta do instrumento frente à taxa de pulsos conforme a rotação do motor.</p>
 
 <h2 id="parte-eletrica">Parte elétrica e testes</h2>
-<p>O conector tem 3 fios:</p>
+<p>O conector do sensor na linha Toyota/Denso possui linhas dedicadas para alimentação/sinal e referência/massa (confirme a pinagem exata no diagrama elétrico específico do motor <b>1KD-FTV</b> ou <b>2KD-FTV</b> da Hilux 2013):</p>
 <ul>
-  <li><b>Pino 1:</b> Sinal (+) enviado à ECM;</li>
-  <li><b>Pino 2:</b> Sinal (-) de retorno/referência;</li>
-  <li><b>Pino 3:</b> Blindagem de aterramento (massa, contra interferências do alternador e motor de partida).</li>
+  <li><b>Linha de Sinal / Alimentação:</b> Conduz o sinal/referência de rotação (<b>NE</b>) para a ECM Denso;</li>
+  <li><b>Linha de Retorno / Massa:</b> Referência eletrônica/terra associada ao circuito do sensor;</li>
+  <li><b>Blindagem / Malha (quando aplicável):</b> Proteção contra interferência eletromagnética (EMI) gerada por alternador, motor de partida e chicote de alta corrente.</li>
 </ul>
 
 <h3 id="teste-resistencia">Teste de resistência (motor desligado)</h3>
 <ul>
-  <li>Tomada <b>DESCONECTADA</b> e chave desligada;</li>
-  <li>Multímetro na escala de Resistência <b>Ω em 2k</b>;</li>
-  <li>Meça entre os <b>pinos 1 e 2 do próprio sensor</b>.</li>
+  <li>Chave de ignição <b>DESLIGADA</b> e conector do sensor <b>DESCONECTADO</b>;</li>
+  <li>Multímetro na escala de Resistência (<b>Ω</b>);</li>
+  <li>Meça entre os terminais do circuito do próprio sensor (conforme o tipo de elemento sensor/versão — em sensores indutivos típicos, mede-se entre os terminais da bobina; em sensores ativos de efeito Hall/MRE, o teste de continuidade/resistência a frio serve para descartar curto ou circuito aberto, priorizando testes alimentados/osciloscópio).</li>
 </ul>
 
 <div class="specs">
-  <div class="spec"><b>860 Ω a 1.060 Ω</b><span>Frio (20°C)</span></div>
-  <div class="spec"><b>1.100 Ω a 1.250 Ω</b><span>Quente (80°C)</span></div>
+  <div class="spec"><b>860 Ω a 1.060 Ω</b><span>Referência indutiva típica a frio (~20°C)<br><small>Confirme o valor nominal da peça/versão</small></span></div>
+  <div class="spec"><b>1.100 Ω a 1.250 Ω</b><span>Referência indutiva típica a quente (~80°C)<br><small>Dilatação térmica eleva a resistência</small></span></div>
 </div>
 
 <!-- GRÁFICO: Resistência vs Temperatura -->
@@ -84,7 +84,6 @@
     </div>
   </div>
 
-  <!-- Ajustado para display: block e removido min-width -->
   <svg viewBox="0 0 700 350" style="width: 100%; height: auto; display: block;">
     <defs>
       <filter id="shadow-res" x="-10%" y="-10%" width="120%" height="120%">
@@ -139,17 +138,17 @@
 
 <div class="aviso">
   <strong>Atenção</strong>
-  <p>Se a resistência passar de 1.300 Ω ou der circuito aberto (OL) com o motor quente, o motor apaga sozinho e só volta a pegar quando esfriar. É o defeito térmico clássico.</p>
+  <p>Se a resistência apresentar circuito aberto (OL / infinito) ou fuga/curto fora do esperado quando o motor aquece, o sensor pode falhar com o motor quente e voltar a funcionar após esfriar (defeito térmico).</p>
 </div>
 
-<h2 id="testes-ac">Testes em corrente alternada (V AC)</h2>
-<p>O sensor de rotação indutivo do motor MWM 2.8 atua como um gerador elétrico de baixa potência. Embora a voltagem suba conforme a rotação aumenta, o sinal é controlado para não saturar e danificar os drivers internos de entrada da ECU Bosch EDC16C8.</p>
-<p>Com o multímetro configurado na escala de <b>Tensão Alternada (V AC ou V~)</b>, inserindo duas agulhas por trás do conector (backprobing) nos Pinos 1 e 2, os valores físicos reais de trabalho são:</p>
+<h2 id="testes-ac">Testes de sinal, frequência e osciloscópio</h2>
+<p>Na <b>Toyota Hilux 2013</b>, o diagnóstico em funcionamento deve avaliar a presença, a estabilidade e a frequência do sinal de rotação (<b>NE</b>) durante o arranque, em marcha lenta (~750 RPM) e em aceleração.</p>
+<p>Com o multímetro configurado adequadamente para medição de sinal alternado/oscilante (<b>V AC</b> em sensores indutivos ou leitura de sinal/frequência conforme o tipo de sensor) por trás do conector (<em>back-probing</em>), o valor deve crescer progressivamente conforme aumenta a rotação do motor:</p>
 
 <div class="specs">
-  <div class="spec"><b>0,8 a 1,5 V AC</b><span>Arranque (~200 RPM)<br><small>Tensão mínima para sincronismo</small></span></div>
-  <div class="spec"><b>2,0 a 3,5 V AC</b><span>Marcha lenta (~800 RPM)<br><small>Sinal estabilizado</small></span></div>
-  <div class="spec"><b>4,5 a 6,5 V AC</b><span>Alta rotação (~3000 RPM)<br><small>Teto de leitura no multímetro</small></span></div>
+  <div class="spec"><b>~0,8 a 1,5 V AC</b><span>Arranque (~200 RPM)<br><small>Sinal mínimo para sincronismo inicial</small></span></div>
+  <div class="spec"><b>~2,0 a 3,5 V AC</b><span>Marcha lenta (~750 RPM)<br><small>Leitura estável em regime de marcha lenta</small></span></div>
+  <div class="spec"><b>~4,5 a 6,5 V AC</b><span>Alta rotação (~3000 RPM)<br><small>Faixa típica de leitura em multímetro comum</small></span></div>
 </div>
 
 <!-- GRÁFICO: Tensão AC vs Rotação -->
@@ -157,7 +156,7 @@
   <div style="display: flex; justify-content: center; flex-wrap: wrap; gap: 15px; margin-bottom: 20px;">
     <div style="display: flex; align-items: center; gap: 8px;">
       <div style="width: 16px; height: 4px; background: #10B981; border-radius: 2px;"></div>
-      <span style="font-size: 0.85rem; font-weight: 700; color: #1e293b;">Tensão Nominal (V AC)</span>
+      <span style="font-size: 0.85rem; font-weight: 700; color: #1e293b;">Tensão de Sinal (V AC)</span>
     </div>
     <div style="display: flex; align-items: center; gap: 8px;">
       <div style="width: 16px; height: 12px; background: rgba(16, 185, 129, 0.2); border-radius: 2px;"></div>
@@ -165,7 +164,6 @@
     </div>
   </div>
 
-  <!-- Ajustado para display: block e removido min-width -->
   <svg viewBox="0 0 700 350" style="width: 100%; height: auto; display: block;">
     <defs>
       <filter id="shadow-ac" x="-10%" y="-10%" width="120%" height="120%">
@@ -198,7 +196,7 @@
       <text x="130" y="340" font-size="10" fill="#94a3b8">(~200 RPM)</text>
       
       <text x="350" y="325">Marcha Lenta</text>
-      <text x="350" y="340" font-size="10" fill="#94a3b8">(~800 RPM)</text>
+      <text x="350" y="340" font-size="10" fill="#94a3b8">(~750 RPM)</text>
       
       <text x="570" y="325">Alta Rotação</text>
       <text x="570" y="340" font-size="10" fill="#94a3b8">(~3000 RPM)</text>
@@ -228,27 +226,27 @@
   </svg>
 </div>
 
-<h3 id="limitacao-multimetro">Por que os valores não chegam a 15V ou 20V AC?</h3>
+<h3 id="limitacao-multimetro">Limitação do multímetro e proteção da ECM</h3>
 <div class="dica" style="background: #eff6ff; border-left-color: #3b82f6;">
-  <strong>1. Frequência versus Amostragem do Multímetro</strong>
-  <p>A roda fônica do MWM 2.8 possui 60 dentes (menos 2 de falha). A 3000 RPM, o motor dá 50 voltas por segundo. Isso significa que cerca de 2.900 dentes passam pelo sensor a cada segundo, gerando uma frequência de quase <b>3 kHz</b>.</p>
-  <p>Os multímetros automotivos comuns não conseguem calcular o valor RMS verdadeiro (True RMS) nessa frequência e tendem a atenuar a leitura, registrando no máximo entre 4,5V e 6,5V AC.</p>
+  <strong>1. Frequência de pulsos vs. leitura do multímetro</strong>
+  <p>Conforme a rotação do motor aumenta, a frequência dos pulsos gerados pela roda fônica sobe proporcionalmente (chegando a dezenas de voltas por segundo em regimes elevados).</p>
+  <p>Multímetros automotivos convencionais possuem banda de frequência e método de integração limitados, o que pode atenuar a leitura em rotações mais altas em comparação ao sinal real visto no osciloscópio.</p>
 </div>
 
 <div class="dica" style="background: #fef2f2; border-left-color: #ef4444;">
-  <strong>2. Proteção Interna da ECU</strong>
-  <p>O circuito da central de injeção possui <b>diodos zener de proteção</b> na entrada dos pinos A12 e A27. Esses diodos ceifam e limitam qualquer pico de tensão excessivo para proteger o processador do módulo contra queimas por sobretensão induzida.</p>
+  <strong>2. Circuitos de entrada e proteção da ECM Denso</strong>
+  <p>A entrada de sinal de rotação na ECM Denso conta com condicionamento de sinal e proteção contra picos/ruídos elétricos para resguardar o estágio de processamento.</p>
 </div>
 
 <div class="aviso">
   <strong>Regra de ouro na oficina</strong>
-  <p>Se marcar <b>menos de 0,8 V AC</b> durante o arranque, a ECM não reconhece que o motor está girando e bloqueia o pulso dos bicos injetores. O motor gira no arranque, mas não liga.</p>
+  <p>Se o sinal de rotação (<b>NE</b>) estiver ausente, muito fraco ou irregular durante o arranque, a ECM Denso não reconhece a rotação do motor e não libera a injeção nos bicos Common Rail — o motor gira no arranque, mas não pega.</p>
 </div>
 
 <h3 id="diagnostico-chicote">Diagnóstico de chicote vs. componente</h3>
 <ul>
-  <li><b>Isolamento:</b> com o sensor desconectado, meça continuidade entre os pinos do chicote e a carcaça do motor (massa). Não deve haver continuidade;</li>
-  <li><b>Integridade:</b> meça continuidade dos fios do plugue até o conector da ECM para descartar fios partidos.</li>
+  <li><b>Isolamento:</b> com a chave desligada e o sensor desconectado, verifique se há curto/continuidade indevida das linhas de sinal/referência para a massa ou para positivo;</li>
+  <li><b>Integridade:</b> teste continuidade e resistência do chicote entre o conector do sensor e o conector da ECM Denso para descartar fio partido, terminal frouxo ou oxidação.</li>
 </ul>
 
 <h2 id="problemas-comuns">Problemas comuns</h2>
@@ -258,81 +256,83 @@
   <div>
     <h4>Sintomas</h4>
     <ul>
-      <li>Motor de partida gira normal;</li>
-      <li>Conta-giros marca 0;</li>
-      <li>Sem pulso nos bicos injetores.</li>
+      <li>Motor de arranque gira normalmente;</li>
+      <li>RPM no scanner marca 0 ou oscila de forma inconsistente;</li>
+      <li>Sem liberação de injeção nos bicos Common Rail.</li>
     </ul>
   </div>
   <div>
     <h4>Possíveis causas</h4>
     <ul>
-      <li>Sensor com defeito ou desplugado;</li>
-      <li>Limalha de ferro na ponta magnética;</li>
-      <li>Chicote partido ou com mau contato;</li>
-      <li>Roda fônica com dentes amassados.</li>
+      <li>Sensor CKP (NE) danificado ou desconectado;</li>
+      <li>Limalha metálica ou sujeira na ponta do sensor;</li>
+      <li>Chicote interrompido ou mau contato no conector;</li>
+      <li>Dente/ressalto da roda fônica danificado ou entreferro incorreto.</li>
     </ul>
   </div>
   <div>
     <h4>Possíveis soluções</h4>
     <ul>
-      <li>Testar resistência (860–1.060 Ω);</li>
-      <li>Testar V AC no arranque (mín. 0,8 V AC);</li>
-      <li>Limpar a ponta magnética;</li>
-      <li>Verificar o gap e a roda fônica.</li>
+      <li>Inspecionar conector, chicote e limpeza da ponta do sensor;</li>
+      <li>Validar sinal de rotação no scanner e no osciloscópio durante a partida;</li>
+      <li>Verificar estado da roda fônica e folga de montagem (entreferro).</li>
     </ul>
   </div>
 </div>
 
-<h3 id="motor-apaga-quando-aquece">Motor apaga quando aquece</h3>
+<h3 id="motor-apaga-quando-aquece">Motor apaga ou corta quando aquece</h3>
 <div class="trio">
   <div>
     <h4>Sintomas</h4>
     <ul>
-      <li>Motor funciona por 20 min e apaga;</li>
-      <li>Só volta a pegar depois de esfriar;</li>
-      <li>Defeito intermitente.</li>
+      <li>Motor funciona normalmente e apaga após aquecer;</li>
+      <li>Volta a pegar após esfriar ou apresenta falhas intermitentes;</li>
+      <li>Pode acender a luz da injeção com registro de falha de rotação/sincronismo.</li>
     </ul>
   </div>
   <div>
     <h4>Possíveis causas</h4>
     <ul>
-      <li>Bobina interna dilata e abre circuito quando quente (OL);</li>
-      <li>Sensor de origem duvidosa.</li>
+      <li>Dilatação térmica interna do sensor provocando falha intermitente;</li>
+      <li>Mau contato por aquecimento em conector ou chicote.</li>
     </ul>
   </div>
   <div>
     <h4>Possíveis soluções</h4>
     <ul>
-      <li>Medir resistência <b>imediatamente</b> após o carro apagar;</li>
-      <li>Substituir o sensor por peça original.</li>
+      <li>Realizar testes elétricos e observar a leitura de RPM no scanner/osciloscópio no momento da falha;</li>
+      <li>Substituir o sensor por peça de qualidade compatível com a aplicação.</li>
     </ul>
   </div>
 </div>
 
 <div class="aviso">
   <strong>Atenção</strong>
-  <p>Nunca injete 12 V nos fios de sinal do CKP conectados à ECM nem use lâmpada de teste comum — queima o circuito integrado de entrada do módulo.</p>
+  <p>Nunca aplique tensão de bateria (12 V) diretamente nos fios de sinal do sensor conectados à ECM nem utilize lâmpada de teste comum em circuitos eletrônicos sensíveis — isso pode danificar o sensor ou a ECM Denso.</p>
 </div>
 
-<h2 id="codigos-de-falha">Códigos de falha</h2>
+<h2 id="codigos-de-falha">Códigos de falha (Padrão Toyota Denso)</h2>
 <div class="codigos">
   <div class="codigo"><span class="num">P0335</span><div>
-    <h4>Falha no circuito do sensor de posição do virabrequim</h4>
-    <p>Não há sinal elétrico adequado chegando à ECM. Causas:</p>
+    <h4>Falha no circuito do sensor "A" de posição do virabrequim (CKP / Sinal NE)</h4>
+    <p>Ausência ou falha crítica no circuito do sinal de rotação chegando à ECM Denso. Principais causas:</p>
     <ul>
-      <li>Sensor desconectado ou queimado;</li>
-      <li>Chicote rompido;</li>
-      <li>Blindagem em curto.</li>
+      <li>Sensor CKP desconectado ou avariado;</li>
+      <li>Fio rompido, terminal aberto ou curto no chicote;</li>
+      <li>Falha de conexão na ECM.</li>
     </ul>
   </div></div>
   <div class="codigo"><span class="num">P0336</span><div>
-    <h4>Sinal incorreto/fora de faixa do sensor de rotação</h4>
-    <p>O sinal existe, mas está irregular. Causas:</p>
+    <h4>Faixa / Desempenho do circuito do sensor de posição do virabrequim (CKP / Sinal NE)</h4>
+    <p>O sinal apresenta irregularidade, perda de pulsos ou inconsistência na leitura. Principais causas:</p>
     <ul>
-      <li>Limalha de ferro na ponta magnética;</li>
-      <li>Dentes da roda fônica amassados/quebrados;</li>
-      <li>Folga excessiva no virabrequim alterando o gap;</li>
-      <li>Ruído de interferência (blindagem ruim).</li>
+      <li>Limalha metálica ou contaminação na face do sensor;</li>
+      <li>Dentes/ressaltos da roda fônica amassados, desgastados ou danificados;</li>
+      <li>Entreferro (folga) alterado ou interferência elétrica no sinal.</li>
     </ul>
   </div></div>
 </div>
+
+<p style="font-size: 0.85rem; color: #64748b; margin-top: 2rem; border-top: 1px solid #e2e8f0; padding-top: 1rem;">
+  <em>Este documento foi desenvolvido com base nos parâmetros técnicos do sistema de gerenciamento eletrônico Toyota / Denso Common Rail (Hilux 2013 — motores 1KD-FTV / 2KD-FTV). Uso exclusivo para treinamento e diagnóstico mecânico profissional.</em>
+</p>
