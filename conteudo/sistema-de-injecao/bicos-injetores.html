@@ -1,6 +1,7 @@
-<!-- Bicos Injetores (Common Rail). Imagens: salve em conteudo/imagens/bicos-injetores/ -->
+<!-- Bicos Injetores Common Rail (Denso) - Toyota Hilux 2013. Imagens: salve em conteudo/imagens/bicos-injetores/ -->
 <header class="art-head">
-  <h1>Bicos Injetores (Common Rail)</h1>
+  <h1>Bicos Injetores (Common Rail Denso) — Toyota Hilux 2013</h1>
+  <p style="font-size: 0.9rem; opacity: 0.9; margin-top: 5px;">Sistema Denso Common Rail • Motores 1KD-FTV 3.0 16V e 2KD-FTV 2.5 16V D-4D (incluindo Hilux SW4)</p>
 </header>
 
 <nav class="toc" aria-label="Neste artigo">
@@ -12,13 +13,13 @@
       <ul>
         <li><a href="#" data-goto="teste-resistencia">Teste de Resistência (Ω)</a></li>
         <li><a href="#" data-goto="teste-isolamento">Teste de Isolamento (Massa)</a></li>
-        <li><a href="#" data-goto="teste-pwm">Sinal de Comando (PWM)</a></li>
+        <li><a href="#" data-goto="teste-pwm">Sinal de Comando (ECM Denso)</a></li>
       </ul>
     </li>
     
     <li><a href="#" data-goto="graficos-dinamicos">Frequência e Duty Cycle</a></li>
-    <li><a href="#" data-goto="problemas-comuns">Falhas e Sintomas</a></li>
-    <li><a href="#" data-goto="codigos-de-falha">Códigos de Falha</a></li>
+    <li><a href="#" data-goto="problemas-comuns">Falhas, Retorno e Sintomas</a></li>
+    <li><a href="#" data-goto="codigos-de-falha">Códigos de Falha (Padrão Toyota Denso)</a></li>
   </ul>
 </nav>
 
@@ -26,61 +27,61 @@
      CONTEÚDO DO ARTIGO
      ========================================== -->
 
-<h2 id="funcionamento">Princípio de Funcionamento Elétrico</h2>
-<p>Os bicos injetores do motor MWM 2.8 Eletrônico (injeção Bosch EDC16C8) são do tipo solenoide. Eles não abrem por pressão mecânica do combustível, mas sim por um comando elétrico ultra-rápido enviado pela central eletrônica (ECU). O combustível fica armazenado na flauta (rail) sob altíssima pressão.</p>
-<p>Quando a ECU energiza a bobina interna do injetor, uma pequena esfera de controle se move, aliviando a pressão interna e permitindo que a agulha suba, pulverizando o diesel diretamente na câmara de combustão.</p>
+<h2 id="funcionamento">Princípio de Funcionamento Elétrico e Hidráulico</h2>
+<p>Na <b>Toyota Hilux 2013</b> (motores diesel Common Rail <b>1KD-FTV 3.0 16V D-4D</b> e <b>2KD-FTV 2.5 16V D-4D</b>, incluindo <b>Hilux SW4</b>), os bicos injetores são comandados eletronicamente pela <b>ECM (Engine Control Module) Denso</b> (não utiliza arquitetura Bosch EDC16C8 do MWM 2.8). O diesel fica pressurizado no tubo acumulador (Common Rail) e é pulverizado na câmara conforme o comando da ECM.</p>
+<p>Quando a ECM energiza o circuito do injetor, o controle interno alivia a pressão hidráulica sobre a válvula/agulha de injeção, permitindo a abertura e a pulverização controlada do combustível no cilindro correspondente (incluindo injeções piloto, principal e pós-injeções conforme o mapa da ECM Denso).</p>
 
 <div class="aviso">
   <strong>Cuidado de Segurança Extremo na Oficina</strong>
-  <p><b>Nunca</b> tente descascar ou agulhar (backprobing) os fios dos bicos injetores com o motor funcionando para medir tensão com um multímetro comum. O pico de tensão pode queimar o multímetro e danificar o driver da ECU. Da mesma forma, <b>nunca</b> desligue a tomada de um bico com o motor em funcionamento; o arco elétrico gerado queima a central instantaneamente.</p>
+  <p><b>Nunca</b> tente descascar ou agulhar (<em>backprobing</em>) os fios dos bicos injetores com o motor funcionando para medir tensão com multímetro comum: os pulsos de acionamento dos injetores Common Rail podem atingir tensões elevadas e danificar o multímetro ou o circuito de acionamento da ECM. Da mesma forma, <b>nunca</b> desconecte ou conecte o conector de um bico injetor com a chave ligada ou o motor em funcionamento para evitar picos indutivos e danos à central.</p>
 </div>
 
 <h2 id="parte-eletrica">Testes com Multímetro (Estáticos)</h2>
-<p>O diagnóstico elétrico seguro dos injetores Bosch é feito de forma estática com o motor e a ignição desligados, utilizando o conector do bico solto (isolado do chicote do carro).</p>
+<p>O diagnóstico elétrico estático dos injetores na Hilux 2013 deve ser feito com o motor e a ignição <b>desligados</b> e com o conector do chicote <b>desconectado</b> do bico injetor.</p>
 
-<h3 id="teste-resistencia">1. Teste de Resistência Elétrica (Bobina Interna)</h3>
+<h3 id="teste-resistencia">1. Teste de Resistência Elétrica (Bobina / Circuito Interno)</h3>
 <ul>
-  <li><b>Configuração:</b> Coloque o multímetro na escala mais baixa de Resistência Ôhmica (200 Ω).</li>
-  <li><b>Medição:</b> Encoste as pontas de prova diretamente nos dois pinos metálicos do bico injetor.</li>
+  <li><b>Configuração:</b> Coloque o multímetro na escala baixa de Resistência Ôhmica (<b>Ω</b>).</li>
+  <li><b>Medição:</b> Encoste as pontas de prova diretamente nos terminais elétricos do bico injetor (confirme a especificação nominal exata no manual/catálogo correspondente ao código do injetor 1KD-FTV ou 2KD-FTV instalado).</li>
 </ul>
 
 <div class="specs">
-  <div class="spec"><b>0,3 Ω a 0,7 Ω</b><span>Valor de referência (tipicamente 0,5 Ω a 20°C)</span></div>
+  <div class="spec"><b>~0,3 Ω a 2,5 Ω</b><span>Referência de baixa resistência (confirme especificação da peça/versão)<br><small>Compare os 4 cilindros entre si com o motor na mesma temperatura</small></span></div>
 </div>
 
 <div class="aviso">
   <strong>Análise</strong>
-  <p>Se marcar zero absoluto (0,0 Ω), a bobina interna entrou em curto-circuito. Se o visor indicar infinito (OL), a bobina do injetor está partida/queimada por circuito aberto. Em ambos os casos o bico deve ser substituído.</p>
+  <p>Se o multímetro indicar <b>0,0 Ω</b> (curto-circuito interno) ou <b>OL / infinito</b> (circuito aberto / bobina interrompida), ou se houver discrepância acentuada entre cilindros sem justificativa de temperatura, avalie a substituição ou teste em bancada especializada.</p>
 </div>
 
 <h3 id="teste-isolamento">2. Teste Crucial de Isolamento (Curto com a Massa)</h3>
 <ul>
-  <li><b>Configuração:</b> Coloque o multímetro na maior escala de resistência disponível (20 Megaohms / 20MΩ ou superior).</li>
-  <li><b>Medição:</b> Encoste uma ponta de prova em um dos pinos elétricos do bico e a outra ponta de prova diretamente na carcaça metálica (corpo) do próprio bico injetor. Repita o teste com o outro pino elétrico.</li>
+  <li><b>Configuração:</b> Coloque o multímetro na escala alta de resistência (<b>MΩ / Megaohms</b>).</li>
+  <li><b>Medição:</b> Encoste uma ponta de prova em cada terminal elétrico do bico injetor e a outra ponta na carcaça metálica (corpo) do injetor.</li>
 </ul>
 
 <div class="specs">
-  <div class="spec"><b>Infinito (OL)</b><span>Isolamento total esperado</span></div>
+  <div class="spec"><b>Infinito (OL)</b><span>Isolamento total esperado entre terminais e carcaça</span></div>
 </div>
 
 <div class="aviso">
   <strong>Análise</strong>
-  <p>Se o multímetro indicar qualquer valor numérico de resistência, significa que o isolamento interno falhou e a fiação do bico está jogando corrente para o bloco do motor. Isso faz a ECU Bosch EDC16C8 entrar em <b>modo de proteção total imediato e desligar o motor de segurança</b>.</p>
+  <p>Qualquer leitura baixa ou continuidade/fuga entre os terminais do injetor e sua carcaça metálica (ou entre chicote e massa) indica falha de isolação e risco de curto/desarme do circuito ou falha grave de acionamento na ECM Denso.</p>
 </div>
 
-<h3 id="teste-pwm">3. Sinal de Comando (Estratégia Peak and Hold)</h3>
-<p>O sinal de comando do injetor não é uma simples onda quadrada de 12V. A ECU utiliza uma estratégia chamada <b>Peak and Hold</b> (Pico e Manutenção), que consiste em duas fases elétricas distintas[reference:1]:</p>
+<h3 id="teste-pwm">3. Sinal de Comando (Estratégia da ECM Denso)</h3>
+<p>O comando enviado pela ECM Denso aos bicos injetores não é um simples liga/desliga constante de 12V: utiliza pulsos temporizados de curta duração e alta precisão para controlar o início e a quantidade de injeção em cada ciclo:</p>
 <ul>
-  <li><b>Fase de Atração (Boost):</b> No exato milissegundo de abertura, a ECU descarrega capacitores internos enviando um pico de alta tensão contínua que varia entre <b>60 Volts e 80 Volts DC</b> por um curtíssimo período (cerca de 100 microssegundos)[reference:2][reference:3]. Essa pancada de energia gera o campo magnético forte necessário para puxar a agulha para cima rapidamente;</li>
-  <li><b>Fase de Manutenção (Hold):</b> Assim que o bico abre, a ECU corta a alta tensão e passa a enviar uma <b>onda quadrada PWM de aproximadamente 12 Volts a 14 Volts DC</b>[reference:4]. O objetivo é manter o bico aberto pelo tempo determinado pelo mapa de injeção, sem superaquecer a bobina.</li>
+  <li><b>Fase de Acionamento / Abertura:</b> A ECM aplica um pulso energético controlado para vencer a inércia mecânica e hidráulica e abrir o injetor com rapidez e repetibilidade;</li>
+  <li><b>Fase de Manutenção / Tempo de Injeção:</b> O tempo total de energização/modulação (em milissegundos / microssegundos) é calculado pela ECM com base em rotação, pressão do Rail, massa de ar, temperatura e carga do acelerador.</li>
 </ul>
 
-<!-- GRÁFICO DE TENSÃO PWM (PEAK AND HOLD) -->
+<!-- GRÁFICO DE TENSÃO PWM (PULSO DE ACIONAMENTO) -->
 <div style="background: #ffffff; border: 1px solid #e2e8f0; border-radius: 16px; padding: 20px; margin: 25px 0; box-shadow: 0 10px 25px -5px rgba(0,0,0,0.05); font-family: 'Inter', 'Segoe UI', sans-serif; overflow-x: auto;">
   <div style="display: flex; justify-content: center; gap: 30px; margin-bottom: 20px;">
     <div style="display: flex; align-items: center; gap: 8px;">
       <div style="width: 16px; height: 4px; background: #3B82F6; border-radius: 2px;"></div>
-      <span style="font-size: 0.9rem; font-weight: 700; color: #1e293b;">Sinal de Comando da ECU (Peak and Hold)</span>
+      <span style="font-size: 0.9rem; font-weight: 700; color: #1e293b;">Pulso de Comando da ECM Denso (Representação Didática)</span>
     </div>
   </div>
 
@@ -104,21 +105,21 @@
     <line x1="60" y1="50" x2="60" y2="300" stroke="#cbd5e1" stroke-width="2" />
 
     <g fill="#64748b" font-size="12" font-weight="600" text-anchor="end">
-      <text x="50" y="54">80V</text>
-      <text x="50" y="104">60V</text>
-      <text x="50" y="154">40V</text>
-      <text x="50" y="204">20V</text>
-      <text x="50" y="254">12V</text>
+      <text x="50" y="54">Pico</text>
+      <text x="50" y="104">Alta</text>
+      <text x="50" y="154">Média</text>
+      <text x="50" y="204">Baixa</text>
+      <text x="50" y="254">Manut.</text>
       <text x="50" y="304">0V</text>
     </g>
 
     <g fill="#64748b" font-size="12" font-weight="600" text-anchor="middle">
-      <text x="100" y="325">Abertura (Boost)</text>
-      <text x="100" y="340" font-size="10" fill="#94a3b8">(Pico de 60-80V / ~100µs)</text>
-      <text x="300" y="325">Manutenção (Hold)</text>
-      <text x="300" y="340" font-size="10" fill="#94a3b8">(PWM 12-14V)</text>
+      <text x="100" y="325">Abertura (Ataque)</text>
+      <text x="100" y="340" font-size="10" fill="#94a3b8">(Pulso inicial de resposta)</text>
+      <text x="300" y="325">Manutenção (Tempo de Injeção)</text>
+      <text x="300" y="340" font-size="10" fill="#94a3b8">(Conforme mapa da ECM Denso)</text>
       <text x="600" y="325">Corte</text>
-      <text x="600" y="340" font-size="10" fill="#94a3b8">(Fechamento)</text>
+      <text x="600" y="340" font-size="10" fill="#94a3b8">(Fechamento do injetor)</text>
     </g>
 
     <g stroke="#e2e8f0" stroke-width="1" stroke-dasharray="4,4">
@@ -133,22 +134,22 @@
     <circle cx="500" cy="300" r="5" fill="#3B82F6" />
 
     <g font-size="11" font-weight="700" fill="#1e293b">
-      <text x="80" y="38" text-anchor="middle">Pico 60-80V</text>
-      <text x="120" y="240" text-anchor="middle">~12-14V</text>
+      <text x="80" y="38" text-anchor="middle">Pulso Inicial</text>
+      <text x="120" y="240" text-anchor="middle">Manutenção</text>
       <text x="500" y="288" text-anchor="middle">0V</text>
     </g>
   </svg>
 </div>
 
 <h2 id="graficos-dinamicos">Frequência e Duty Cycle</h2>
-<p>Para analisar o comportamento dinâmico dos injetores, utilizamos a frequência de injeção e o Duty Cycle (ciclo de trabalho). Como o motor é 4 cilindros e 4 tempos, a frequência fundamental de injeção segue a fórmula: <b>Frequência (Hz) = Rotação (RPM) ÷ 30</b>.</p>
+<p>Na análise dinâmica em um motor de <b>4 cilindros e 4 tempos</b>, cada cilindro realiza um ciclo completo a cada 2 voltas do virabrequim, de modo que a frequência fundamental por cilindro segue: <b>Frequência (Hz) = Rotação (RPM) ÷ 120</b> (enquanto a frequência de eventos no conjunto de 4 cilindros ocorre a cada 180° do virabrequim, equivalente a <b>RPM ÷ 30</b>). No gráfico abaixo, os pontos ilustram a relação com a rotação do motor:</p>
 
 <!-- GRÁFICO DE FREQUÊNCIA VS ROTAÇÃO -->
 <div style="background: #ffffff; border: 1px solid #e2e8f0; border-radius: 16px; padding: 20px; margin: 25px 0; box-shadow: 0 10px 25px -5px rgba(0,0,0,0.05); font-family: 'Inter', 'Segoe UI', sans-serif; overflow-x: auto;">
   <div style="display: flex; justify-content: center; gap: 30px; margin-bottom: 20px;">
     <div style="display: flex; align-items: center; gap: 8px;">
       <div style="width: 16px; height: 4px; background: #8B5CF6; border-radius: 2px;"></div>
-      <span style="font-size: 0.9rem; font-weight: 700; color: #1e293b;">Frequência Fundamental de Injeção (Hz)</span>
+      <span style="font-size: 0.9rem; font-weight: 700; color: #1e293b;">Frequência de Eventos por Rotação (Hz)</span>
     </div>
   </div>
   <svg viewBox="0 0 850 400" style="width: 100%; height: auto; min-width: 650px;">
@@ -172,13 +173,13 @@
     </g>
     <g fill="#64748b" font-size="12" font-weight="600" text-anchor="middle">
       <text x="100" y="325">Marcha Lenta</text>
-      <text x="100" y="340" font-size="10" fill="#94a3b8">(800 RPM)</text>
-      <text x="300" y="325">Torque Máximo</text>
-      <text x="300" y="340" font-size="10" fill="#94a3b8">(1800 RPM)</text>
-      <text x="550" y="325">Plena Carga</text>
-      <text x="550" y="340" font-size="10" fill="#94a3b8">(3000 RPM)</text>
-      <text x="700" y="325">Rotação Máx</text>
-      <text x="700" y="340" font-size="10" fill="#94a3b8">(3500 RPM)</text>
+      <text x="100" y="340" font-size="10" fill="#94a3b8">(~750 RPM)</text>
+      <text x="300" y="325">Faixa de Torque</text>
+      <text x="300" y="340" font-size="10" fill="#94a3b8">(~1800 RPM)</text>
+      <text x="550" y="325">Alta Carga</text>
+      <text x="550" y="340" font-size="10" fill="#94a3b8">(~3000 RPM)</text>
+      <text x="700" y="325">Rotação Elevada</text>
+      <text x="700" y="340" font-size="10" fill="#94a3b8">(~3500 RPM)</text>
     </g>
     <g stroke="#e2e8f0" stroke-width="1" stroke-dasharray="4,4">
       <line x1="100" y1="50" x2="100" y2="300" />
@@ -192,7 +193,7 @@
     <circle cx="550" cy="150" r="6" fill="#ffffff" stroke="#8B5CF6" stroke-width="3" />
     <circle cx="700" cy="133" r="6" fill="#ffffff" stroke="#8B5CF6" stroke-width="3" />
     <g font-size="11" font-weight="700" fill="#1e293b">
-      <text x="100" y="248" text-anchor="middle">~26,7 Hz</text>
+      <text x="100" y="248" text-anchor="middle">~25 Hz</text>
       <text x="300" y="188" text-anchor="middle">60 Hz</text>
       <text x="550" y="138" text-anchor="middle">100 Hz</text>
       <text x="700" y="121" text-anchor="middle">~117 Hz</text>
@@ -205,7 +206,7 @@
   <div style="display: flex; justify-content: center; gap: 30px; margin-bottom: 20px;">
     <div style="display: flex; align-items: center; gap: 8px;">
       <div style="width: 16px; height: 4px; background: #10B981; border-radius: 2px;"></div>
-      <span style="font-size: 0.9rem; font-weight: 700; color: #1e293b;">Duty Cycle (%) do Injetor</span>
+      <span style="font-size: 0.9rem; font-weight: 700; color: #1e293b;">Duty Cycle (%) de Referência</span>
     </div>
   </div>
 
@@ -229,13 +230,13 @@
     </g>
     <g fill="#64748b" font-size="12" font-weight="600" text-anchor="middle">
       <text x="100" y="325">Marcha Lenta</text>
-      <text x="100" y="340" font-size="10" fill="#94a3b8">(800 RPM)</text>
-      <text x="300" y="325">Torque Máximo</text>
-      <text x="300" y="340" font-size="10" fill="#94a3b8">(1800 RPM)</text>
-      <text x="550" y="325">Plena Carga</text>
-      <text x="550" y="340" font-size="10" fill="#94a3b8">(3000 RPM)</text>
-      <text x="700" y="325">Rotação Máx</text>
-      <text x="700" y="340" font-size="10" fill="#94a3b8">(3500 RPM)</text>
+      <text x="100" y="340" font-size="10" fill="#94a3b8">(~750 RPM)</text>
+      <text x="300" y="325">Faixa de Torque</text>
+      <text x="300" y="340" font-size="10" fill="#94a3b8">(~1800 RPM)</text>
+      <text x="550" y="325">Alta Carga</text>
+      <text x="550" y="340" font-size="10" fill="#94a3b8">(~3000 RPM)</text>
+      <text x="700" y="325">Rotação Elevada</text>
+      <text x="700" y="340" font-size="10" fill="#94a3b8">(~3500 RPM)</text>
     </g>
     <g stroke="#e2e8f0" stroke-width="1" stroke-dasharray="4,4">
       <line x1="100" y1="50" x2="100" y2="300" />
@@ -243,7 +244,6 @@
       <line x1="550" y1="50" x2="550" y2="300" />
       <line x1="700" y1="50" x2="700" y2="300" />
     </g>
-    <!-- Curva de Duty Cycle caindo com a rotação -->
     <polyline points="100,175 300,210 550,240 700,250" fill="none" stroke="#10B981" stroke-width="4" stroke-linecap="round" stroke-linejoin="round"/>
     <circle cx="100" cy="175" r="6" fill="#ffffff" stroke="#10B981" stroke-width="3" />
     <circle cx="300" cy="210" r="6" fill="#ffffff" stroke="#10B981" stroke-width="3" />
@@ -258,57 +258,65 @@
   </svg>
 
   <div class="dica">
-    <strong>Por que o Duty Cycle diminui em alta rotação?</strong>
-    <p>O Duty Cycle é a porcentagem de tempo que o injetor fica aberto em relação ao tempo total do ciclo do motor. Em alta rotação, o tempo total do ciclo encurta drasticamente (a 3000 RPM, o motor completa um ciclo em menos de 10ms). Embora o injetor precise ficar aberto por mais tempo absoluto (em milissegundos) para fornecer combustível, essa duração representa uma <b>porcentagem menor</b> do ciclo total. Por isso, a linha do Duty Cycle cai[reference:5].</p>
+    <strong>Por que o Duty Cycle pode cair em rotações mais altas?</strong>
+    <p>O Duty Cycle expressa a fração de tempo em que o comando permanece ativo em relação ao período total do ciclo. Em rotações elevadas, o tempo disponível para cada ciclo diminui bastante; assim, mesmo que a duração do pulso em milissegundos acompanhe a demanda de injeção, o percentual relativo ao ciclo completo pode cair em relação a regimes mais baixos.</p>
   </div>
 </div>
 
-<h2 id="problemas-comuns">Principais Falhas e Sintomas de Oficina</h2>
-<p>As falhas nos injetores podem ser elétricas ou mecânicas (hidráulicas):</p>
+<h2 id="problemas-comuns">Principais Falhas, Retorno e Sintomas de Oficina</h2>
+<p>Na <b>Toyota Hilux 2013 (1KD-FTV / 2KD-FTV)</b>, os problemas nos bicos injetores Common Rail costumam ser <b>hidráulicos/mecânicos</b> (desgaste interno, contaminação por água/impurezas, gotejamento ou <b>excesso de retorno de combustível</b>) ou <b>elétricos</b> (chicote, conector ou bobina/circuito interno):</p>
 
 <div class="trio">
   <div>
     <h4>Sintomas</h4>
     <ul>
-      <li>Motor falha um cilindro (manco) e perde força;</li>
-      <li>Motor bate pino forte (rajado metálico pesado);</li>
-      <li>Solta muita fumaça branca/cinza com cheiro de diesel cru;</li>
-      <li>Motor demora muito para pegar ou só pega no "tranco".</li>
+      <li>Falha em cilindro ("motor manco"), marcha lenta irregular ou trepidação;</li>
+      <li>Ruído excessivo de batida/detonação ("batendo pino") ou fumaça branca/cinza/preta;</li>
+      <li>Partida demorada, dificuldade de pegar ou perda de potência com <a href="#sistema-de-injecao/sensor-pres-rail">queda de pressão no Rail</a>.</li>
     </ul>
   </div>
   <div>
     <h4>Causas</h4>
     <ul>
-      <li>Bobina com circuito aberto ou bico travado fechado;</li>
-      <li>Bico injetor com giclê travado aberto ou gotejando;</li>
-      <li>Desgaste mecânico na válvula de controle interna (gera excesso de retorno).</li>
+      <li><b>Excesso de retorno</b> por desgaste interno do injetor (derruba a pressão no Rail e dificulta a partida);</li>
+      <li>Pulverização deficiente, bico travado aberto/gotejando ou sujeira/água no combustível;</li>
+      <li>Falha elétrica no injetor, conector mal encaixado ou fio partido/com mau contato no chicote.</li>
     </ul>
   </div>
   <div>
     <h4>Soluções</h4>
     <ul>
-      <li>Substituir o bico injetor;</li>
-      <li>Para bico travado aberto, substituir imediatamente;</li>
-      <li>Para excesso de retorno, substituir o bico ou enviar para teste em bancada Bosch.</li>
+      <li>Realizar teste de vazão de retorno e avaliação com scanner (compensação por cilindro e pressão do Rail);</li>
+      <li>Testar resistência/isolamento elétrico e integridade do chicote;</li>
+      <li>Substituir ou enviar os injetores a bancada especializada conforme o diagnóstico e registrar códigos de calibração (QR/código de injetor) na ECM Denso quando aplicável.</li>
     </ul>
   </div>
 </div>
 
-<h2 id="codigos-de-falha">Códigos de Falha (OBD-II)</h2>
+<div class="dica">
+  <strong>Ponto de Atenção na Hilux 2013 D-4D</strong>
+  <p>Em casos de partida longa ou dificuldade de pegar na linha 1KD-FTV / 2KD-FTV, o <b>retorno excessivo em um ou mais bicos injetores</b> é uma ocorrência frequente: o combustível de alta pressão vaza para o retorno antes de atingir a pressão mínima no Rail. Além disso, em muitas aplicações Toyota/Denso, após a troca de injetores é necessário realizar o registro/programação do código de calibração do injetor via scanner para manter a uniformidade de débito entre cilindros.</p>
+</div>
+
+<h2 id="codigos-de-falha">Códigos de Falha (Padrão Toyota Denso)</h2>
 
 <div class="codigos">
-  <div class="codigo"><span class="num">P0201 a P0204</span><div>
-    <h4>Falha no Circuito do Injetor (Cilindros 1 a 4)</h4>
-    <p>Indica falha elétrica direta na linha do injetor correspondente (chicote partido ou bobina do bico queimada em circuito aberto).</p>
+  <div class="codigo"><span class="num">P0201 / P0202 / P0203 / P0204</span><div>
+    <h4>Falha no Circuito do Injetor (Cilindros 1, 2, 3 e 4)</h4>
+    <p>Indica falha no circuito elétrico de acionamento do injetor correspondente (circuito aberto, curto ou mau contato no chicote/conector/bico).</p>
   </div></div>
   
-  <div class="codigo"><span class="num">P2146</span><div>
-    <h4>Tensão de Alimentação dos Injetores - Banco A (Cilindros 1 e 4)</h4>
-    <p>A ECU divide os bicos em dois bancos elétricos de controle. Se um único bico do cilindro 1 ou 4 sofrer curto-circuito com a massa (corpo do bico), a ECU desarma o banco inteiro por proteção e o motor apaga imediatamente na via ou não pega.</p>
+  <div class="codigo"><span class="num">P1201 / P1202 / P1203 / P1204</span><div>
+    <h4>Circuito Aberto ou Curto no Circuito do Injetor (Conforme Aplicação Denso)</h4>
+    <p>Códigos associados a falhas específicas no circuito de acionamento do injetor do cilindro indicado. Inspecione chicote, conector, isolação e resistência do componente.</p>
   </div></div>
 
-  <div class="codigo"><span class="num">P2149</span><div>
-    <h4>Tensão de Alimentação dos Injetores - Banco B (Cilindros 2 e 3)</h4>
-    <p>Mesma lógica do P2146, mas para o banco 2. Se o curto ocorrer nos cilindros 2 ou 3, o erro gravado será o P2149, desligando a injeção por completo.</p>
+  <div class="codigo"><span class="num">P0087</span><div>
+    <h4>Pressão do Rail Muito Baixa (Associável a Excesso de Retorno)</h4>
+    <p>Um bico injetor com retorno excessivo pode impedir que o sistema mantenha a pressão do Rail próxima à comandada, especialmente na partida e em aceleração.</p>
   </div></div>
 </div>
+
+<p style="font-size: 0.85rem; color: #64748b; margin-top: 2rem; border-top: 1px solid #e2e8f0; padding-top: 1rem;">
+  <em>Este documento foi desenvolvido com base nos parâmetros técnicos do sistema de gerenciamento eletrônico Toyota / Denso Common Rail (Hilux 2013 — motores 1KD-FTV / 2KD-FTV). Uso exclusivo para treinamento e diagnóstico mecânico profissional.</em>
+</p>
