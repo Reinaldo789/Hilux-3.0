@@ -1,4 +1,4 @@
-<!-- Sensor de Pressão do Rail. Imagens: salve em conteudo/imagens/sensor-pres-rail/ com estes nomes:
+<!-- Sensor de Pressão do Rail (FRP / Fuel Rail Pressure) - Toyota Hilux 2013 (Sistema Denso Common Rail). Imagens: salve em conteudo/imagens/sensor-pres-rail/ com estes nomes:
 01-localizacao.jpg                   Localização no tubo Rail
 02-funcionamento.jpg                 Como funciona
 03-conector-pinos.jpg                Parte elétrica: conector e pinos
@@ -10,62 +10,68 @@
 09-pressao-comandada-real-2.jpg      Pressão comandada x real, 2.000 rpm
 Links entre páginas: confirme os caminhos (#sistema-de-injecao/..., #alimentacao-de-combustivel/...). -->
 <header class="art-head">
-  <h1>Sensor de Pressão do Rail</h1>
+  <h1>Sensor de Pressão do Rail (FRP) — Toyota Hilux 2013</h1>
+  <p style="font-size: 0.9rem; opacity: 0.9; margin-top: 5px;">Sistema Denso Common Rail • Motores 1KD-FTV 3.0 / 2KD-FTV 2.5 D-4D</p>
 </header>
 
 <nav class="toc" aria-label="Neste artigo">
   <strong>Neste artigo</strong>
   <ul>
     <li><a href="#" data-goto="localizacao">Localização</a></li>
-    <li><a href="#" data-goto="como-funciona">Como funciona</a></li>
-    <li><a href="#" data-goto="teste-multimetro">Testes com multímetro</a>
+    <li><a href="#" data-goto="como-funciona">Como funciona (Sistema Denso / SCV)</a></li>
+    <li><a href="#" data-goto="teste-multimetro">Testes com multímetro e pinagem</a>
       <ul>
         <li><a href="#" data-goto="teste-scanner">Testes com scanner</a></li>
       </ul>
     </li>
     <li><a href="#" data-goto="problemas-comuns">Problemas comuns</a>
       <ul>
-        <li><a href="#" data-goto="motor-desliga-durante-a-aceleracao">Motor desliga durante a aceleração</a></li>
+        <li><a href="#" data-goto="motor-desliga-durante-a-aceleracao">Motor desliga ou corta em aceleração / alta carga</a></li>
         <li><a href="#" data-goto="pressao-comandada-x-pressao-real">Pressão comandada x pressão real</a></li>
       </ul>
     </li>
-    <li><a href="#" data-goto="codigos-de-falha">Códigos de falha</a></li>
+    <li><a href="#" data-goto="codigos-de-falha">Códigos de falha (Padrão Toyota Denso)</a></li>
   </ul>
 </nav>
 
 <h2 id="localizacao">Localização</h2>
-<p>Está instalado no próprio tubo Rail.</p>
+<p>Na <b>Toyota Hilux 2013</b> (motores diesel Common Rail <b>1KD-FTV 3.0 16V D-4D</b> e <b>2KD-FTV 2.5 16V D-4D</b>, incluindo <b>Hilux SW4</b>), o sensor de pressão do rail (<b>FRP — Fuel Rail Pressure Sensor</b>) está instalado diretamente na extremidade do <b>tubo acumulador de alta pressão (Common Rail)</b>.</p>
 <figure class="img-box-preview">
-  <img src="conteudo/imagens/sensor-pres-rail/01-localizacao.jpg" alt="Localização do sensor de pressão no tubo Rail" loading="lazy">
+  <img src="conteudo/imagens/sensor-pres-rail/01-localizacao.jpg" alt="Localização do sensor de pressão no tubo Rail da Toyota Hilux 2013" loading="lazy">
   <figcaption><i class="fa-solid fa-magnifying-glass-plus"></i> Clique na imagem para ampliar</figcaption>
 </figure>
 
-<h2 id="como-funciona">Como funciona</h2>
+<h2 id="como-funciona">Como funciona (Sistema Denso Common Rail)</h2>
 <ul>
-  <li>Monitora constantemente a pressão do combustível no sistema de alta pressão;</li>
-  <li>É um elemento <b>piezo-resistivo</b> com circuito integrado e compensação de temperatura;</li>
-  <li>Atua por um diafragma que se deforma com a pressão do combustível, o que altera a resistência e o sinal;</li>
-  <li>Quanto maior a pressão no Rail, maior a tensão de sinal no pino 02, de retorno para a Central;</li>
-  <li>A ECM usa esse valor para regular a pressão e controlar a <a href="#sistema-de-injecao/valvula-mprop">válvula MProp</a>.</li>
+  <li>Monitora continuamente a pressão do diesel no tubo acumulador de alta pressão (Rail) e envia um sinal analógico para a <b>ECM (Engine Control Module) Denso</b>;</li>
+  <li>Utiliza elemento <b>piezo-resistivo</b> com circuito integrado e compensação térmica: a pressão do combustível deforma o diafragma interno e altera a tensão de saída;</li>
+  <li>Quanto maior a pressão no Rail, maior a tensão no pino de sinal de retorno para a ECM;</li>
+  <li>Na arquitetura <b>Toyota / Denso</b>, o controle da pressão de alta pressão é feito principalmente pela <a href="#sistema-de-injecao/valvula-scv">válvula SCV (Suction Control Valve)</a> na bomba de alta pressão (e, conforme a arquitetura/aplicação, regulagem/estratégia de controle de pressão do sistema), mantendo a pressão real alinhada à pressão comandada pela ECM.</li>
 </ul>
 <figure class="img-box-preview">
-  <img src="conteudo/imagens/sensor-pres-rail/02-funcionamento.jpg" alt="Funcionamento do sensor de pressão do Rail" loading="lazy">
+  <img src="conteudo/imagens/sensor-pres-rail/02-funcionamento.jpg" alt="Funcionamento do sensor de pressão do Rail na Hilux 2013" loading="lazy">
   <figcaption><i class="fa-solid fa-magnifying-glass-plus"></i> Clique na imagem para ampliar</figcaption>
 </figure>
-<p>Se a pressão está baixa, a ECM aumenta o Duty Cycle da MProp, que fica mais tempo aberta. Se a pressão está alta, diminui o Duty Cycle e a pressão cai.</p>
+<p>Se a pressão real no Rail fica abaixo da comandada, a ECM ajusta o comando da <b>válvula SCV</b> para aumentar a vazão admitida na bomba de alta pressão. Se a pressão sobe acima do esperado, a ECM reduz a vazão/comando para reconduzir a pressão ao valor alvo.</p>
 <div class="aviso">
-  <strong>Modo de segurança</strong>
-  <p>Se a Central verificar que a pressão está acima do permitido (~1.500 bar) e não conseguir controlá-la pela MProp, entra em modo de segurança e desliga o motor. Se a tensão do sensor for inferior a 0,3 V ou superior a 4,76 V, a ECU também assume controle de emergência.</p>
+  <strong>Modo de segurança (Fail-Safe)</strong>
+  <p>Se a ECM Denso detectar pressão excessiva fora da faixa permitida, queda severa de pressão ou sinal elétrico do sensor FRP fora dos limites válidos (curto à massa, curto ao 5V ou circuito aberto), acende a luz de anomalia (MIL), limita o débito/rotação ou corta a injeção para proteger o sistema Common Rail e os bicos injetores.</p>
 </div>
 
-<h2 id="teste-multimetro">Testes com multímetro</h2>
-<p>Tensão no pino 02 (sinal), por condição do motor:</p>
+<h2 id="teste-multimetro">Testes com multímetro e pinagem</h2>
+<p>O sensor FRP de 3 pinos opera com alimentação de <b>+5,0 V</b>, massa eletrônica (<b>GND / E2</b>) e sinal analógico proporcional à pressão do Rail. Realize os testes com o chicote conectado usando agulhas de medição traseira (<em>back-probing</em>):</p>
+<figure class="img-box-preview">
+  <img src="conteudo/imagens/sensor-pres-rail/03-conector-pinos.jpg" alt="Conector e pinagem do sensor de pressão do Rail" loading="lazy">
+  <figcaption><i class="fa-solid fa-magnifying-glass-plus"></i> Clique na imagem para ampliar</figcaption>
+</figure>
+
+<p>Tensão típica de sinal do sensor FRP por condição de operação (referência de bancada/sistema Common Rail — confirme sempre o valor exato no manual da versão/scanner):</p>
 
 <div class="specs">
-  <div class="spec"><b>~0,5 V</b><span>Chave ligada (~0 bar)</span></div>
-  <div class="spec"><b>~1,2 V</b><span>Partida (~300 bar)</span></div>
-  <div class="spec"><b>~2,0 V</b><span>Média Carga (~600 bar)</span></div>
-  <div class="spec"><b>~4,3 V</b><span>Plena Carga (~1.350 bar)</span></div>
+  <div class="spec"><b>~0,5 V</b><span>Chave ligada / sem pressão (~0 bar)</span></div>
+  <div class="spec"><b>~1,2 V</b><span>Partida / marcha lenta (~250–350 bar)</span></div>
+  <div class="spec"><b>~2,0 V</b><span>Média carga (~600–800 bar)</span></div>
+  <div class="spec"><b>~3,5 V a 4,3 V</b><span>Alta carga / plena solicitação</span></div>
 </div>
 
 <!-- GRÁFICO TENSÃO X PRESSÃO -->
@@ -74,7 +80,7 @@ Links entre páginas: confirme os caminhos (#sistema-de-injecao/..., #alimentaca
   <div style="display: flex; justify-content: center; gap: 30px; margin-bottom: 20px;">
     <div style="display: flex; align-items: center; gap: 8px;">
       <div style="width: 16px; height: 4px; background: #3B82F6; border-radius: 2px;"></div>
-      <span style="font-size: 0.9rem; font-weight: 700; color: #1e293b;">Tensão no Pino 02 (V)</span>
+      <span style="font-size: 0.9rem; font-weight: 700; color: #1e293b;">Tensão de Sinal FRP (V)</span>
     </div>
     <div style="display: flex; align-items: center; gap: 8px;">
       <div style="width: 16px; height: 4px; background: #F59E0B; border-radius: 2px;"></div>
@@ -116,10 +122,10 @@ Links entre páginas: confirme os caminhos (#sistema-de-injecao/..., #alimentaca
 
     <!-- Valores Eixo Y Direito (Pressão) -->
     <g fill="#F59E0B" font-size="12" font-weight="600" text-anchor="start">
-      <text x="735" y="54">1400 bar</text>
-      <text x="735" y="104">1050 bar</text>
-      <text x="735" y="154">700 bar</text>
-      <text x="735" y="204">350 bar</text>
+      <text x="735" y="54">1600 bar</text>
+      <text x="735" y="104">1200 bar</text>
+      <text x="735" y="154">800 bar</text>
+      <text x="735" y="204">400 bar</text>
       <text x="735" y="304">0 bar</text>
     </g>
 
@@ -128,14 +134,14 @@ Links entre páginas: confirme os caminhos (#sistema-de-injecao/..., #alimentaca
       <text x="100" y="325">Chave Ligada</text>
       <text x="100" y="340" font-size="10" fill="#94a3b8">(~0 bar)</text>
       
-      <text x="260" y="325">Partida</text>
+      <text x="260" y="325">Partida / Marcha Lenta</text>
       <text x="260" y="340" font-size="10" fill="#94a3b8">(~300 bar)</text>
       
       <text x="440" y="325">Média Carga</text>
-      <text x="440" y="340" font-size="10" fill="#94a3b8">(~600 bar)</text>
+      <text x="440" y="340" font-size="10" fill="#94a3b8">(~600–800 bar)</text>
       
-      <text x="620" y="325">Plena Carga</text>
-      <text x="620" y="340" font-size="10" fill="#94a3b8">(~1350 bar)</text>
+      <text x="620" y="325">Alta / Plena Carga</text>
+      <text x="620" y="340" font-size="10" fill="#94a3b8">(~1350–1600 bar)</text>
     </g>
 
     <!-- Linhas Verticais de Grade -->
@@ -147,12 +153,10 @@ Links entre páginas: confirme os caminhos (#sistema-de-injecao/..., #alimentaca
     </g>
 
     <!-- Curva de Tensão (Azul) -->
-    <!-- 0.5V = 275, 1.2V = 240, 2.0V = 200, 4.3V = 85 -->
     <polyline points="100,275 260,240 440,200 620,85" fill="none" stroke="#3B82F6" stroke-width="4" stroke-linecap="round" stroke-linejoin="round" filter="url(#shadow-rail)"/>
     
     <!-- Curva de Pressão (Laranja) -->
-    <!-- 0 = 300, 300 = 236, 600 = 171, 1350 = 64 -->
-    <polyline points="100,300 260,236 440,171 620,64" fill="none" stroke="#F59E0B" stroke-width="4" stroke-linecap="round" stroke-linejoin="round" filter="url(#shadow-rail)"/>
+    <polyline points="100,300 260,256 440,185 620,64" fill="none" stroke="#F59E0B" stroke-width="4" stroke-linecap="round" stroke-linejoin="round" filter="url(#shadow-rail)"/>
 
     <!-- Pontos Interativos Tensão (Azul) -->
     <g fill="#ffffff" stroke="#3B82F6" stroke-width="3">
@@ -165,49 +169,46 @@ Links entre páginas: confirme os caminhos (#sistema-de-injecao/..., #alimentaca
     <!-- Pontos Interativos Pressão (Laranja) -->
     <g fill="#ffffff" stroke="#F59E0B" stroke-width="3">
       <circle cx="100" cy="300" r="6" />
-      <circle cx="260" cy="236" r="6" />
-      <circle cx="440" cy="171" r="6" />
+      <circle cx="260" cy="256" r="6" />
+      <circle cx="440" cy="185" r="6" />
       <circle cx="620" cy="64" r="6" />
     </g>
     
     <!-- Etiquetas de Valores nos Pontos -->
     <g font-size="11" font-weight="700">
-      <!-- Tensão -->
-      <text x="100" y="263" fill="#3B82F6" text-anchor="middle">0,5V</text>
-      <text x="260" y="228" fill="#3B82F6" text-anchor="middle">1,2V</text>
-      <text x="440" y="188" fill="#3B82F6" text-anchor="middle">2,0V</text>
-      <text x="620" y="73" fill="#3B82F6" text-anchor="middle">4,3V</text>
+      <text x="100" y="263" fill="#3B82F6" text-anchor="middle">~0,5V</text>
+      <text x="260" y="228" fill="#3B82F6" text-anchor="middle">~1,2V</text>
+      <text x="440" y="188" fill="#3B82F6" text-anchor="middle">~2,0V</text>
+      <text x="620" y="73" fill="#3B82F6" text-anchor="middle">~4,3V</text>
       
-      <!-- Pressão -->
       <text x="100" y="315" fill="#F59E0B" text-anchor="middle">0 bar</text>
-      <text x="260" y="224" fill="#F59E0B" text-anchor="middle">300 bar</text>
-      <text x="440" y="159" fill="#F59E0B" text-anchor="middle">600 bar</text>
-      <text x="620" y="52" fill="#F59E0B" text-anchor="middle">1350 bar</text>
+      <text x="260" y="272" fill="#F59E0B" text-anchor="middle">~300 bar</text>
+      <text x="440" y="172" fill="#F59E0B" text-anchor="middle">~600 bar</text>
+      <text x="620" y="52" fill="#F59E0B" text-anchor="middle">alta pressão</text>
     </g>
   </svg>
 </div>
 
 <ul>
-  <li>Teste a alimentação de 5 V entre os pinos 1 e 3, de preferência com o chicote conectado ao sensor;</li>
-  <li>Com a chave ligada, a tensão no pino 02 deve ser de 0,5 V;</li>
-  <li>Durante a partida, a tensão no pino 02 deve ficar em cerca de 1,2 V, o que corresponde a aproximadamente 300 bar;</li>
-  <li>Se não chegar a cerca de 1,2 V, verifique os componentes antes do tubo Rail;</li>
-  <li>Na marcha lenta, a tensão no pino 02 é de cerca de 1,2 V a 1,3 V.</li>
+  <li>Verifique a alimentação de <b>+5,0 V</b> (faixa de 4,5V a 5,5V) entre os pinos de alimentação e massa do sensor com a chave ligada (<b>ON</b>);</li>
+  <li>Com a chave ligada e o motor desligado, o sinal do sensor deve situar-se próximo de <b>0,5 V</b> (pressão residual/zerada);</li>
+  <li>Durante a partida e em marcha lenta, o sinal sobe na faixa de aproximadamente <b>1,1 V a 1,4 V</b> (correspondente a cerca de <b>250 a 350 bar</b>);</li>
+  <li>Se não houver subida de tensão na partida, verifique alimentação de baixa pressão (<a href="#alimentacao-de-combustivel/bomba-de-transferencia">linha de alimentação de combustível</a> / filtro saturado / entrada de ar), <a href="#sistema-de-injecao/valvula-scv">válvula SCV</a>, bomba de alta pressão ou retorno excessivo de bicos injetores.</li>
 </ul>
 <div class="aviso">
   <strong>Atenção</strong>
-  <p>Se a tensão não alcançar cerca de 1,2 V, a Central não libera pulso nos bicos injetores.</p>
+  <p>Se a pressão no Rail não atingir o patamar mínimo de partida (cerca de 250–300 bar), a ECM Denso não libera a injeção de combustível nos bicos e o motor não entra em funcionamento.</p>
 </div>
 <figure class="img-box-preview">
-  <img src="conteudo/imagens/sensor-pres-rail/04-teste-multimetro.jpg" alt="Teste do sensor de pressão do Rail com multímetro" loading="lazy">
+  <img src="conteudo/imagens/sensor-pres-rail/04-teste-multimetro.jpg" alt="Teste do sensor de pressão do Rail com multímetro na Hilux 2013" loading="lazy">
   <figcaption><i class="fa-solid fa-magnifying-glass-plus"></i> Clique na imagem para ampliar</figcaption>
 </figure>
 
 <h3 id="teste-scanner">Testes com scanner</h3>
 <ul>
-  <li>Coloque o scanner em leitura de pressão do Rail e verifique a pressão durante a partida;</li>
-  <li>Em marcha lenta, a pressão deve estar entre 250 e 350 bar;</li>
-  <li>Se a pressão real estiver sempre abaixo, o problema é a bomba, o DRV ou injetores com retorno excessivo.</li>
+  <li>Monitore o parâmetro de pressão do combustível no Rail (<em>Fuel Rail Pressure</em>) via scanner durante a partida e em marcha lenta;</li>
+  <li>Em marcha lenta estável, a pressão do Rail na Hilux 2013 D-4D situa-se tipicamente na faixa de aproximadamente <b>250 a 400 bar</b> (conforme temperatura do motor e condição de carga);</li>
+  <li>Se a pressão real permanecer consistentemente abaixo da comandada, investigue restrição no filtro de diesel, bomba de alimentação/alta pressão, <a href="#sistema-de-injecao/valvula-scv">válvula SCV</a> ou injetores com retorno elevado.</li>
 </ul>
 <figure class="img-box-preview">
   <img src="conteudo/imagens/sensor-pres-rail/05-teste-scanner.jpg" alt="Leitura da pressão do Rail no scanner durante a partida" loading="lazy">
@@ -216,76 +217,82 @@ Links entre páginas: confirme os caminhos (#sistema-de-injecao/..., #alimentaca
 
 <h2 id="problemas-comuns">Problemas comuns</h2>
 
-<h3 id="motor-desliga-durante-a-aceleracao">Motor desliga durante a aceleração</h3>
+<h3 id="motor-desliga-durante-a-aceleracao">Motor desliga ou corta potência durante a aceleração</h3>
 <div class="trio">
   <div>
     <h4>Sintomas</h4>
     <ul>
-      <li>Alta pressão no tubo Rail;</li>
-      <li>Acende a luz de injeção e o motor desliga.</li>
+      <li>Pico de pressão acima do esperado ou queda brusca de pressão em retomada/aceleração;</li>
+      <li>Luz da injeção acesa, perda de força ou desligamento repentino do motor.</li>
     </ul>
   </div>
   <div>
     <h4>Possíveis causas</h4>
     <ul>
-      <li>Válvula MProp travada aberta;</li>
-      <li>Sensor do Rail avariado.</li>
+      <li><a href="#sistema-de-injecao/valvula-scv">Válvula SCV</a> com travamento, sujeira ou falha de comando;</li>
+      <li>Sensor FRP com leitura distorcida ou mau contato no chicote;</li>
+      <li>Restrição no circuito de alimentação de diesel ou desgaste na bomba de alta pressão.</li>
     </ul>
   </div>
   <div>
     <h4>Possíveis soluções</h4>
     <ul>
-      <li>Limpar a válvula MProp;</li>
-      <li>Trocar o sensor do Rail avariado.</li>
+      <li>Verificar/substituir a válvula SCV e conferir o circuito de alimentação de combustível;</li>
+      <li>Testar e substituir o sensor de pressão do Rail se a leitura divergir do real;</li>
+      <li>Avaliar retorno dos injetores e estado da bomba de alta pressão.</li>
     </ul>
   </div>
 </div>
 <div class="dica">
   <strong>Dica</strong>
-  <p>Problemas no sensor do Rail e na MProp se confundem, porque um depende do outro. Observe se há excesso de fumaça preta no escapamento: indica excesso de combustível nos injetores por falha da MProp.</p>
+  <p>Em falhas de controle de pressão no sistema Denso, compare sempre a <b>pressão comandada</b> com a <b>pressão real</b> no scanner e observe o comportamento da <a href="#sistema-de-injecao/valvula-scv">válvula SCV</a> junto com o retorno dos injetores Common Rail.</p>
 </div>
-<p><b>Multímetro:</b> verifique a tensão no pino 02 do sensor do tubo.</p>
+<p><b>Multímetro:</b> monitore o sinal do sensor FRP com o chicote conectado:</p>
 <ul>
-  <li>Chave ligada, antes da partida: 0,5 V;</li>
-  <li>Marcha lenta: aproximadamente 1,2 V a 1,3 V;</li>
-  <li>Rotação alta: aproximadamente até 4,3 V.</li>
+  <li>Chave ligada (motor parado): próximo de <b>0,5 V</b>;</li>
+  <li>Marcha lenta: em torno de <b>1,1 V a 1,4 V</b>;</li>
+  <li>Aceleração / carga: eleva-se de forma contínua e proporcional à pressão do Rail.</li>
 </ul>
-<p><b>Scanner:</b> se durante a aceleração a pressão chegar a ~1.500 bar, a ECM entra em modo de proteção e desliga o motor.</p>
+<p><b>Scanner:</b> se durante a aceleração a pressão ultrapassar o limite tolerado ou cair abaixo do mínimo exigido, a ECM ativa proteção e pode cortar a injeção ou desligar o motor.</p>
 <figure class="img-box-preview">
   <img src="conteudo/imagens/sensor-pres-rail/06-scanner-pressao-1.jpg" alt="Scanner mostrando a pressão do Rail durante a aceleração" loading="lazy">
   <figcaption><i class="fa-solid fa-magnifying-glass-plus"></i> Clique na imagem para ampliar</figcaption>
 </figure>
-<p>Atingiu o limite de pressão, o motor desligou e a pressão caiu instantaneamente.</p>
+<p>Quando ocorre excesso de pressão fora do limite de segurança, o motor pode apagar bruscamente e a leitura de pressão cai de imediato.</p>
 <figure class="img-box-preview">
-  <img src="conteudo/imagens/sensor-pres-rail/07-scanner-1500-bar.jpg" alt="Scanner mostrando a pressão chegando ao limite e o motor desligando" loading="lazy">
+  <img src="conteudo/imagens/sensor-pres-rail/07-scanner-1500-bar.jpg" alt="Scanner mostrando pico de pressão e desligamento do motor" loading="lazy">
   <figcaption><i class="fa-solid fa-magnifying-glass-plus"></i> Clique na imagem para ampliar</figcaption>
 </figure>
 
 <h3 id="pressao-comandada-x-pressao-real">Pressão comandada x pressão real</h3>
-<p>Se a pressão real estiver sempre acima da comandada, a válvula MProp pode estar travada ou o sensor de pressão está com defeito.</p>
-<p>Em marcha lenta (750 rpm), a pressão deveria estar entre 200 e 500 bar.</p>
+<p>A comparação entre <b>Pressão Comandada</b> (alvo da ECM Denso) e <b>Pressão Real</b> (lida pelo sensor FRP) é o principal indicador de saúde do sistema Common Rail: em regime estável, a pressão real deve acompanhar de perto a comandada.</p>
+<p>Em marcha lenta (~750 RPM), a pressão do Rail situa-se tipicamente na faixa de aproximadamente 250 a 400 bar.</p>
 <figure class="img-box-preview">
-  <img src="conteudo/imagens/sensor-pres-rail/08-pressao-comandada-real-1.jpg" alt="Pressão comandada e real em marcha lenta" loading="lazy">
+  <img src="conteudo/imagens/sensor-pres-rail/08-pressao-comandada-real-1.jpg" alt="Pressão comandada e real em marcha lenta na Hilux 2013" loading="lazy">
   <figcaption><i class="fa-solid fa-magnifying-glass-plus"></i> Clique na imagem para ampliar</figcaption>
 </figure>
-<p>Em 2.000 rpm, a pressão já está no limite máximo aceitável para a rotação máxima.</p>
+<p>Em aceleração (~2.000 RPM), a pressão sobe acompanhando a demanda do motor, sem oscilações violentas nem afastamento prolongado entre comandada e real.</p>
 <figure class="img-box-preview">
-  <img src="conteudo/imagens/sensor-pres-rail/09-pressao-comandada-real-2.jpg" alt="Pressão comandada e real a 2.000 rpm" loading="lazy">
+  <img src="conteudo/imagens/sensor-pres-rail/09-pressao-comandada-real-2.jpg" alt="Pressão comandada e real a 2.000 rpm na Hilux 2013" loading="lazy">
   <figcaption><i class="fa-solid fa-magnifying-glass-plus"></i> Clique na imagem para ampliar</figcaption>
 </figure>
 
-<h2 id="codigos-de-falha">Códigos de falha</h2>
+<h2 id="codigos-de-falha">Códigos de falha (Padrão Toyota Denso)</h2>
 <div class="codigos">
   <div class="codigo"><span class="num">P0087</span><div>
-    <h4>Pressão do rail muito baixa</h4>
-    <p>Regulador de pressão (DRV / SCV) travado aberto.</p>
+    <h4>Pressão do rail / sistema de combustível muito baixa</h4>
+    <p>Pressão real abaixo da comandada. Verifique filtro de combustível, alimentação de baixa pressão, <a href="#sistema-de-injecao/valvula-scv">válvula SCV</a>, bomba de alta pressão ou retorno excessivo de bicos injetores.</p>
   </div></div>
   <div class="codigo"><span class="num">P0088</span><div>
-    <h4>Pressão do rail muito alta</h4>
-    <p>Regulador de pressão (DRV / SCV) travado fechado.</p>
+    <h4>Pressão do rail / sistema de combustível muito alta</h4>
+    <p>Pressão real acima do limite controlado. Verifique funcionamento/comando da <a href="#sistema-de-injecao/valvula-scv">válvula SCV</a>, regulagem de pressão e coerência do sinal do sensor FRP.</p>
   </div></div>
-  <div class="codigo"><span class="num">P0191</span><div>
-    <h4>Variação incorreta da pressão (intermitente)</h4>
-    <p>Se a leitura do sensor estiver travada ou incoerente, a ECU pode gerar P0191 ou P0193, ou entrar em modo de emergência.</p>
+  <div class="codigo"><span class="num">P0190 / P0191 / P0192 / P0193</span><div>
+    <h4>Circuito e Desempenho do Sensor de Pressão do Rail (FRP)</h4>
+    <p>Falhas associadas ao circuito ou sinal do sensor FRP (P0190 circuito, P0191 faixa/desempenho intermitente, P0192 sinal baixo/curto à massa, P0193 sinal alto/curto ao 5V). Inspecione conector, chicote, alimentação 5V, massa e sensor.</p>
   </div></div>
 </div>
+
+<p style="font-size: 0.85rem; color: #64748b; margin-top: 2rem; border-top: 1px solid #e2e8f0; padding-top: 1rem;">
+  <em>Este documento foi desenvolvido com base nos parâmetros técnicos do sistema de gerenciamento eletrônico Toyota / Denso Common Rail (Hilux 2013 — motores 1KD-FTV / 2KD-FTV). Uso exclusivo para treinamento e diagnóstico mecânico profissional.</em>
+</p>
